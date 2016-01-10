@@ -10,13 +10,8 @@ var CheckUser = require('../middleware/checkUser');
 var config = require('../config/config');
 var Portfolio = mongoose.model('Portfolio');
 
-
-router.use(function(req, res, next) {
-
-    next();
-});
-
 router.get('/', CheckUser,function(req, res) {
+    console.log("main");
     res.render('main');
 });
 
@@ -26,6 +21,7 @@ router.get('/getWorks',CheckUser, function(req,res) {
         res.json(works);
     });
 });
+
 router.post('/register',Credentials.checkLoginAndPassword,
                         Credentials.checkEmail,
                         Credentials.checkName,
@@ -49,7 +45,7 @@ router.post('/register',Credentials.checkLoginAndPassword,
 router.post('/authorize', Credentials.checkLoginAndPassword, function(req,res,next) {
     if (req.user)
     {
-       res.redirect('/user/main');
+       res.redirect('/user');
     }
     else {
        User.authorize(req.body.login, req.body.password, function(err,user) {
@@ -77,12 +73,12 @@ router.get('/verify', function(req,res,next) {
     });
 });
 
-router.post('/logout', function(req,res) {
+router.post('/logout',CheckUser, function(req,res) {
     req.session.destroy();
     res.redirect('/');
 });
 
-router.post('/update', function(req,res,next) {
+router.post('/update', CheckUser, function(req,res,next) {
     req.user.edit(req.body, function(err,user) {
         if (err) return next(err);
         res.redirect("/user");

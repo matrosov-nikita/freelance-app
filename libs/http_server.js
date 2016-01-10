@@ -10,7 +10,7 @@ var conf = require('../config/config');
 var mongoose = require('mongoose');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
-var checkAuth = require('../middleware/checkUser');
+var checkUser = require('../middleware/checkUser');
 var Category = mongoose.model('Category');
 
 var app = express();
@@ -45,6 +45,7 @@ class Server {
             cookie: conf.get("session:cookie"),
             store: new MongoStore({mongooseConnection: mongoose.connection})
         }));
+        app.use(require('../middleware/escapeHtml'));
 
         app.use(require('../middleware/loadUser'));
 
@@ -53,13 +54,13 @@ class Server {
             res.render('auth');
         });
 
-        app.use('/category',Controller.Category);
+        app.use('/category', checkUser, Controller.Category);
 
-        app.use('/task',Controller.Task);
+        app.use('/task',checkUser, Controller.Task);
 
         app.use("/user",Controller.User);
 
-        app.use('/request', Controller.Request);
+        app.use('/request', checkUser, Controller.Request);
 
 
         app.use(function(err,req,res,next) {

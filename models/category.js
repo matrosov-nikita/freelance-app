@@ -14,12 +14,15 @@ var category = new Schema({
    }
 });
 
-
 category.statics.getList = function(callback) {
     this.find({}, function(err,categories) {
             if (err) callback(err);
             callback(null,categories);
-
     });
 };
+
+category.methods.incOrdersPerMonth = function() {
+    this.ordersPerMonth+=1;
+};
+
 var Category = module.exports = mongoose.model("Category",category);

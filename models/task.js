@@ -44,6 +44,7 @@ var task = new Schema({
 
 
 task.statics.add = function(data, callback) {
+    var Category = mongoose.model("Category");
     var task = new Task({
         header: data.header,
         description: data.description,
@@ -54,8 +55,14 @@ task.statics.add = function(data, callback) {
     });
     task.save(function(err,task) {
        if (err) callback(err);
-        else
-       callback(null,task);
+        else {
+           Category.findOne({_id: task.category}, function (err, category) {
+               if (err) callback(new HttpError(404, "Категория не найдена"));
+               category.incOrdersPerMonth();
+               category.save();
+           });
+           callback(null, task);
+       }
     });
 };
 task.statics.get = function(callback) {

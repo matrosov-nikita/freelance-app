@@ -1,6 +1,5 @@
 var HttpError = require('../error');
 module.exports = {
-
     checkLoginAndPassword: function (req, res, next) {
         var patternLogin = /^[a-zA-Z0-9-_]{5,16}$/;
         var patternPassword = /^.{5,16}$/;
@@ -22,7 +21,7 @@ module.exports = {
     },
     checkName: function(req,res,next) {
         //var patternName = /^([А-ЯЁ][а-яё]+[\-\s]?){3,}$/;
-        //if (!patternName.test(req.body.email)) {
+        //if (!patternName.test(req.body.name)) {
         //    return next(new HttpError(403, "Имя должно состоять только из русских букв. Длина от 5 до 50"));
         //}
         next();

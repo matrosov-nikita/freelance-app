@@ -5,6 +5,7 @@ $.ajax({
     type: "POST",
     url: "/category/get",
     success: function(result) {
+        console.log(result);
         parseData(result,null);
             $("#list_category").html(html);
         }
@@ -28,7 +29,8 @@ var byParent = function(data, parent){
     }).map(function(el){
         return {
             id: el._id,
-            name: el.name
+            name: el.name,
+            ordersPerMonth: el.ordersPerMonth
         }
     });
 };
@@ -38,8 +40,9 @@ var parseData = function(data, parent){
     if (result.length>0) {
         html += "<ul>";
         result.forEach(function (element) {
+            console.log(element);
             if (byParent(data,element.id).length==0) {
-                html += "<li class='last'>"+ "<a data-id=" + element.id + ">" +  element.name + "</a>";
+                html += "<li class='last'>"+ "<a data-id=" + element.id + ">" +  element.name +"("+element.ordersPerMonth + ")" +  "</a>";
                 element.children = parseData(data, element.id);
             }
             else {
