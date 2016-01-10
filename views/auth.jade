@@ -1,0 +1,18 @@
+extend layout
+block content
+    p Регистрация
+    form(action="/user/register",method="post")
+        input(type="text",placeholder="Имя",class="form-control" name="name")
+        input(type="text",placeholder="Логин",class="form-control" name="login")
+        input(type="text",placeholder="Email",class="form-control" name="email")
+        input(type="password",placeholder="Пароль",class="form-control", name="password")
+        button(type="submit",class="btn btn-primary") Отправить
+    p Авторизация
+    form(action="/user/authorize",method="post")
+        input(type="text",placeholder="Логин",class="form-control" name="login")
+        input(type="password",placeholder="Пароль",class="form-control", name="password")
+        button(type="submit",class="btn btn-primary") Отправить
+
+
+
+

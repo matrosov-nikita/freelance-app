@@ -1,0 +1,19 @@
+.task
+    .task_header(id='{{task._id}}',ng-click="ClickTaskHeader(task._id)")
+        span {{task.header}}
+        span {{task.price}}
+        i.fa.fa-check-square-o(ng-click="SendRequest(task.author._id, task._id)")
+
+    .task_content
+        p.category {{task.category.name}}
+        p.description  {{task.description}}
+        span.deadline Деадлайн: {{task.deadline | date: 'dd.MM.yyyy'}}
+        span.created Дата рамещения: {{task._created | date: 'dd.MM.yyyy'}}
+        p.attach_files Прикрепленные файлы
+        ul
+            li(ng-repeat="file in task.files")
+                i.fa.fa-file-o
+                a(href="http://localhost:8080/uploads/{{file.name}}") {{file.original}}
+    .task_footer
+        span Заказчик: {{task.author.name}}
+

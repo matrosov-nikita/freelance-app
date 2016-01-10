@@ -1,0 +1,20 @@
+.item
+    i.fa.fa-folder(data-toggle="modal",data-target="#" + "{{work._id}}")
+    p {{work.name}}
+.modal.fade(id='{{work._id}}')
+    .modal-dialog
+        .modal-content
+            .modal-header
+                button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
+                h4.modal-title {{work.name}}
+            .modal-body
+                p {{work.description}}
+                ul
+                    li(ng-repeat="file in work.files")
+                        i.fa.fa-file-o
+                        a(href="http://localhost:8080/uploads/{{file.name}}") {{file.original}}
+
+            .modal-footer
+                button.btn.btn-default(type='button', data-dismiss='modal') Закрыть
+
+

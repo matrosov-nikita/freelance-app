@@ -1,0 +1,15 @@
+doctype html
+html(lang="en",ng-app="app")
+    head
+        title Главная
+        link(rel="stylesheet",href="/libs/bootstrap/bootstrap.css")
+        link(rel="stylesheet",href="/css/font-awesome.css")
+        link(rel="stylesheet",href="/css/fonts.css")
+        block additional_styles
+    body
+        block content
+        block scripts
+            script(src="/libs/jquery/dist/jquery.min.js")
+            script(src="/libs/bootstrap/bootstrap.js")
+            script(src="/libs/angular/angular.js")
+        block additional_scripts

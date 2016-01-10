@@ -1,0 +1,29 @@
+extends layout
+block additional_styles
+    link(rel="stylesheet",href="/css/executer.css")
+block content
+    include includes/navbar
+    .container-fluid(ng-controller="TaskCtrl")
+        .row
+            include includes/messages
+            .col-lg-6
+               p Задания
+               .row
+                   .col-lg-12(ng-repeat="task in tasks")
+                        include includes/task
+    include includes/last_tasks
+    .modal.fade(id="modal_message")
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
+                    h4.modal-title Напишите свое сообщение
+                .modal-body
+                    textarea.message(placeholder="Сообщение")
+                .modal-footer
+                    button.btn.btn-default.no(type='button', data-dismiss='modal') Закрыть
+                    button.btn.btn-primary.yes(type='button') Отправить заявку
+block additional_scripts
+    script(src="/js/controllers/task.js")
+
+

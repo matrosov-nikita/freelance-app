@@ -1,0 +1,10 @@
+mixin genGroupField(label, name, value)
+    .form-group.clearfix
+        label.control-label.col-lg-2(for="#{label}") #{name}
+        .col-lg-10
+            if (attributes.tag != 'input')
+                textarea.form-control(name="#{label}",id="#{label}", placeholder="#{name}") #{value}
+            else if (attributes.type=="file")
+                input.form-control.col-lg-10(type=attributes.type, name="#{label}", id="#{label}", multiple)
+            else
+                input.form-control.col-lg-10(type=attributes.type,name="#{label}", id="#{label}", placeholder="#{name}", value="#{value}")

@@ -1,0 +1,22 @@
+{
+  "name": "Freelance",
+  "authors": [
+    "Nikita Matrosov <matrosov.nikita94@yandex.ru>"
+  ],
+  "description": "",
+  "main": "index.js",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.6",
+    "jade": "~1.11.0",
+    "jquery": "~2.1.4",
+    "OwlCarousel": "owl-carousel#~1.3.2"
+  }
+}

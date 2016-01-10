@@ -1,0 +1,26 @@
+{
+  "port" : 8080,
+  "host": "http://localhost",
+  "mongoose_address": "mongodb://localhost/test",
+  "session": {
+    "secret": "cat map",
+    "key": "sid",
+    "cookie" : {
+      "path": "/",
+      "httpOnly" : true,
+      "maxAge": null
+    }
+  },
+  "sender": {
+    "email": "matrosov.nikita94@gmail.com",
+    "password": ""
+  },
+  "mailOptions": {
+    "from": "Nekit",
+    "to": "matrosov.nikita94@yandex.ru",
+    "subject": "Пожалуйста, подтвердите регистрацию на сайте freelance.com ✔",
+    "text": "Hello world ✔",
+    "html": ""
+},
+  "maxCountFiles": 12
+}
