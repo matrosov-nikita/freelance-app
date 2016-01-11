@@ -1,4 +1,4 @@
-var HttpError = require('../error');
+var HttpError = require('../error/http_error');
 module.exports = {
     checkLoginAndPassword: function (req, res, next) {
         var patternLogin = /^[a-zA-Z0-9-_]{5,16}$/;

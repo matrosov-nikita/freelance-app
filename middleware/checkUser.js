@@ -1,4 +1,4 @@
-var HttpError = require('../error');
+var HttpError = require('../error/http_error');
 
 module.exports =function(req,res,next) {
   if (!req.session.user) {

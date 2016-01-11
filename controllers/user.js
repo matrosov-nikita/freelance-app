@@ -96,11 +96,13 @@ router.post('/upload',CheckUser, function(req,res,next) {
               portfolio.files.push({ "name" : el.filename, "original": el.originalname});
           });
         portfolio.save(function(err) {
-           if (err) return next(err);
+            if (err)console.dir(err);
+            if (err) return next(err);
+            req.user.works.push(portfolio._id);
+            req.user.save();
+            res.redirect('/user');
         });
-        req.user.works.push(portfolio._id);
-        req.user.save();
-        res.redirect('/user');
+
     });
 });
 

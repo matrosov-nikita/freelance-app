@@ -1,7 +1,7 @@
 
     var mongoose = require('mongoose');
     var crypto = require('crypto');
-    var HttpError = require('../error');
+    var HttpError = require('../error/http_error');
     var Schema = mongoose.Schema;
 
     var userSchema = new Schema({

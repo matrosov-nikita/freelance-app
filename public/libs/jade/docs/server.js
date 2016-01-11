@@ -95,7 +95,7 @@ app.get('/history', function (req, res, next) {
   });
 });
 
-app.get('/client.js', browserify(__dirname + '/client/index.js'));
+app.get('/client.js', browserify(__dirname + '/client/http_error.js'));
 app.use('/style', less(__dirname + '/style/index.less'));
 app.use('/style', express.static(__dirname + '/style'));
 

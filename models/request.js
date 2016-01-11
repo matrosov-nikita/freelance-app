@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var HttpError = require('../error');
+var HttpError = require('../error/http_error');
 
 var request = new Schema({
 
