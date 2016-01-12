@@ -1,3 +1,8 @@
 h2  Error #{error.status}
 hr
-#{error.message}
+if (typeof error.message != 'string')
+    ul
+        each item in error.message
+            li= item.message
+else
+    #{error.message}

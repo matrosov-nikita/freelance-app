@@ -38,9 +38,7 @@ block content
                         form(action="/user/upload", method="post", id="upload", enctype="multipart/form-data")
                             input.form-control(type="text", name="name", placeholder="Название")
                             textarea.form-control(type="text", name="description", placeholder="Описание")
-                            .attach
-                                span Прикрепите файлы
-                                input.form-control(type="file",name="files",multiple)
+                            input.form-control(type="file",name="files",multiple)
                             button.btn.btn-sm.btn-default(type="submit") Добавить
                         .row
                             .col-lg-4(ng-repeat="work in works")

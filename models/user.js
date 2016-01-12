@@ -7,7 +7,9 @@
     var userSchema = new Schema({
         name: {
             type: String,
-            required: true
+            required: true,
+            minlength: [3,'Минимальная длина имени 3 символа'],
+            maxlength:[70,'Максимальная длина имени 70 символа']
         },
         hashedPassword: {
             type: String,
@@ -16,12 +18,16 @@
         login: {
             type: String,
             unique: true,
-            required: true
+            required: true,
+            minlength: [3,'Минимальная длина логина 3 символа'],
+            maxlength:[70,'Максимальная длина логина 70 символа'],
+            match: /^[a-zA-Z0-9-_]{3,70}$/
         },
         email: {
             type: String,
             unique: true,
-            required: true
+            required: true,
+            match: [/([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}/,"Некорректный email"]
         },
         marks: {
             positive: { type: Number, default: 0},
@@ -35,7 +41,8 @@
         },
         about:
         {
-            type: String
+            type: String,
+            maxlength:[150,'Максимальная длина информации об имени 150 символов']
         },
         salt: {
             type: String,
@@ -82,7 +89,7 @@
                 var hash = Math.random().toString(36).slice(2);
                 user._hash = hash;
                 user.save(function(err, user) {
-                    if (err) return callback(err);
+                    if (err) return callback(new HttpError(422,err.errors));
                     else {
                         callback(null,user);
                     }

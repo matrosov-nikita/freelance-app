@@ -26,7 +26,6 @@ class Server {
         app.set('view engine','jade');
         app.locals.pretty = true;
         app.use(require("../middleware/sendHttpError"));
-        app.use(body_parser.json());
         app.use(body_parser.urlencoded({
             extended: true
         }));

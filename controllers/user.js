@@ -5,13 +5,12 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var EmailSender = require("../libs/EmailSender");
 var upload = require('../libs/storage');
-var Credentials = require('../middleware/checkCredentials');
 var CheckUser = require('../middleware/checkUser');
 var config = require('../config/config');
 var Portfolio = mongoose.model('Portfolio');
+var HttpError  = require('../error/http_error');
 
 router.get('/', CheckUser,function(req, res) {
-    console.log("main");
     res.render('main');
 });
 
@@ -22,10 +21,11 @@ router.get('/getWorks',CheckUser, function(req,res) {
     });
 });
 
-router.post('/register',Credentials.checkLoginAndPassword,
-                        Credentials.checkEmail,
-                        Credentials.checkName,
-    function(req,res,next) {
+router.get('/activate',function(req,res) {
+    res.render('activation');
+});
+
+router.post('/register', function(req,res,next) {
     User.register(req.body, function(err,user) {
         if (err) {
             return  next(err);
@@ -35,25 +35,22 @@ router.post('/register',Credentials.checkLoginAndPassword,
             sender.send(function(err) {
                if (err) return next(err);
             });
-            res.send("Пожалуйста, подтвердите регистрацию!");
+            res.send("/user/activate");
         }
     });
 });
 
-
-
-router.post('/authorize', Credentials.checkLoginAndPassword, function(req,res,next) {
+router.post('/authorize', function(req,res,next) {
     if (req.user)
     {
-       res.redirect('/user');
+       res.send('/user');
     }
     else {
        User.authorize(req.body.login, req.body.password, function(err,user) {
         if (err) return next(err);
             req.session.user = user._id;
             res.locals.user = user;
-            res.redirect('/user');
-
+            res.send('/user');
        });
     }
 });
@@ -96,8 +93,7 @@ router.post('/upload',CheckUser, function(req,res,next) {
               portfolio.files.push({ "name" : el.filename, "original": el.originalname});
           });
         portfolio.save(function(err) {
-            if (err)console.dir(err);
-            if (err) return next(err);
+            if (err) return next(new HttpError(422,err.errors));
             req.user.works.push(portfolio._id);
             req.user.save();
             res.redirect('/user');

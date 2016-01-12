@@ -1,18 +1,25 @@
 extend layout
 block content
-    p Регистрация
-    form(action="/user/register",method="post")
-        input(type="text",placeholder="Имя",class="form-control" name="name")
-        input(type="text",placeholder="Логин",class="form-control" name="login")
-        input(type="text",placeholder="Email",class="form-control" name="email")
-        input(type="password",placeholder="Пароль",class="form-control", name="password")
-        button(type="submit",class="btn btn-primary") Отправить
-    p Авторизация
-    form(action="/user/authorize",method="post")
-        input(type="text",placeholder="Логин",class="form-control" name="login")
-        input(type="password",placeholder="Пароль",class="form-control", name="password")
-        button(type="submit",class="btn btn-primary") Отправить
-
-
+    div(ng-controller='RegisterCtrl')
+        form( id="register", method="post")
+            p Регистрация
+            input(type="text",placeholder="Имя",class="form-control" name="name",required)
+            span.valid_mes {{valid_errors.name.message}}
+            input(type="text",placeholder="Логин",class="form-control" name="login",required)
+            span.valid_mes {{valid_errors.login.message}}
+            input(type="email",placeholder="Email",class="form-control" name="email",required)
+            span.valid_mes {{valid_errors.email.message}}
+            input(type="password",placeholder="Пароль",class="form-control", name="password",required)
+            span.valid_mes {{valid_errors.password.message}}
+            button(type="submit",class="btn btn-primary") Зарегистрироваться
+    div(ng-controller='AuthCtrl')
+        form(method="post", id="authorize")
+            p Авторизация
+            span.valid_notification {{valid_mes}}
+            input(type="text",placeholder="Логин",class="form-control" name="login",required)
+            input(type="password",placeholder="Пароль",class="form-control", name="password",required)
+            button(type="submit",class="btn btn-primary") Войти
+block additional_scripts
+    script(src="/js/user.js")
 
 
