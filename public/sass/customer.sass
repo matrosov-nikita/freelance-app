@@ -1,23 +1,24 @@
 @import "settings"
-ul
-  li
-    cursor: pointer
-    transition: all .5s ease
-    a
-      text-decoration: none
-      color: #fff
-      transition: all .2s ease
-      &:hover
+#list_category
+  ul
+    li
+      cursor: pointer
+      transition: all .5s ease
+      a
         text-decoration: none
         color: #fff
-li:before
-  content: "\f0da"
-  font-family: FontAwesome
-  padding-right: 5px
-li.last:hover a
-  background-color: $green
-li.last:before
-  content: ''
+        transition: all .2s ease
+        &:hover
+          text-decoration: none
+          color: #fff
+    li:before
+      content: "\f0da"
+      font-family: FontAwesome
+      padding-right: 5px
+    li.last:hover a
+      background-color: $green
+    li.last:before
+      content: ''
+    li>ul
+      display: none
 
-li>ul
-  display: none

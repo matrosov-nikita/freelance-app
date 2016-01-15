@@ -1,28 +1,31 @@
 var myApp = angular.module('app', []);
 
-myApp.controller('TaskCtrl', function($scope, $http) {
+myApp.config(['$httpProvider', function($httpProvider) {
+    $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
+}]);
 
+myApp.controller('TaskCtrl', function($scope, $http) {
     $http.get('/task/getTasks').success(function(data) {
         $scope.tasks = data;
-        $scope.$apply();
     });
 
     $scope.ClickTaskHeader = function(id) {
         $("#" + id).next().slideToggle();
     };
 
-    $scope.SendRequest = function(task_author,task_id) {
+    $scope.SendRequest = function(task_id) {
         $("#modal_message").modal('show');
         $("#modal_message .yes").click(function() {
             $http({
                 url: '/request/add',
                 method: 'post',
                 data: {
-                    author: task_author,
                     task_id: task_id,
-                    message:  $("#modal_message .message").val()
+                    message:  $("#modal_message .message").val(),
+                    headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
                 }
             }).then(function successCallback(response) {
+                alert(response.data);
                 $('#modal_message').modal('toggle');
             }, function errorCallback(response) {
                 alert("error");

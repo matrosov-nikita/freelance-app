@@ -37,9 +37,9 @@ var task = new Schema({
         type: Date
     },
 
-    requests: {
-        type: [Schema.Types.ObjectId], ref: 'Request'
-    }
+    requests:
+         [{type: Schema.Types.ObjectId, ref: 'Request'}]
+
 });
 
 
@@ -74,8 +74,25 @@ task.statics.get = function(callback) {
        if (err) callback(err);
         callback(null,tasks);
     })
-
 };
 
+task.methods.getRequestsPerTask = function() {
+    var Request = mongoose.model("Request");
+    var self = this;
+    return new Promise(function(resolve,reject) {
+        Request.find({_id: {$in: self.requests}},function(err,requests) {
+            if (err) reject(err);
+        }).populate('executer','_id name').exec(function(err,requests) {
+            if (err) reject(err);
+            resolve({
+                task: {
+                    _id: self._id,
+                    header: self.header,
+                },
+                requests: requests
+            });
+        });
+    });
+};
 
 Task = module.exports = mongoose.model("Task",task);

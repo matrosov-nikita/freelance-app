@@ -3,6 +3,7 @@ block content
     div(ng-controller='RegisterCtrl')
         form( id="register", method="post")
             p Регистрация
+            span.valid_notification {{valid_mes}}
             input(type="text",placeholder="Имя",class="form-control" name="name",required)
             span.valid_mes {{valid_errors.name.message}}
             input(type="text",placeholder="Логин",class="form-control" name="login",required)

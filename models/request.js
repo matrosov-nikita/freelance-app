@@ -5,7 +5,7 @@ var HttpError = require('../error/http_error');
 var request = new Schema({
 
     executer: {
-        type: Schema.Types.ObjectId
+        type: Schema.Types.ObjectId, ref: 'User'
     },
 
     date: {
@@ -38,6 +38,7 @@ request.statics.add = function(data, callback) {
        });
     });
 };
+
 
 
 Request = module.exports = mongoose.model("Request",request);

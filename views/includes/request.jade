@@ -1,0 +1,8 @@
+.request
+    .header
+        span {{request.task.header}}
+        i.fa.fa-envelope
+    .authors
+        .author(ng-repeat="author in request.requests") {{author.executer.name}}
+            i.fa.fa-plus-square
+            i.fa.fa-minus-square

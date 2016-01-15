@@ -1,6 +1,6 @@
 extends layout
 block additional_styles
-    link(rel="stylesheet",href="/css/task.css")
+    link(rel="stylesheet",href="/css/customer.css")
     link(rel="stylesheet",href="/libs/OwlCarousel/owl-carousel/owl.carousel.css")
     link(rel="stylesheet",href="/libs/OwlCarousel/owl-carousel/owl.theme.css")
 block content
@@ -10,6 +10,7 @@ block content
         .row
             include includes/messages
             .col-lg-6
+                include includes/customer_menu
                 .row
                     #owl-carousel
                         .col-lg-12

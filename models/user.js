@@ -9,7 +9,7 @@
             type: String,
             required: true,
             minlength: [3,'Минимальная длина имени 3 символа'],
-            maxlength:[70,'Максимальная длина имени 70 символа']
+            maxlength:[70,'Максимальная длина имени 70 символов']
         },
         hashedPassword: {
             type: String,
@@ -20,7 +20,7 @@
             unique: true,
             required: true,
             minlength: [3,'Минимальная длина логина 3 символа'],
-            maxlength:[70,'Максимальная длина логина 70 символа'],
+            maxlength:[70,'Максимальная длина логина 70 символов'],
             match: /^[a-zA-Z0-9-_]{3,70}$/
         },
         email: {
@@ -79,7 +79,7 @@
         this.findOne({login: data.login}, function(err, user) {
             if (err) return callback(err);
             if (user) {
-                callback(new HttpError(403,"Пользователь с такими данными уже существует"));
+                callback(new HttpError(403,"Пользователь с таким логином уже существует"));
             }
             else {
                 var user = new User();
@@ -123,6 +123,30 @@
             callback(null,works);
         });
     };
+
+    userSchema.methods.getTasks = function(callback){
+        var Task = mongoose.model("Task");
+        Task.find({author: this._id}, function(err,tasks){
+            if (err) callback(err);
+            callback(null,tasks);
+        });
+    };
+
+    userSchema.methods.getAllRequests = function(callback) {
+          var promises = [];
+          this.getTasks(function(err,tasks) {
+              if (err) callback(err);
+              tasks.forEach(function(task) {
+                  promises.push(task.getRequestsPerTask());
+              });
+              Promise.all(promises).then(
+                  requests => callback(null, requests),
+                  err => callback(err)
+              );
+          });
+    };
+
+
 
     userSchema.methods.edit = function(date,callback) {
             for (var item in date) {

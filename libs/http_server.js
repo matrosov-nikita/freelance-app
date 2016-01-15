@@ -29,6 +29,7 @@ class Server {
         app.use(body_parser.urlencoded({
             extended: true
         }));
+        app.use(body_parser.json());
         app.use(sassMiddleware({
             src: path.join(__dirname, '../public/sass'),
             dest: path.join(__dirname, '../public/css'),

@@ -43,11 +43,15 @@ function error_callback(scope, status, data) {
 
     switch(status) {
         case 403:
+        case 404:
         {
             scope.valid_mes = data;
+            scope.valid_errors = null;
+            break;
         }
         case 422:
         {
+            scope.valid_mes = "";
             scope.valid_errors = data;
             break;
         }

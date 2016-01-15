@@ -7,11 +7,11 @@ block content
         .row
             include includes/messages
             .col-lg-6
-               p Задания
-               .row
-                   .col-lg-12(ng-repeat="task in tasks")
+                include includes/executer_menu
+                .row
+                    .col-lg-12(ng-repeat="task in tasks")
                         include includes/task
-    include includes/last_tasks
+            include includes/last_tasks
     .modal.fade(id="modal_message")
         .modal-dialog
             .modal-content

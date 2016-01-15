@@ -13,7 +13,7 @@
   },
   "sender": {
     "email": "matrosov.nikita94@gmail.com",
-    "password": ""
+    "password": "udifih16"
   },
   "mailOptions": {
     "from": "Nekit",
@@ -22,5 +22,6 @@
     "text": "Hello world ✔",
     "html": ""
 },
-  "maxCountFiles": 12
+  "maxCountFiles": 12,
+  "tasksPerPage": 10
 }

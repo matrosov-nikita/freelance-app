@@ -1,0 +1,21 @@
+extends layout
+block additional_styles
+    link(rel="stylesheet",href="/css/request.css")
+block content
+    include includes/navbar
+    .container-fluid(ng-controller="RequestCtrl")
+        .row
+            include includes/messages
+            .col-lg-6
+                include includes/customer_menu
+                .row
+                    div(ng-repeat="request in requests")
+                        include includes/request
+            include includes/last_tasks
+block additional_scripts
+    script(src="/js/controllers/request.js")
+
+
+
+
+

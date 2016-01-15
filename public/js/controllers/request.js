@@ -1,3 +1,6 @@
-/**
- * Created by nikita on 1/9/16.
- */
+var myApp = angular.module('app', []);
+myApp.controller('RequestCtrl', function($scope, $http) {
+    $http.get('/request/getRequests').success(function(data) {
+        $scope.requests = data;
+    });
+});

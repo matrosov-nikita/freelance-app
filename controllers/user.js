@@ -72,7 +72,7 @@ router.get('/verify', function(req,res,next) {
 
 router.post('/logout',CheckUser, function(req,res) {
     req.session.destroy();
-    res.redirect('/');
+    res.send('/');
 });
 
 router.post('/update', CheckUser, function(req,res,next) {
