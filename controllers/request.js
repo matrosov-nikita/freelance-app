@@ -8,10 +8,21 @@ router.get('/get',function(req,res,next) {
     res.render('requests');
 });
 
+router.get('/getown', function(req,res) {
+    res.render('own_requests')
+});
 router.get('/getRequests', function(req,res) {
     req.user.getAllRequests(function(err,requests){
            if (err) return next(err);
            res.json(requests);
+    });
+});
+
+router.get('/getOwnRequests', function(req,res) {
+    req.user.getOwnRequests(function(err,requests) {
+        if (err) return next(err);
+        console.log(requests);
+        res.json(requests);
     });
 });
 

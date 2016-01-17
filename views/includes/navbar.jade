@@ -2,8 +2,8 @@ nav.navbar.navbar-default.navbar-fixed-top
     .container-fluid
         .navbar-brand
             a FF
-        a(href="/task/get").btn.btn-success.navbar-btn Исполнитель
-        a(href="/task/add").btn.btn-default.navbar-btn Заказчик
+        a(href="/task/get").btn.btn-default.navbar-btn.role Исполнитель
+        a(href="/task/add").btn.btn-default.navbar-btn.role Заказчик
         button.btn.btn-sm.btn-default.navbar-btn.navbar-right(id="logout") Выйти
         p.navbar-text.navbar-right(id='#{user._id}') Добро пожаловать, #{user.name}!
 

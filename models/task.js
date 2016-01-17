@@ -37,6 +37,12 @@ var task = new Schema({
         type: Date
     },
 
+    status: {
+        type: String,
+        enum: ["Поиск исполнителей", "В работе", "Арбитраж", "Выполнено"],
+        default: "Поиск исполнителей"
+    },
+
     requests:
          [{type: Schema.Types.ObjectId, ref: 'Request'}]
 

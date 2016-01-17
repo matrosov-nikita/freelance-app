@@ -7,11 +7,11 @@ block content
         .row
             include includes/messages
             .col-lg-6
-                include includes/customer_menu
+                include includes/executer_menu
                 .row
                     p.request_status Поиск исполнителей
-                    div(ng-repeat="request in requests")
-                        include includes/request
+                    div.request(ng-repeat="request in own_requests")
+                        include includes/request_header
                     p.request_status В работе
                     p.request_status Арбитраж
             include includes/last_tasks

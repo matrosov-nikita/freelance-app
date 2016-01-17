@@ -146,7 +146,15 @@
           });
     };
 
-
+    userSchema.methods.getOwnRequests = function(callback) {
+        var Request = mongoose.model('Request');
+        Request.find({executer: this._id}, function(err) {
+            if (err) callback(err);
+        }).populate('task','_id header').exec(function(err,requests) {
+            if (err) callback(err);
+            callback(null, requests);
+        });
+    };
 
     userSchema.methods.edit = function(date,callback) {
             for (var item in date) {

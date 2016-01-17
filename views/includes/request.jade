@@ -1,8 +1,7 @@
 .request
-    .header
-        span {{request.task.header}}
-        i.fa.fa-envelope
+    include request_header
     .authors
         .author(ng-repeat="author in request.requests") {{author.executer.name}}
-            i.fa.fa-plus-square
-            i.fa.fa-minus-square
+            i(data-toggle="tooltip" data-placement="right" title="" data-original-title="Tooltip on right").fa.fa-plus-square
+            i(data-toggle="tooltip" data-placement="right" title="" data-original-title="Tooltip on right").fa.fa-minus-square
+
