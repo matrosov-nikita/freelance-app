@@ -10,7 +10,7 @@ block content
                 include includes/customer_menu
                 .row
                     p.request_status Поиск исполнителей
-                    div(ng-repeat="request in requests")
+                    div(ng-repeat="request in req_search")
                         include includes/request
                     p.request_status В работе
                     p.request_status Арбитраж

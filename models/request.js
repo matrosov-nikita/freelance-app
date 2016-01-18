@@ -44,6 +44,52 @@ request.statics.add = function(data, callback) {
     });
 };
 
+    request.statics.refuse = function(request_id,callback) {
+        Request.findByIdAndRemove({_id: request_id}, function(err,request) {
+            if (err) callback(err);
+            if (!request) {
+                return callback(new HttpError(404,'Заявка не найдена'));
+            }
+            else {
+                var Task = mongoose.model("Task");
+                Task.findOne({requests: request._id}, function(err,task) {
+                    if (err) callback(err);
+                    if (!task) {
+                        return callback(new HttpError(404,"Задание не найдено"));
+                    }
+                    else {
+                        var index = task.requests.indexOf(request._id);
+                        task.requests.splice(index,1);
+                        task.save();
+                    }
+                });
+                callback(null,true);
+            }
+        });
+    };
 
+request.statics.accept = function(request_id,callback) {
+    Request.findByIdAndRemove({_id: request_id}, function(err,request) {
+        if (err) callback(err);
+        if (!request) {
+            return callback(new HttpError(404,'Заявка не найдена'));
+        }
+        else {
+            var Task = mongoose.model("Task");
+            Task.findOne({requests: request._id}, function(err,task) {
+                if (err) callback(err);
+                if (!task) {
+                    return callback(new HttpError(404,"Задание не найдено"));
+                }
+                else {
+                    var index = task.requests.indexOf(request._id);
+                    task.requests.splice(index,1);
+                    task.save();
+                }
+            });
+            callback(null,true);
+        }
+    });
+};
 
 Request = module.exports = mongoose.model("Request",request);

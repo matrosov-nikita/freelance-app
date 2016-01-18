@@ -86,7 +86,7 @@ task.methods.getRequestsPerTask = function() {
     var Request = mongoose.model("Request");
     var self = this;
     return new Promise(function(resolve,reject) {
-        Request.find({_id: {$in: self.requests}},function(err,requests) {
+        Request.find({_id: {$in: self.requests}},function(err) {
             if (err) reject(err);
         }).populate('executer','_id name').exec(function(err,requests) {
             if (err) reject(err);
@@ -94,6 +94,7 @@ task.methods.getRequestsPerTask = function() {
                 task: {
                     _id: self._id,
                     header: self.header,
+                    status: self.status
                 },
                 requests: requests
             });

@@ -14,6 +14,7 @@ router.get('/getown', function(req,res) {
 router.get('/getRequests', function(req,res) {
     req.user.getAllRequests(function(err,requests){
            if (err) return next(err);
+        console.log(requests);
            res.json(requests);
     });
 });
@@ -21,7 +22,7 @@ router.get('/getRequests', function(req,res) {
 router.get('/getOwnRequests', function(req,res) {
     req.user.getOwnRequests(function(err,requests) {
         if (err) return next(err);
-        console.log(requests);
+
         res.json(requests);
     });
 });
@@ -33,5 +34,20 @@ router.post('/add',function(req,res,next) {
     });
     res.send("Заявка отправлена заказчику");
 });
+
+
+router.post("/refuse", function(req,res,next) {
+    Request.refuse(req.body.request, function(err,result) {
+        if (err) return next(err);
+        res.json(result);
+    });
+});
+
+    router.post("/accept", function(req,res,next) {
+        Request.accept(req.body.request, function(err,result) {
+            if (err) return next(err);
+            res.json(result);
+        });
+    });
 
 module.exports = router;
