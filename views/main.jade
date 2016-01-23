@@ -11,7 +11,7 @@ block content
     - }
     include includes/navbar
     include mixins/genGroupField
-    .container-fluid(ng-controller="PortfolioCtrl")
+    .container-fluid(ng-controller="PortfolioCtrl",ng-init="works= #{JSON.stringify(works)}")
         .row
             include includes/messages
             .col-lg-5
@@ -26,18 +26,19 @@ block content
                     .well.tab-pane.active(id="profile")
                         form.form-horizontal(action="/user/update", method="post")
                             fieldset
-                                 input.form-control(type="hidden" name="_id",value="#{user._id}")
-                                 +genGroupField('name','Имя',user.name)(tag='input')
-                                 +genGroupField('login','Логин',user.login)(tag='input')
-                                 +genGroupField('email','E-mail',user.email)(tag='input')
-                                 +genGroupField('about','О себе',user.about)(tag='textarea')
+                                 input.form-control(type="hidden" name="_id",value="#{user_info._id}")
+                                 +genGroupField('name','Имя',user_info.name)(tag='input')
+                                 +genGroupField('login','Логин',user_info.login)(tag='input')
+                                 +genGroupField('email','E-mail',user_info.email)(tag='input')
+                                 +genGroupField('about','О себе',user_info.about)(tag='textarea')
                                 button(class="btn btn-primary") Сохранить
-                        p Количество дней на сайте:  #{getDiffBetweenDates(user.created)}
+                        p Количество дней на сайте:  #{getDiffBetweenDates(user_info.created)}
                     .well.tab-pane.fade(id="portfolio")
                         p(id="addwork") Добавить в портфолио
                         form(action="/user/upload", method="post", id="upload", enctype="multipart/form-data")
                             input.form-control(type="text", name="name", placeholder="Название")
                             textarea.form-control(type="text", name="description", placeholder="Описание")
+                            input(type="hidden",name="user", value='#{user_info._id}')
                             input.form-control(type="file",name="files",multiple)
                             button.btn.btn-sm.btn-default(type="submit") Добавить
                         .row
@@ -45,20 +46,16 @@ block content
                                 include includes/folder
                     .well.tab-pane.fade(id="stats")
                         ul
-                            li.positive Положительные оценки: #{user.marks.positive}
-                            li.neitral Нейтральные оценки: #{user.marks.neitral}
-                            li.negative Отрицательные оценки: #{user.marks.negative}
-                        p.rating Рейтинг: #{user.rating}
+                            li.positive Положительные оценки: #{user_info.marks.positive}
+                            li.neitral Нейтральные оценки: #{user_info.marks.neitral}
+                            li.negative Отрицательные оценки: #{user_info.marks.negative}
+                        p.rating Рейтинг: #{user_info.rating}
             include includes/last_tasks
 
 block additional_scripts
     script(src="/js/user.js")
     script(src="/js/controllers/portfolio.js")
-
-
-
-
-
-
+    script.
+        access = #{access}
 
 

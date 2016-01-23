@@ -13,8 +13,8 @@ router.get('/get', function(req,res) {
     res.render('executer');
 });
 
-router.get('/getTasks', function(req,res) {
-    Task.get(function(err,tasks) {
+router.get('/getTasks', function(req,res,next) {
+    Task.get(req.user, function(err,tasks) {
         if (err) return next(err);
         res.json(tasks);
     });
@@ -33,7 +33,7 @@ router.post('/add', function(req,res,next) {
             task.save();
         });
     });
-    res.send("Задание добавлено");
+    res.redirect("/request/get");
 });
 
 module.exports = router;

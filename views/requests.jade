@@ -13,6 +13,8 @@ block content
                     div(ng-repeat="request in req_search")
                         include includes/request
                     p.request_status В работе
+                    div(ng-repeat="request in req_work")
+                        include includes/request_in_work
                     p.request_status Арбитраж
             include includes/last_tasks
 block additional_scripts

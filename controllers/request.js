@@ -22,32 +22,49 @@ router.get('/getRequests', function(req,res) {
 router.get('/getOwnRequests', function(req,res) {
     req.user.getOwnRequests(function(err,requests) {
         if (err) return next(err);
-
+        console.log(requests);
         res.json(requests);
     });
 });
 
-router.post('/add',function(req,res,next) {
+router.post('/add', function(req,res,next) {
     req.body.author = req.user._id;
     Request.add(req.body, function(err) {
         if (err) return next(err);
+        res.send("Заявка отправлена заказчику");
     });
-    res.send("Заявка отправлена заказчику");
+
 });
 
 
 router.post("/refuse", function(req,res,next) {
-    Request.refuse(req.body.request, function(err,result) {
+    Request.findByIdAndRemove({_id: req.body.request}, function(err,request) {
         if (err) return next(err);
-        res.json(result);
+        if (!request) {
+            return next(new HttpError(404,'Заявка не найдена'));
+        }
+        else {
+            request.refuse(function(err,result) {
+                if (err) return next(err);
+                res.json(result);
+            });
+        }
     });
 });
 
     router.post("/accept", function(req,res,next) {
-        Request.accept(req.body.request, function(err,result) {
+        Request.findById({_id: req.body.request}, function(err,request) {
             if (err) return next(err);
-            res.json(result);
-        });
+            if (!request) {
+                return next(new HttpError(404,'Заявка не найдена'));
+            }
+            else {
+            request.accept(function(err,result) {
+                if (err) return next(err);
+                res.json(result);
+            });
+        }
+      });
     });
 
 module.exports = router;

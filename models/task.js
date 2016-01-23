@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var HttpError = require('../error/http_error');
 
 var task = new Schema({
 
@@ -63,23 +64,34 @@ task.statics.add = function(data, callback) {
        if (err) callback(err);
         else {
            Category.findOne({_id: task.category}, function (err, category) {
-               if (err) callback(new HttpError(404, "Категория не найдена"));
+               if (err) return callback(new HttpError(404, "Категория не найдена"));
                category.incOrdersPerMonth();
                category.save();
            });
-           callback(null, task);
+           return callback(null, task);
        }
     });
 };
-task.statics.get = function(callback) {
+task.statics.get = function(user, callback) {
     Task.find({}).
+        where('status').equals("Поиск исполнителей").
         sort({_created: -1}).
         populate('category').
         populate('author').
         exec(function(err,tasks) {
-       if (err) callback(err);
-        callback(null,tasks);
+       if (err) return callback(err);
+        return callback(null,tasks);
     })
+};
+
+task.statics.getByRequest = function(request, callback) {
+    Task.findOne({requests: request}, function (err, task) {
+        if (err) return callback(err);
+        if (!task) {
+            return callback(new HttpError(404, "Задание не найдено"));
+        }
+        return callback(null, task);
+    });
 };
 
 task.methods.getRequestsPerTask = function() {
@@ -94,7 +106,8 @@ task.methods.getRequestsPerTask = function() {
                 task: {
                     _id: self._id,
                     header: self.header,
-                    status: self.status
+                    status: self.status,
+                    deadline: self.deadline
                 },
                 requests: requests
             });

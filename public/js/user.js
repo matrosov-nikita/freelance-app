@@ -71,6 +71,11 @@ $(document).ready(function() {
     $("#addwork").click(function() {
        $("#upload").slideToggle();
     });
+    if (!access) {
+        $("input,textarea,button").prop("disabled", true);
+        $(".modal button").prop("disabled", false);
+    }
+
 });
 
 

@@ -79,7 +79,7 @@
         this.findOne({login: data.login}, function(err, user) {
             if (err) return callback(err);
             if (user) {
-                callback(new HttpError(403,"Пользователь с таким логином уже существует"));
+                return callback(new HttpError(403,"Пользователь с таким логином уже существует"));
             }
             else {
                 var user = new User();
@@ -91,7 +91,7 @@
                 user.save(function(err, user) {
                     if (err) return callback(new HttpError(422,err.errors));
                     else {
-                        callback(null,user);
+                        return callback(null,user);
                     }
                 });
             }
@@ -102,15 +102,15 @@
         this.findOne({login: login}, function(err, user) {
             if (err) return callback(err);
             if (!user) {
-                callback(new HttpError(403, "Пользователя с таким логином не существует"));
+               return  callback(new HttpError(403, "Пользователя с таким логином не существует"));
             }
             else {
                 if (user.checkPassword(password) && user.confirmEmail)
                 {
-                    callback(null,user);
+                    return callback(null,user);
                 }
                 else {
-                    callback(new HttpError(403,"Неверный пароль"));
+                    return callback(new HttpError(403,"Неверный пароль"));
                 }
             }
         });
@@ -119,23 +119,23 @@
     userSchema.methods.getWorks = function(callback) {
         var Portfolio = mongoose.model('Portfolio');
         Portfolio.find({_id: {$in: this.works}}, function(err,works){
-            if (err) callback(err);
-            callback(null,works);
+            if (err) return callback(err);
+            return callback(null,works);
         });
     };
 
     userSchema.methods.getTasks = function(callback){
         var Task = mongoose.model("Task");
         Task.find({author: this._id}, function(err,tasks){
-            if (err) callback(err);
-            callback(null,tasks);
+            if (err) return callback(err);
+            return callback(null,tasks);
         });
     };
 
     userSchema.methods.getAllRequests = function(callback) {
           var promises = [];
           this.getTasks(function(err,tasks) {
-              if (err) callback(err);
+              if (err) return callback(err);
               tasks.forEach(function(task) {
                   promises.push(task.getRequestsPerTask());
               });
@@ -149,14 +149,15 @@
     userSchema.methods.getOwnRequests = function(callback) {
         var Request = mongoose.model('Request');
         Request.find({executer: this._id}, function(err) {
-            if (err) callback(err);
+            if (err) return callback(err);
         }).populate('task','_id header').exec(function(err,requests) {
-            if (err) callback(err);
-            callback(null, requests);
+            if (err) return callback(err);
+            return callback(null, requests);
         });
     };
 
     userSchema.methods.edit = function(date,callback) {
+        if (date._id != this._id) return callback(new HttpError(403,"Недостаточно прав"));
             for (var item in date) {
                if (item!='_id') {
                    this[item] = date[item];
@@ -164,7 +165,7 @@
             }
             this.save(function(err) {
                 if (err) return callback(err);
-                callback(null,this);
+                return callback(null,this);
             });
     };
 

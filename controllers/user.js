@@ -10,16 +10,30 @@ var config = require('../config/config');
 var Portfolio = mongoose.model('Portfolio');
 var HttpError  = require('../error/http_error');
 
-router.get('/', CheckUser,function(req, res) {
-    res.render('main');
+router.get('/:id', CheckUser,function(req, res) {
+    if (req.user._id == req.params.id) {
+        req.user.getWorks(function (err, works) {
+            if (err) return next(err);
+            res.render('main', {
+                works: works,
+                user_info: req.user,
+                access: true
+            });
+        });
+    } else {
+        User.findById({_id: req.params.id}, function (err, user) {
+            user.getWorks(function (err, works) {
+                if (err) return next(err);
+                res.render('main', {
+                    works: works,
+                    user_info: user,
+                    access: false
+                });
+            });
+        });
+    }
 });
 
-router.get('/getWorks',CheckUser, function(req,res) {
-    req.user.getWorks(function(err,works) {
-       if (err) return next(err);
-        res.json(works);
-    });
-});
 
 router.get('/activate',function(req,res) {
     res.render('activation');
@@ -50,7 +64,7 @@ router.post('/authorize', function(req,res,next) {
         if (err) return next(err);
             req.session.user = user._id;
             res.locals.user = user;
-            res.send('/user');
+            res.send('/user/'+user._id);
        });
     }
 });
@@ -65,7 +79,7 @@ router.get('/verify', function(req,res,next) {
            user.save();
            req.session.user = user._id;
            res.locals.user = user;
-           res.redirect('/user');
+           res.redirect('/user/'+user._id);
        }
     });
 });
@@ -78,13 +92,15 @@ router.post('/logout',CheckUser, function(req,res) {
 router.post('/update', CheckUser, function(req,res,next) {
     req.user.edit(req.body, function(err,user) {
         if (err) return next(err);
-        res.redirect("/user");
+        res.redirect("/user/"+user._id);
     });
 });
 
 router.post('/upload',CheckUser, function(req,res,next) {
+
     upload.array('files', config.get("maxCountFiles"))(req,res, function(err) {
        if (err) return next(err);
+       if (req.body.user!=req.user._id) return next(new HttpError(403,"Недостаточно прав"));
         var portfolio = new Portfolio( {
             name: req.body.name,
             description: req.body.description
@@ -96,7 +112,7 @@ router.post('/upload',CheckUser, function(req,res,next) {
             if (err) return next(new HttpError(422,err.errors));
             req.user.works.push(portfolio._id);
             req.user.save();
-            res.redirect('/user');
+            res.redirect('/user/'+ req.user._id);
         });
 
     });

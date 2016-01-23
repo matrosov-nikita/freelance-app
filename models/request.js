@@ -28,68 +28,51 @@ request.statics.add = function(data, callback) {
         date: new Date(),
         task: data.task_id
     });
-    request.save(function(err,request) {
-       if (err) callback(err);
        var Task = mongoose.model('Task');
        Task.findOne({_id: data.task_id}, function(err,task) {
-           if (err) callback(err);
+           if (err) return callback(err);
            if (!task) {
-               callback(new HttpError(404,"Задание не найдено"));
+               return callback(new HttpError(404,"Задание не найдено"));
            }
            else {
-               task.requests.push(request._id);
-               task.save();
+               var Request = mongoose.model('Request');
+               Request.find({_id: {$in: task.requests}}, function (err, requests) {
+                   if (requests.some(el=>JSON.stringify(el.executer) == JSON.stringify(data.author))) {
+                       return callback(new HttpError(404, "Вы уже оставляли заявку на это задание"));
+                   }
+                   else {
+                       task.requests.push(request._id);
+                       task.save();
+                       request.save();
+                   }
+               });
            }
-       });
     });
 };
 
-    request.statics.refuse = function(request_id,callback) {
-        Request.findByIdAndRemove({_id: request_id}, function(err,request) {
-            if (err) callback(err);
-            if (!request) {
-                return callback(new HttpError(404,'Заявка не найдена'));
-            }
+request.methods.refuse = function(callback) {
+        var Task = mongoose.model("Task");
+        Task.getByRequest(this._id, function (err, task) {
+            if (err) return callback(err);
             else {
-                var Task = mongoose.model("Task");
-                Task.findOne({requests: request._id}, function(err,task) {
-                    if (err) callback(err);
-                    if (!task) {
-                        return callback(new HttpError(404,"Задание не найдено"));
-                    }
-                    else {
-                        var index = task.requests.indexOf(request._id);
-                        task.requests.splice(index,1);
-                        task.save();
-                    }
-                });
-                callback(null,true);
+                var index = task.requests.indexOf(this._id);
+                task.requests.splice(index, 1);
+                task.save();
+                callback(null, true);
+            }
+        });
+};
+
+request.methods.accept = function(callback) {
+        var Task = mongoose.model("Task");
+        Task.getByRequest(this._id, function (err, task) {
+            if (err) return callback(err);
+            else {
+                task.status="В работе";
+                task.save();
+                return callback(null,true);
             }
         });
     };
-
-request.statics.accept = function(request_id,callback) {
-    Request.findByIdAndRemove({_id: request_id}, function(err,request) {
-        if (err) callback(err);
-        if (!request) {
-            return callback(new HttpError(404,'Заявка не найдена'));
-        }
-        else {
-            var Task = mongoose.model("Task");
-            Task.findOne({requests: request._id}, function(err,task) {
-                if (err) callback(err);
-                if (!task) {
-                    return callback(new HttpError(404,"Задание не найдено"));
-                }
-                else {
-                    var index = task.requests.indexOf(request._id);
-                    task.requests.splice(index,1);
-                    task.save();
-                }
-            });
-            callback(null,true);
-        }
-    });
-};
 
 Request = module.exports = mongoose.model("Request",request);

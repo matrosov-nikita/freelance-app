@@ -16,8 +16,8 @@ var category = new Schema({
 
 category.statics.getList = function(callback) {
     this.find({}, function(err,categories) {
-            if (err) callback(err);
-            callback(null,categories);
+            if (err) return callback(err);
+            return callback(null,categories);
     });
 };
 
