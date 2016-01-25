@@ -11,10 +11,10 @@ block content
                 .row
                     p.request_status Поиск исполнителей
                     div(ng-repeat="request in req_search")
-                        include includes/request
+                        include includes/request/customer/request_search
                     p.request_status В работе
                     div(ng-repeat="request in req_work")
-                        include includes/request_in_work
+                        include includes/request/customer/request_in_work
                     p.request_status Арбитраж
             include includes/last_tasks
 block additional_scripts

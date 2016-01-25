@@ -11,8 +11,10 @@ block content
                 .row
                     p.request_status Поиск исполнителей
                     div.request(ng-repeat="request in own_requests")
-                        include includes/request_header
+                        include includes/request/executer/request_search
                     p.request_status В работе
+                    div.request(ng-repeat="request in own_requests")
+                        include includes/request/executer/request_in_work
                     p.request_status Арбитраж
             include includes/last_tasks
 block additional_scripts

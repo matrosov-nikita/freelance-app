@@ -1,0 +1,18 @@
+extends layout
+block additional_styles
+    link(rel="stylesheet",href="/css/customer.css")
+block content
+    include includes/navbar
+    include mixins/genGroupField
+    .container-fluid(ng-controller="TaskCtrl")
+        .row
+            include includes/messages
+            .col-lg-6
+
+            include includes/last_tasks
+block additional_scripts
+    script(src="/js/controllers/task.js")
+
+
+
+

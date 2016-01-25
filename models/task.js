@@ -5,11 +5,17 @@ var HttpError = require('../error/http_error');
 var task = new Schema({
 
     header: {
-        type: String
+        type: String,
+        required: true,
+        minlength: [3,'Минимальная длина заголовка 10 символов'],
+        maxlength:[70,'Максимальная длина заголовка 70 символов']
     },
 
     price: {
-        type: Number
+        type: Number,
+        required: true,
+        min: [100,'Минимальная стоимость задания 100 рублей'],
+        max: [100000,'Максимальная стоимость задания 100000 рублей']
     },
 
     category: {
@@ -17,7 +23,10 @@ var task = new Schema({
     },
 
     description: {
-        type: String
+        type: String,
+        required: true,
+        minlength: [20,'Минимальная длина описания задания 20 символов'],
+        maxlength:[400,'Максимальная длина описания задания 400 символов']
     },
 
     deadline: {
@@ -40,12 +49,22 @@ var task = new Schema({
 
     status: {
         type: String,
-        enum: ["Поиск исполнителей", "В работе", "Арбитраж", "Выполнено"],
+        required: true,
+        enum: ["Поиск исполнителей", "В работе","Ожидает проверки","Арбитраж", "Выполнено"],
         default: "Поиск исполнителей"
     },
 
     requests:
-         [{type: Schema.Types.ObjectId, ref: 'Request'}]
+         [{type: Schema.Types.ObjectId, ref: 'Request'}],
+
+    result: {
+        message: String,
+        files:
+            [{
+                name: String,
+                original: String
+            }]
+    }
 
 });
 

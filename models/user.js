@@ -150,7 +150,7 @@
         var Request = mongoose.model('Request');
         Request.find({executer: this._id}, function(err) {
             if (err) return callback(err);
-        }).populate('task','_id header').exec(function(err,requests) {
+        }).populate('task','_id header status').exec(function(err,requests) {
             if (err) return callback(err);
             return callback(null, requests);
         });
