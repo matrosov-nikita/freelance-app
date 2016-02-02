@@ -2,7 +2,9 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var Request = mongoose.model('Request');
-
+var HttpError = require('../error/http_error');
+var upload = require('../libs/storage');
+var config = require('../config/config');
 
 router.get('/get',function(req,res,next) {
     res.render('requests');
@@ -11,6 +13,7 @@ router.get('/get',function(req,res,next) {
 router.get('/getown', function(req,res) {
     res.render('own_requests')
 });
+
 router.get('/getRequests', function(req,res) {
     req.user.getAllRequests(function(err,requests){
            if (err) return next(err);
@@ -22,12 +25,48 @@ router.get('/getRequests', function(req,res) {
 router.get('/getOwnRequests', function(req,res) {
     req.user.getOwnRequests(function(err,requests) {
         if (err) return next(err);
-        console.log(requests);
         res.json(requests);
     });
 });
 
+router.get('/sendresult/:request', function(req,res,next) {
+    var request = req.params.request;
+    Request.findById({_id: request}, function(err,request) {
+        if (err) return next(err);
+        if (JSON.stringify(request.executer) == JSON.stringify(req.user._id)) {
+            var Task = mongoose.model('Task');
+            Task.findById({_id: request.task}, (err,task) => {
+               if (err) return next(err);
+                res.render('send_result', {
+                    task: task
+                })
+            });
+        }
+        else {
+            return next(new HttpError(403,"Вы не подавали заявку на выполнение данного задания"));
+        }
+    })
+});
+    router.post('/sendresult', function(req,res,next) {
+        upload.array('files', config.get("maxCountFiles"))(req,res, function(err) {
+            if (err) return next(err);
+            var Task = mongoose.model('Task');
+            Task.findOne({_id: req.body.task}, function(err,task) {
+                if (err) return next(err);
+                task.result.message = req.body.message;
+                task.status = "Ожидает проверки";
+                req.files.forEach(function(el) {
+                    task.result.files.push({ "name" : el.filename, "original": el.originalname});
+                });
+                task.save();
+
+            });
+        });
+        res.redirect("/request/get");
+    });
+
 router.post('/add', function(req,res,next) {
+    console.log("user");
     req.body.author = req.user._id;
     Request.add(req.body, function(err) {
         if (err) return next(err);

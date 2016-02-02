@@ -23,7 +23,6 @@ router.get('/getTasks', function(req,res,next) {
 router.post('/add', function(req,res,next) {
     upload.array('files', config.get("maxCountFiles"))(req,res, function(err) {
         if (err) return next(err);
-
         Task.add(req.body, function(err,task) {
             if (err) return next(err);
             req.files.forEach(function(el) {
@@ -34,6 +33,19 @@ router.post('/add', function(req,res,next) {
         });
     });
     res.redirect("/request/get");
+});
+
+router.get('/viewresult/:id', function(req,res,next) {
+    Task.findOne({_id: req.params.id}, function(err,task) {
+       if (err) return next(err);
+        console.log(task);
+        res.render(
+            'view_result',
+            {
+                task: task
+            }
+        );
+    });
 });
 
 module.exports = router;

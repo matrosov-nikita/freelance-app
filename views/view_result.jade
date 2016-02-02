@@ -1,0 +1,36 @@
+extends layout
+block additional_styles
+    link(rel="stylesheet",href="/css/executer.css")
+    link(rel="stylesheet",href="/css/passive_task.css")
+block content
+    include includes/navbar
+    include mixins/genGroupField
+    .container-fluid
+        .row
+            include includes/messages
+            .col-lg-6
+                .row
+                    p Прикрепите необходимые файлы
+                    .div(ng-init="task= #{JSON.stringify(task)}")
+                        include includes/task
+                        .alert.alert-dismissible.alert-warning
+                            button.close(type='button', data-dismiss='alert') &times;
+                            h4 Сообщение от исполнителя об выполнении работы
+                            p {{task.result.message}}
+                        p Прикрепленные файлы
+                        ul
+                            li(ng-repeat="file in task.result.files")
+                                i.fa.fa-file-o
+                                a(href="http://localhost:8080/uploads/{{file.name}}") {{file.original}}
+                        .button_wrapper
+                            a.btn.btn-success Подтвердить
+                            a.btn.btn-danger Арбитраж
+
+
+            include includes/last_tasks
+block additional_scripts
+    script(src="/js/controllers/task.js")
+
+
+
+

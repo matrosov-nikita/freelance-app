@@ -7,7 +7,7 @@ var task = new Schema({
     header: {
         type: String,
         required: true,
-        minlength: [3,'Минимальная длина заголовка 10 символов'],
+        minlength: [3,'Минимальная длина заголовка 3 символа'],
         maxlength:[70,'Максимальная длина заголовка 70 символов']
     },
 
@@ -58,7 +58,7 @@ var task = new Schema({
          [{type: Schema.Types.ObjectId, ref: 'Request'}],
 
     result: {
-        message: String,
+        message: { type: String, default: '' },
         files:
             [{
                 name: String,

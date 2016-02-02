@@ -15,6 +15,9 @@ block content
                     p.request_status В работе
                     div(ng-repeat="request in req_work")
                         include includes/request/customer/request_in_work
+                    p.request_status Ожидают проверки
+                    div(ng-repeat="request in req_check")
+                        include includes/request/customer/request_in_check
                     p.request_status Арбитраж
             include includes/last_tasks
 block additional_scripts

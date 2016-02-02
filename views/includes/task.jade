@@ -2,7 +2,7 @@
     .task_header(id='{{task._id}}',ng-click="ClickTaskHeader(task._id)")
         span {{task.header}}
         span {{task.price}}
-        i.fa.fa-check-square-o(ng-click="SendRequest(task._id)")
+        i.fa.fa-check-square-o(ng-click="SendRequest(task._id); $event.stopPropagation();")
 
     .task_content
         p.category {{task.category.name}}

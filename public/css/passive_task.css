@@ -1,0 +1,12 @@
+.task .task_content {
+    display: block;
+}
+.task .task_header i {
+    display: none;
+}
+li i {
+    margin-right: 10px;
+}
+.button_wrapper {
+    text-align: center;
+}

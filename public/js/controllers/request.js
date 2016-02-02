@@ -6,7 +6,7 @@ myApp.config(['$httpProvider', function($httpProvider) {
 myApp.controller('RequestCtrl', function($scope, $http) {
 
     $http.get('/request/getRequests').success(function(data) {
-        $scope.req_search = []; $scope.req_work = []; $scope.req_dispute = [];
+        $scope.req_search = []; $scope.req_work = []; $scope.req_check = []; $scope.req_dispute = [];
         data.forEach(function(el) {
 
            switch(el.task.status) {
@@ -22,6 +22,11 @@ myApp.controller('RequestCtrl', function($scope, $http) {
                         request.date = new Date(el.task.deadline) - new Date();
                     });
 
+                   break;
+               }
+               case "Ожидает проверки" :
+               {
+                   $scope.req_check.push(el);
                    break;
                }
                case "Арбитраж":
@@ -100,8 +105,6 @@ myApp.controller('RequestCtrl', function($scope, $http) {
         }
     };
 
-    $scope.getDifBetweenDate = function(date) {
-        alert(date);
-    }
+
 
 });
