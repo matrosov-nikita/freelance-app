@@ -2,5 +2,5 @@
     include request_header
     .authors
         .author(ng-repeat="req in request.requests") {{req.executer.name}}
-            span {{req.date | date: 'ddдн. Hч. mmмин.'}}
+            span {{req.date | date: 'M мес. ddдн. Hч. mmмин.'}}
             button(style="float: right").btn.btn-danger.btn-sm Арбитраж

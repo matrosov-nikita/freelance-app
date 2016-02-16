@@ -10,13 +10,13 @@ block content
                 include includes/customer_menu
                 .row
                     p.request_status Поиск исполнителей
-                    div(ng-repeat="request in req_search")
+                    div(ng-repeat="request in requests.req_search")
                         include includes/request/customer/request_search
                     p.request_status В работе
-                    div(ng-repeat="request in req_work")
+                    div(ng-repeat="request in requests.req_work")
                         include includes/request/customer/request_in_work
                     p.request_status Ожидают проверки
-                    div(ng-repeat="request in req_check")
+                    div(ng-repeat="request in requests.req_check")
                         include includes/request/customer/request_in_check
                     p.request_status Арбитраж
             include includes/last_tasks

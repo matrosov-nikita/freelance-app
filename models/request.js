@@ -44,6 +44,7 @@ request.statics.add = function(data, callback) {
                        task.requests.push(request._id);
                        task.save();
                        request.save();
+                       return callback(null);
                    }
                });
            }

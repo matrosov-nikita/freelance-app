@@ -24,7 +24,11 @@ block content
                                 a(href="http://localhost:8080/uploads/{{file.name}}") {{file.original}}
                         .button_wrapper
                             a.btn.btn-success Подтвердить
-                            a.btn.btn-danger Арбитраж
+                            a.btn.btn-danger#dispute Арбитраж
+                form(action="/dispute/add", method="post", id="dispute_form", type="hidden")
+                    +genGroupField('message','Сообщение',"")(tag='textarea')
+                    input(name='task',value='{{task._id}}',type='hidden')
+                    button.btn.btn-primary.continue(type="submit") Отправить
 
 
             include includes/last_tasks

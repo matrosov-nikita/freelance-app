@@ -6,14 +6,14 @@ var task = new Schema({
 
     header: {
         type: String,
-        required: true,
+        required: [true,'Заголовок обязателен для заполнения'],
         minlength: [3,'Минимальная длина заголовка 3 символа'],
         maxlength:[70,'Максимальная длина заголовка 70 символов']
     },
 
     price: {
         type: Number,
-        required: true,
+        required:  [true,'Цена обязателена для заполнения'],
         min: [100,'Минимальная стоимость задания 100 рублей'],
         max: [100000,'Максимальная стоимость задания 100000 рублей']
     },
@@ -24,14 +24,17 @@ var task = new Schema({
 
     description: {
         type: String,
-        required: true,
+        required:  [true,'Описание задания обязательно для заполнения'],
         minlength: [20,'Минимальная длина описания задания 20 символов'],
         maxlength:[400,'Максимальная длина описания задания 400 символов']
     },
 
-    deadline: {
-        type: Date
-    },
+
+        deadline: {
+            type: Date,
+            required: [true,'Срок сдачи задания обязателен для заполнения'],
+            validate: [dateValidator, 'Срок сдачи задания должен быть не меньше 15 минут и не больше года']
+        },
 
     files:
         [{
@@ -68,6 +71,12 @@ var task = new Schema({
 
 });
 
+function dateValidator(value) {
+    var min = new Date(+new Date + 20*60000);
+    var max = new Date(+new Date + 365*24*60*60000);
+    var deadline = new Date(+value-3*60*60000);
+    return min < deadline && deadline < max;
+}
 
 task.statics.add = function(data, callback) {
     var Category = mongoose.model("Category");
@@ -80,14 +89,14 @@ task.statics.add = function(data, callback) {
         _created: new Date()
     });
     task.save(function(err,task) {
-       if (err) callback(err);
+       if (err) return callback(err.errors);
         else {
            Category.findOne({_id: task.category}, function (err, category) {
                if (err) return callback(new HttpError(404, "Категория не найдена"));
                category.incOrdersPerMonth();
                category.save();
+               return callback(null, task);
            });
-           return callback(null, task);
        }
     });
 };

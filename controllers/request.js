@@ -17,7 +17,6 @@ router.get('/getown', function(req,res) {
 router.get('/getRequests', function(req,res) {
     req.user.getAllRequests(function(err,requests){
            if (err) return next(err);
-        console.log(requests);
            res.json(requests);
     });
 });
@@ -66,7 +65,6 @@ router.get('/sendresult/:request', function(req,res,next) {
     });
 
 router.post('/add', function(req,res,next) {
-    console.log("user");
     req.body.author = req.user._id;
     Request.add(req.body, function(err) {
         if (err) return next(err);

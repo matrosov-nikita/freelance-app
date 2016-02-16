@@ -1,10 +1,10 @@
-mixin genGroupField(label, name, value)
+mixin genGroupField(label, name, value,model)
     .form-group.clearfix
         label.control-label.col-lg-2(for="#{label}") #{name}
         .col-lg-10
             if (attributes.tag != 'input')
-                textarea.form-control(name="#{label}",id="#{label}", placeholder="#{name}") #{value}
+                textarea.form-control(name="#{label}",id="#{label}", placeholder="#{name}",ng-model="#{model}") #{value}
             else if (attributes.type=="file")
-                input.form-control.col-lg-10(type=attributes.type, name="#{label}", id="#{label}", multiple)
+                input.form-control.col-lg-10(type=attributes.type, name="#{label}", id="#{label}",ng-model="#{model}", multiple)
             else
-                input.form-control.col-lg-10(type=attributes.type,name="#{label}", id="#{label}", placeholder="#{name}", value="#{value}")
+                input.form-control.col-lg-10(type=attributes.type,name="#{label}", id="#{label}",ng-model="#{model}", placeholder="#{name}", value="#{value}")

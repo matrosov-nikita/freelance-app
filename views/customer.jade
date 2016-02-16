@@ -16,24 +16,29 @@ block content
                         .col-lg-12
                             p Выберите категорию
                             #list_category
-                            button.btn.btn-primary.continue Продолжить
+                            button.btn.btn-primary.continue(ng-click="continue()") Продолжить
                         .col-lg-12
                             p Заполните необходимые поля
                             .well
-                                form(action="/task/add", method="post", id="addtask", enctype="multipart/form-data")
-                                    +genGroupField('header','Заголовок',"")(tag='input',type="text")
-                                    +genGroupField('description','Описание',"")(tag='textarea')
-                                    +genGroupField('price','Цена',"")(tag='input',type="number")
-                                    +genGroupField('category_name','Категория',"")(tag='input',type="text")
-                                    input(type="hidden",name="category_id")
-                                    +genGroupField('deadline','Срок сдачи',"")(tag='input',type="datetime")
-                                    +genGroupField('files','Прикрепите файлы',"")(tag='input',type="file",other="multiple")
+                                form(ng-submit ="submit()", name="addForm", novalidate, id="addtask", enctype="multipart/form-data")
+                                    +genGroupField('header','Заголовок',"","header")(tag='input',type="text")
+                                    div(ng-show="isEmpty(addForm.header.$error)",style="color: #F2B1B1") {{addForm.header.$error}}
+                                    +genGroupField('description','Описание',"","description")(tag='textarea')
+                                    div(ng-show="isEmpty(addForm.description.$error)",style="color: #F2B1B1") {{addForm.description.$error}}
+                                    +genGroupField('price','Цена',"","price")(tag='input',type="number")
+                                    div(ng-show="isEmpty(addForm.price.$error)",style="color: #F2B1B1") {{addForm.price.$error}}
+                                    +genGroupField('category_name','Категория',"",'category_name')(tag='input',type="text")
+                                    input(type="hidden",name="category_id",ng-model="category_id")
+                                    +genGroupField('deadline','Срок сдачи',"","deadline")(tag='input',type="datetime-local")
+                                    div(ng-show="isEmpty(addForm.deadline.$error)",style="color: #F2B1B1") {{addForm.deadline.$error}}
+                                    +genGroupField('files','Файлы',"","files")(tag='input',type="file")
                                     a.btn.btn-primary.prev Назад
                                     button.btn.btn-primary.continue(type="submit") Продолжить
             include includes/last_tasks
 block additional_scripts
     script(src="/js/controllers/task.js")
     script(src="/js/category.js")
+    script(src="/js/common.js")
     script(src="/libs/OwlCarousel/owl-carousel/owl.carousel.js")
 
 
