@@ -6,7 +6,7 @@ var HttpError = require('../error/http_error');
 var upload = require('../libs/storage');
 var config = require('../config/config');
 
-router.get('/get',function(req,res,next) {
+router.get('/get',function(req,res) {
     res.render('requests');
 });
 

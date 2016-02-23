@@ -1,0 +1,39 @@
+.task
+    .task_header(id='{{task._id}}',ng-click="ClickTaskHeader(task._id)")
+        span {{task.header}}
+        span {{task.price}}
+        i.fa.fa-times(ng-click="DeleteTask(task._id); $event.stopPropagation();")
+        i.fa.fa-pencil-square-o(ng-click="EditTask(task._id); $event.stopPropagation();")
+    .task_content
+        p.category {{task.category.name}}
+        p.description  {{task.description}}
+        span.deadline Деадлайн: {{task.deadline | date: 'dd.MM.yyyy'}}
+        span.created Дата рамещения: {{task._created | date: 'dd.MM.yyyy'}}
+        p.attach_files Прикрепленные файлы
+        ul
+            li(ng-repeat="file in task.files")
+                i.fa.fa-file-o
+                a(href="http://localhost:8080/uploads/{{file.name}}") {{file.original}}
+    .task_footer
+        span Заказчик: Вы
+.modal.fade(id="modal_{{task._id}}")
+    .modal-dialog
+        .modal-content
+            .modal-header
+                button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
+                h4.modal-title {{task.header}}
+            .modal-body
+                form(ng-submit ="update($event,task._id)", name="updateForm", novalidate, enctype="multipart/form-data")
+                    +genGroupField('header','Заголовок',"","task.header")(tag='input',type="text")
+                    div(ng-show="isEmpty(updateForm.header.$error)",style="color: #F2B1B1") {{updateForm.header.$error}}
+                    +genGroupField('description','Описание',"","task.description")(tag='textarea')
+                    div(ng-show="isEmpty(updateForm.description.$error)",style="color: #F2B1B1") {{updateForm.description.$error}}
+                    +genGroupField('price','Цена',"","task.price")(tag='input',type="number")
+                    div(ng-show="isEmpty(updateForm.price.$error)",style="color: #F2B1B1") {{updateForm.price.$error}}
+                    +genGroupField('deadline','Срок сдачи',"","task.deadline")(tag='input',type="datetime-local")
+                    div(ng-show="isEmpty(updateForm.deadline.$error)",style="color: #F2B1B1") {{updateForm.deadline.$error}}
+                    +genGroupField('files','Файлы',"","files")(tag='input',type="file")
+                    button.btn.btn-primary.continue(type="submit") Сохранить
+            .modal-footer
+                button.btn.btn-default(type='button', data-dismiss='modal') Закрыть
+

@@ -22,7 +22,7 @@ myApp.controller('TaskCtrl', function($scope, $http) {
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined}
         }).success((resp)=> {
-
+            window.location.href="/request/get";
         }).error((resp)=> {
             for (var key in $scope.addForm)
             {
@@ -62,6 +62,49 @@ myApp.controller('TaskCtrl', function($scope, $http) {
             });
         });
     };
+
+    $scope.EditTask = function(task_id) {
+        $scope.my_tasks.forEach((task)=> {
+           task.deadline = new Date(task.deadline);
+        });
+        var modal_id = `#modal_${task_id}`;
+        $(modal_id).modal('show');
+    };
+    $scope.DeleteTask = function(task_id) {
+      var answer = confirm("Вы действительно хотите удалить задание");
+      if (answer) {
+          $http({
+              url: '/user/tasks/delete',
+              method: 'post',
+              data: {
+                  task_id: task_id
+              }
+          }).then(function successCallback(response) {
+                $scope.my_tasks.forEach((my_task,index,tasks)=> {
+                   if (my_task._id == task_id) tasks.splice(index,1);
+                });
+          }, function errorCallback(response) {
+              alert("error");
+          });
+      }
+    };
+
+
+    $scope.update = function(ev,id) {
+        var formData = new FormData(ev.currentTarget);
+        formData.append("id",id);
+        $http({
+            url: '/task/update',
+            method: 'post',
+            data: formData,
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        }).then((response) => {
+           alert('success');
+        }, (response)=> {
+            alert('error');
+        });
+    }
 });
 
 $(document).ready(function() {

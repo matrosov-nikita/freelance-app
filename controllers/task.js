@@ -37,9 +37,32 @@ router.post('/add', function(req,res,next) {
 
         });
     });
-
 });
+router.post('/update', function(req,res,next) {
 
+    upload.array('files', config.get("maxCountFiles"))(req,res, function(err) {
+        if (err) return next(err);
+        Task.findOne({_id: req.body.id}, (err,task)=> {
+            if (err) return next(err);
+            task.edit(req.body, function(err,task) {
+                if (err) return next(err);
+                if (req.files.length>0)
+                {
+                    task.files = [];
+                    req.files.forEach(function(el) {
+                        task.files.push({ "name" : el.filename, "original": el.originalname});
+                    });
+                }
+                task.save((err)=> {
+                    if (err) return next(new HttpError(422,err.errors));
+                    res.json(true);
+                });
+
+            });
+        });
+
+    });
+});
 router.get('/viewresult/:id', function(req,res,next) {
     Task.findOne({_id: req.params.id}, function(err,task) {
        if (err) return next(err);

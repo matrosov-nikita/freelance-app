@@ -118,6 +118,29 @@ router.post('/upload',CheckUser, function(req,res,next) {
     });
 });
 
+router.get('/tasks/get', CheckUser, function(req,res,next) {
+    var Task = mongoose.model('Task');
+    Task.getByCustomerId(req.user._id, (err,tasks) => {
+       if (err) return next(err);
+            res.render('customer_tasks',{
+                my_tasks: tasks
+            });
+    });
+});
+
+router.post('/tasks/delete',CheckUser, function(req,res,next) {
+   var Task = mongoose.model('Task');
+    Task.findOne({_id: req.body.task_id},(err,task) => {
+        if (err) return next(err);
+        if (task.author.toString() != req.user._id.toString() || task.status!='Поиск исполнителей')
+        return next(new HttpError(403,'Недостаточно прав для удаления данного задания'));
+
+        task.remove((err) => {
+            if (err) return next(err);
+            res.json('Задание успешно удалено');
+        })
+    });
+});
 
 
 router.post('/remember',function(req,res,next) {

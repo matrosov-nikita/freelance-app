@@ -112,6 +112,13 @@ task.statics.get = function(user, callback) {
     })
 };
 
+task.methods.edit = function(data,callback) {
+    Object.keys(data).forEach((item)=> {
+        this[item] = data[item];
+    });
+    return callback(null,this);
+};
+
 task.statics.getByRequest = function(request, callback) {
     Task.findOne({requests: request}, function (err, task) {
         if (err) return callback(err);
@@ -141,6 +148,13 @@ task.methods.getRequestsPerTask = function() {
             });
         });
     });
+};
+
+task.statics.getByCustomerId = function(id,callback) {
+        Task.find({author: id}, (err,tasks) => {
+            if (err) return callback(err);
+            return callback(null, tasks);
+        })
 };
 
 Task = module.exports = mongoose.model("Task",task);
