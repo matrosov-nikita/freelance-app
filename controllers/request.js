@@ -17,6 +17,7 @@ router.get('/getown', function(req,res) {
 router.get('/getRequests', function(req,res) {
     req.user.getAllRequests(function(err,requests){
            if (err) return next(err);
+        console.log(requests);
            res.json(requests);
     });
 });

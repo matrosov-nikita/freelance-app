@@ -109,11 +109,6 @@ myApp.controller('TaskCtrl', function($scope, $http) {
 
 $(document).ready(function() {
 
-
-    $("#dispute").click(function() {
-        $("#dispute_form").slideToggle();
-
-    });
     var owl = $("#owl-carousel");
     owl.owlCarousel({
         singleItem: true,

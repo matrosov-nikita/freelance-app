@@ -19,6 +19,8 @@ block content
                     div.request(ng-repeat="request in own_requests.req_check")
                         include includes/request/executer/request_in_check
                     p.request_status Арбитраж
+                    div.request(ng-repeat="request in own_requests.req_dispute")
+                        include includes/request/executer/request_in_dispute
             include includes/last_tasks
 block additional_scripts
     script(src="/js/controllers/request.js")

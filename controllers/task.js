@@ -34,7 +34,6 @@ router.post('/add', function(req,res,next) {
                 if (err) return next(new HttpError(422,err.errors));
                 res.redirect("/request/get");
             });
-
         });
     });
 });

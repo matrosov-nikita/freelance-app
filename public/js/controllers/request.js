@@ -42,28 +42,28 @@ myApp.controller('RequestCtrl', function($scope, $http) {
         generateSetRequests($scope.own_requests, data);
     });
 
-    function GetRequestIndexByTask(task) {
-        return $scope.requests.req_search.findIndex(elem => elem.task._id == task);
+    function GetRequestIndexByTask(container, task) {
+        return container.findIndex(elem => elem.task._id == task);
     }
 
-    function RemoveRequest(task) {
-        $scope.requests.req_search.splice(GetRequestIndexByTask(task),1);
+    function RemoveRequest(container,task) {
+        container.splice(GetRequestIndexByTask(container,task),1);
     }
 
-    function RemoveOneAuthor(request,task) {
-        var index = GetRequestIndexByTask(task);
+    function RemoveOneAuthor(source,request,task) {
+        var index = GetRequestIndexByTask(source,task);
         if (index>-1) {
-            var current =  $scope.requests.req_search[index].requests;
+            var current =  source[index].requests;
                     return {
-                        "task": $scope.requests.req_search[index].task,
+                        "task": source[index].task,
                         "requests": current.splice(current.findIndex(elem => elem._id==request), 1)
                     }
                 }
          }
 
-    var ComeRequestToWork = function(request,task) {
-        $scope.requests.req_work.push(RemoveOneAuthor(request,task));
-        RemoveRequest(task);
+    var ComeRequestToAnotherCollection  = function(source,destination, request,task) {
+        destination.push(RemoveOneAuthor(source,request,task));
+        RemoveRequest(source, task);
     };
 
     $scope.RefuseRequest = function(request,task,ev) {
@@ -78,14 +78,34 @@ myApp.controller('RequestCtrl', function($scope, $http) {
                 }
             }).success(function(response) {
                 if (response) {
-                    RemoveOneAuthor(request,task);
+                    RemoveOneAuthor($scope.requests.req_search,request,task);
                 }
             }).error(function() {
                 alert("error");
             });
         }
     };
+    $scope.SendDispute = function(request,task_id) {
+        $("#dispute").modal('show');
+        $("#dispute .yes").click(function(e) {
+            $http({
+                url: '/dispute/add',
+                method: 'post',
+                data: {
+                    task_id: task_id,
+                    message:  $("#dispute .message").val()
+                }
+            }).then(function successCallback(response) {
+                $('#dispute').modal('toggle');
 
+                if (request && response) {
+                    ComeRequestToAnotherCollection( $scope.requests.req_work,$scope.requests.req_dispute,request, task_id);
+                }
+            }, function errorCallback(response) {
+                alert("error");
+            });
+        });
+    };
     $scope.AcceptRequest = function(request,task,ev) {
         ev.stopPropagation();
         var response = confirm("Принять заявку?");
@@ -98,13 +118,15 @@ myApp.controller('RequestCtrl', function($scope, $http) {
                 }
             }).success(function(response) {
                 if (response) {
-                    ComeRequestToWork(request,task);
+                    ComeRequestToAnotherCollection( $scope.requests.req_search,$scope.requests.req_work, request,task);
                 }
             }).error(function() {
                 alert("error");
             });
         }
     };
+
+
     $scope.viewAuthorInfo = (id)=>
     {
         location.href= "/user/" + id;

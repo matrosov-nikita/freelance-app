@@ -1,0 +1,11 @@
+.modal.fade(id="dispute")
+    .modal-dialog
+        .modal-content
+            .modal-header
+                button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
+                h4.modal-title Напишите причину арбитража
+            .modal-body
+                textarea.message(rows=15,placeholder="Причина арбитража")
+            .modal-footer
+                button.btn.btn-default.no(type='button', data-dismiss='modal') Закрыть
+                button.btn.btn-primary.yes(type='button') Отправить жалобу

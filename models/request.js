@@ -18,6 +18,10 @@ var request = new Schema({
 
     message: {
         type: String
+    },
+    accepted: {
+        type: Boolean,
+        default: false
     }
 });
 
@@ -65,12 +69,17 @@ request.methods.refuse = function(callback) {
 };
 
 request.methods.accept = function(callback) {
+        this.accepted = true;
+        this.save(function(err) {
+            if (err) return callback(new HttpError(401,"Не удалось принять заявку"));
+        });
         var Task = mongoose.model("Task");
         Task.getByRequest(this._id, function (err, task) {
             if (err) return callback(err);
             else {
                 task.status="В работе";
                 task.save();
+
                 return callback(null,true);
             }
         });

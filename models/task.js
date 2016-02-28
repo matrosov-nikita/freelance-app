@@ -67,6 +67,16 @@ var task = new Schema({
                 name: String,
                 original: String
             }]
+    },
+
+    dispute: {
+        type: String,
+        default: ''
+    },
+
+    comment: {
+        type: String,
+        default: ''
     }
 
 });
@@ -137,6 +147,14 @@ task.methods.getRequestsPerTask = function() {
             if (err) reject(err);
         }).populate('executer','_id name').exec(function(err,requests) {
             if (err) reject(err);
+            console.log(requests);
+            if (self.status!="Поиск исполнителей") {
+                requests = requests.filter((request)=> {
+                    if (request.accepted) {
+                        return request;
+                    }
+                });
+            }
             resolve({
                 task: {
                     _id: self._id,
@@ -150,11 +168,20 @@ task.methods.getRequestsPerTask = function() {
     });
 };
 
+
 task.statics.getByCustomerId = function(id,callback) {
         Task.find({author: id}, (err,tasks) => {
             if (err) return callback(err);
             return callback(null, tasks);
         })
+};
+task.methods.addDispute = function(dispute,callback) {
+    this.dispute = dispute;
+    this.status = "Арбитраж";
+    this.save(function(err){
+        if (err) return callback(new HttpError(422,err.errors));
+        return callback(null,this);
+    });
 };
 
 Task = module.exports = mongoose.model("Task",task);

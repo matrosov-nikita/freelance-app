@@ -60,6 +60,8 @@ class Server {
 
         app.use("/user",Controller.User);
 
+        app.use("/dispute",checkUser,Controller.Dispute);
+
         app.use('/request', checkUser, Controller.Request);
 
 

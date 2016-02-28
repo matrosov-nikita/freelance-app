@@ -11,8 +11,9 @@ block content
             .col-lg-6
                 .row
                     p Прикрепите необходимые файлы
-                    .div(ng-init="task= #{JSON.stringify(task)}")
+                    .div(ng-controller="RequestCtrl",ng-init="task= #{JSON.stringify(task)}")
                         include includes/task
+                        include includes/dispute
                         .alert.alert-dismissible.alert-warning
                             button.close(type='button', data-dismiss='alert') &times;
                             h4 Сообщение от исполнителя об выполнении работы
@@ -24,16 +25,13 @@ block content
                                 a(href="http://localhost:8080/uploads/{{file.name}}") {{file.original}}
                         .button_wrapper
                             a.btn.btn-success Подтвердить
-                            a.btn.btn-danger#dispute Арбитраж
-                form(action="/dispute/add", method="post", id="dispute_form", type="hidden")
-                    +genGroupField('message','Сообщение',"")(tag='textarea')
-                    input(name='task',value='{{task._id}}',type='hidden')
-                    button.btn.btn-primary.continue(type="submit") Отправить
+                            button.btn.btn-danger#dispute(ng-click="SendDispute(null,task._id)") Арбитраж
 
 
             include includes/last_tasks
 block additional_scripts
     script(src="/js/controllers/task.js")
+    script(src="/js/controllers/request.js")
 
 
 
