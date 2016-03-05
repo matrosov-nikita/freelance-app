@@ -1,13 +1,14 @@
-var myApp = angular.module('app', []);
-myApp.config(['$httpProvider', function($httpProvider) {
+
+angular.module('app').config(['$httpProvider', function($httpProvider) {
     $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
 }]);
 
-myApp.controller('RequestCtrl', function($scope, $http) {
+angular.module('app').controller('RequestCtrl', function($scope, $http) {
 
     var generateSetRequests = function(parent,data)
     {
         parent.req_search = []; parent.req_work = []; parent.req_check = []; parent.req_dispute = [];
+        parent.done=[];
 
         function add_request_el(el)
         {
@@ -15,7 +16,8 @@ myApp.controller('RequestCtrl', function($scope, $http) {
                 "Поиск исполнителей":   parent.req_search,
                 "В работе": parent.req_work,
                 "Ожидает проверки":  parent.req_check,
-                "Арбитраж": parent.req_dispute
+                "Арбитраж": parent.req_dispute,
+                "Выполнено": parent.done
             };
 
             if (el.hasOwnProperty('requests'))
@@ -85,6 +87,10 @@ myApp.controller('RequestCtrl', function($scope, $http) {
             });
         }
     };
+    $scope.SendComment = () => {
+        $("#comment").modal('show');
+    };
+
     $scope.SendDispute = function(request,task_id) {
         $("#dispute").modal('show');
         $("#dispute .yes").click(function(e) {
@@ -126,12 +132,8 @@ myApp.controller('RequestCtrl', function($scope, $http) {
         }
     };
 
-
     $scope.viewAuthorInfo = (id)=>
     {
         location.href= "/user/" + id;
-    }
-
-
-
+    };
 });

@@ -1,5 +1,5 @@
-var myApp = angular.module('app', []);
 
-myApp.controller('PortfolioCtrl', function($scope, $http) {
+
+angular.module('app').('PortfolioCtrl', function($scope, $http) {
 
 });

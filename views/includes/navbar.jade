@@ -6,7 +6,7 @@ nav.navbar.navbar-default.navbar-fixed-top
         a(href="/task/add").btn.btn-default.navbar-btn.role Заказчик
         button.btn.btn-sm.btn-default.navbar-btn.navbar-right(id="logout") Выйти
         p.navbar-text.navbar-right(id='#{user._id}') Добро пожаловать,
-            a(href='#{user._id}') #{user.name}
+            a(href='/user/#{user._id}') #{user.name}
 
 
 

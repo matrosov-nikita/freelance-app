@@ -1,0 +1,19 @@
+.modal.fade(id="comment")
+    .modal-dialog
+        .modal-content
+            .modal-header
+                button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
+                h4.modal-title Напишите отзыв и поставьте оценку исполнителю
+            .modal-body
+                form(method="post",action="/task/add/comment")
+                    input(type="hidden", name="id", value="{{task._id}}")
+                    textarea.message(rows=5,name="comment",placeholder="Отзыв")
+                    input(type="radio",name="mark",value="0")
+                    | Положительная
+                    input(type="radio",name="mark",value="1")
+                    | Нейтральная
+                    input(type="radio",name="mark",value="2")
+                    | Отрицательная
+                    button.btn.btn-default(type="submit") Отправить
+            .modal-footer
+                button.btn.btn-default.no(type='button', data-dismiss='modal') Закрыть

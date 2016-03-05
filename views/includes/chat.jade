@@ -1,0 +1,4 @@
+div.chat.col-lg-7
+    input.form-control(type="text",placeholder="Введите сообщение",ng-keypress="add($event,{_id: '#{user._id}',name: '#{user.name}'},request.task._id)",ng-model="chat.mes")
+    div(message-list="{{request.task._id}}")
+    br

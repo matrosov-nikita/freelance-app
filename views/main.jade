@@ -11,10 +11,10 @@ block content
     - }
     include includes/navbar
     include mixins/genGroupField
-    .container-fluid(ng-controller="PortfolioCtrl",ng-init="works= #{JSON.stringify(works)}")
+    .container-fluid(ng-controller="PortfolioCtrl",ng-init="user= #{JSON.stringify(user_info)}; works= #{JSON.stringify(works)}")
         .row
             include includes/messages
-            .col-lg-5
+            .col-lg-6
                 ul.nav.nav-tabs(id="tabs")
                     li.active
                         a(href='#profile',data-toggle="tab") Профиль
@@ -27,10 +27,10 @@ block content
                         form.form-horizontal(action="/user/update", method="post")
                             fieldset
                                  input.form-control(type="hidden" name="_id",value="#{user_info._id}")
-                                 +genGroupField('name','Имя',user_info.name)(tag='input')
-                                 +genGroupField('login','Логин',user_info.login)(tag='input')
-                                 +genGroupField('email','E-mail',user_info.email)(tag='input')
-                                 +genGroupField('about','О себе',user_info.about)(tag='textarea')
+                                 +genGroupField('name','Имя','',"user.name")(tag='input')
+                                 +genGroupField('login','Логин','',"user.login")(tag='input')
+                                 +genGroupField('email','E-mail','',"user.email")(tag='input')
+                                 +genGroupField('about','О себе','',"user.about")(tag='textarea')
                                 button(class="btn btn-primary") Сохранить
                         p Количество дней на сайте:  #{getDiffBetweenDates(user_info.created)}
                     .well.tab-pane.fade(id="portfolio")

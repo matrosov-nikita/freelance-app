@@ -1,6 +1,7 @@
 extends layout
 block additional_styles
     link(rel="stylesheet",href="/css/request.css")
+    link(rel="stylesheet",href="/css/chat.css")
 block content
     include includes/navbar
     .container-fluid(ng-controller="RequestCtrl")
@@ -8,23 +9,25 @@ block content
             include includes/messages
             .col-lg-6
                 include includes/customer_menu
-                .row
+                .row(ng-controller="Chat as chat")
                     p.request_status Поиск исполнителей
-                    div(ng-repeat="request in requests.req_search")
+                    div.clearfix.reqs(ng-repeat="request in requests.req_search")
                         include includes/request/customer/request_search
                     p.request_status В работе
-                    div(ng-repeat="request in requests.req_work")
+                    div.clearfix.reqs(ng-repeat="request in requests.req_work")
                         include includes/request/customer/request_in_work
                     p.request_status Ожидают проверки
-                    div(ng-repeat="request in requests.req_check")
+                    div.clearfix.reqs(ng-repeat="request in requests.req_check")
                         include includes/request/customer/request_in_check
                     p.request_status Арбитраж
-                    div(ng-repeat="request in requests.req_dispute")
+                    div.clearfix.reqs(ng-repeat="request in requests.req_dispute")
                         include includes/request/customer/request_in_dispute
             include includes/last_tasks
             include includes/dispute
 block additional_scripts
+    script(src="/js/controllers/chat.js")
     script(src="/js/controllers/request.js")
+
 
 
 

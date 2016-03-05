@@ -1,4 +1,4 @@
 .header
     span {{request.task.header}}
     .icon_set
-        i.fa.fa-envelope
+        i.fa.fa-envelope.openChat(ng-click="showChat($event, request.task._id)")

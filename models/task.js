@@ -121,6 +121,12 @@ task.statics.get = function(user, callback) {
         return callback(null,tasks);
     })
 };
+task.statics.getMyTasks = function(user, callack) {
+    Task.find({'author': user._id},'_id', function(err,mytasks) {
+       if (err) return callack(err);
+        return callack(null, mytasks);
+    });
+};
 
 task.methods.edit = function(data,callback) {
     Object.keys(data).forEach((item)=> {
@@ -147,7 +153,6 @@ task.methods.getRequestsPerTask = function() {
             if (err) reject(err);
         }).populate('executer','_id name').exec(function(err,requests) {
             if (err) reject(err);
-            console.log(requests);
             if (self.status!="Поиск исполнителей") {
                 requests = requests.filter((request)=> {
                     if (request.accepted) {
@@ -181,6 +186,26 @@ task.methods.addDispute = function(dispute,callback) {
     this.save(function(err){
         if (err) return callback(new HttpError(422,err.errors));
         return callback(null,this);
+    });
+};
+
+task.methods.addComment = function(comment,callback) {
+    this.comment = comment;
+    this.status = "Выполнено";
+    this.save(function(err){
+        if (err) return callback(new HttpError(422,err.errors));
+        return callback(null,this);
+    });
+};
+
+task.methods.findExecuter = function(callback) {
+    var self = this;
+    var Request = mongoose.model('Request');
+    Request.find({_id: {$in: self.requests}},function(err) {
+        if (err) return callback(err);
+    }).where('accepted','true').populate('executer','_id').exec(function(err,requests) {
+            if (err) return callback(err);
+            return callback(null,requests);
     });
 };
 

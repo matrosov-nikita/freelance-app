@@ -1,10 +1,11 @@
 .request
     include request_header
-    .authors
+    .authors.col-lg-5
         a.author(ng-repeat="req in request.requests", ng-click="viewAuthorInfo(req.executer._id)") {{req.executer.name}}
             .icon_set
                 i(data-toggle="tooltip" data-placement="right" title="" data-original-title="Tooltip on right",
                 ng-click="AcceptRequest(req._id, request.task._id, $event); $event.stopPropagation();").fa.fa-plus-square
                 i(data-toggle="tooltip" data-placement="right" title="" data-original-title="Tooltip on right",
                 ng-click="RefuseRequest(req._id, request.task._id,$event);$event.stopPropagation();").fa.fa-minus-square
+    include  ../../chat
 

@@ -4,4 +4,5 @@ module.exports = function() {
     require('./portfolio');
     require('./task');
     require('./request');
+    require('./message')
 };

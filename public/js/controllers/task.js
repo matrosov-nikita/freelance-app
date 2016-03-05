@@ -1,10 +1,10 @@
-var myApp = angular.module('app',  []);
 
-myApp.config(['$httpProvider', function($httpProvider) {
+
+angular.module('app').config(['$httpProvider', function($httpProvider) {
     $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
 }]);
 
-myApp.controller('TaskCtrl', function($scope, $http) {
+angular.module('app').controller('TaskCtrl', function($scope, $http) {
     $http.get('/task/getTasks').success(function(data) {
         $scope.tasks = data;
     });

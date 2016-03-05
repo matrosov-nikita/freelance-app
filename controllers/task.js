@@ -20,6 +20,29 @@ router.get('/getTasks', function(req,res,next) {
     });
 });
 
+
+router.post('/add/comment', function(req,res,next) {
+    Task.findOne({_id: req.body.id},(err,task)=> {
+       if (err) return next(err);
+        task.addComment(req.body.comment,(err)=> {
+            if (err) return next(err);
+            task.findExecuter((err,request) => {
+                var User = mongoose.model("User");
+                User.findOne({_id: request[0].executer._id}, (err,user) => {
+                   if (err) return next(err);
+                    var marks = {
+                        0: user.marks.positive,
+                        1: user.marks.neitral,
+                        2: user.marks.negative
+                    };
+                    marks[req.body.mark]+=1;
+                    user.save();
+                    res.redirect("/request/get")
+                });
+            });
+        })
+    });
+});
 router.post('/add', function(req,res,next) {
     upload.array('files', config.get("maxCountFiles"))(req,res, function(err) {
         if (err) return next(err);
