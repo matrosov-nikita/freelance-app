@@ -9,6 +9,7 @@ var CheckUser = require('../middleware/checkUser');
 var config = require('../config/config');
 var Portfolio = mongoose.model('Portfolio');
 var HttpError  = require('../error/http_error');
+var chat = require('../libs/chat');
 
 router.get('/:id', CheckUser,function(req, res) {
     if (req.user._id == req.params.id) {
@@ -64,6 +65,7 @@ router.post('/authorize', function(req,res,next) {
         if (err) return next(err);
             req.session.user = user._id;
             res.locals.user = user;
+
             res.send('/user/'+user._id);
        });
     }

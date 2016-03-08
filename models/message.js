@@ -28,7 +28,10 @@ message.statics.add  = function(data,author,cb) {
     });
     message.save(function(err,mes){
         if (err) return cb(err);
-        return cb(null,mes);
+        Message.populate(mes,{path:'author',select: '_id name',model: 'User'}, function(err,mes) {
+            if (err) return cb(err);
+            return cb(null,mes);
+        })
     });
 };
 

@@ -85,4 +85,11 @@ request.methods.accept = function(callback) {
         });
     };
 
+request.statics.getMyExecuterTasks = function(executer,cb) {
+    Request.find({executer: executer},'task',(err,tasks)=> {
+        if (err) return cb(err);
+        return cb(null,tasks);
+    })
+};
+
 Request = module.exports = mongoose.model("Request",request);

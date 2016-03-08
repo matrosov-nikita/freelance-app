@@ -15,13 +15,19 @@ var App = angular.module('app', [])
                     mes.appendChild(author); mes.appendChild(date);
                     $(element[0]).prepend(mes);
                 };
+                var uniqueResultOne =(newVal,oldVal)=> {
+                    return newVal.filter(function(obj) {
+                        return !oldVal.some(function(obj2) {
+                            return obj.id == obj2.id;
+                        });
+                    });
+                };
                 scope.$watch('messages', function(newVal,oldVal) {
 
                     if (newVal!==oldVal)
                     {
-                        console.log(newVal,oldVal);
-                         newVal[attrs.messageList].filter(el => oldVal[attrs.messageList].indexOf(el) === -1).forEach((el)=> {
-                            show(el);
+                        uniqueResultOne(newVal[attrs.messageList],oldVal[attrs.messageList]).forEach((mes)=> {
+                            show(mes);
                         });
                     }
 

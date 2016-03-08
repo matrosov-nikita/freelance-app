@@ -3,19 +3,57 @@ angular.module('app').config(['$httpProvider', function($httpProvider) {
     $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
 }]);
 
-angular.module('app').controller('Chat', function($scope, $http, $interval) {
+angular.module('app').controller('Chat', function($scope, $http) {
 
-    $scope.subscribe = () => {
+    $scope.subscribeCustomersTasks = () => {
         $http({
-            url: '/message/subscribe',
-            method: 'post'
+            url: '/message/subscribe/customer',
+            method: 'get'
         }).then(function (response) {
+           $scope.addMessage(response.data.task,response.data);
+           $scope.subscribeByTask(response.data.task);
 
         }, function (response) {
 
         });
     };
 
+    $scope.subscribeExecuterTasks = () => {
+        $http({
+            url: '/message/subscribe/executer',
+            method: 'get'
+        }).then(function (response) {
+            $scope.addMessage(response.data.task,response.data);
+            $scope.subscribeByTask(response.data.task);
+        }, function (response) {
+
+        });
+    };
+
+    $scope.subscribeByTask = (task)=> {
+        $http({
+            url: '/message/subscribe/'+task,
+            method: 'get'
+        }).then(function (response) {
+            console.log("response");
+            $scope.addMessage(response.data.task,response.data);
+            $scope.subscribeByTask(task);
+        }, function (response) {
+
+        });
+    };
+
+    $scope.addMessage = (task,mes) => {
+        if ($scope.messages[task] === undefined) {
+            $scope.messages[task] = [];
+        }
+        $scope.messages[task].unshift({
+            id: mes._id,
+            author: mes.author,
+            date: new Date(mes.datePublish),
+            message: mes.text
+        });
+    };
 
     $scope.add = (event, author, task) => {
         if (event.keyCode == 13) {
@@ -27,14 +65,6 @@ angular.module('app').controller('Chat', function($scope, $http, $interval) {
                     task: task
                 }
             }).then(function successCallback(response) {
-                if ($scope.messages[task] === undefined) {
-                    $scope.messages[task] = [];
-                }
-                $scope.messages[task].unshift({
-                    author: author,
-                    date: new Date(),
-                    message: $scope.chat.mes
-                });
                 $scope.chat.mes = "";
             }, function errorCallback(response) {
 
@@ -43,7 +73,6 @@ angular.module('app').controller('Chat', function($scope, $http, $interval) {
     };
     $scope.messages = {};
     $scope.showChat = (ev, task) => {
-        console.log(typeof  task);
         $(ev.currentTarget.parentElement.parentElement.nextElementSibling.nextElementSibling).slideToggle();
         if ($scope.messages[task] == undefined) {
             $scope.messages[task] = [];
@@ -52,13 +81,12 @@ angular.module('app').controller('Chat', function($scope, $http, $interval) {
                 method: 'get'
             }).then(function success(resp) {
                 resp.data.forEach((message) => {
-                    setTimeout(function() {
-                         $scope.messages[task].unshift({
+                         $scope.messages[task].push({
+                            id: message.id,
                             author: message.author,
                             date: new Date(message.datePublish),
                             message: message.text
                     });
-                    }, 0);
                 })
             }, function error(resp) {
 

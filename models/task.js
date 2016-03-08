@@ -121,7 +121,7 @@ task.statics.get = function(user, callback) {
         return callback(null,tasks);
     })
 };
-task.statics.getMyTasks = function(user, callack) {
+task.statics.getMyCustomerTasks = function(user, callack) {
     Task.find({'author': user._id},'_id', function(err,mytasks) {
        if (err) return callack(err);
         return callack(null, mytasks);
