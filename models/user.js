@@ -61,7 +61,12 @@
             default: 0
         },
 
-        works: [Schema.Types.ObjectId]
+        works: [Schema.Types.ObjectId],
+
+        role: {
+            type: String,
+            enum: ["Администратор","Пользователь"]
+        }
     });
 
     userSchema.methods.encryptPassword = function(password) {
@@ -74,6 +79,44 @@
        this.salt = Math.random() + '';
        this.hashedPassword = this.encryptPassword(password);
     });
+
+    userSchema.statics.getAll = function(cb) {
+        User.find({}, (err,users)=> {
+            if (err) return cb(err);
+            return cb(null,users);
+        })
+    };
+
+    userSchema.methods.getOrdersCount = function() {
+        var self = this;
+        return new Promise(function(resolve,reject)
+        {
+            var Task = mongoose.model('Task');
+            Task.count({author:self._id}, (err,count)=> {
+                if (err)  reject(err);
+                resolve(count);
+            });
+        });
+    };
+
+    userSchema.methods.getExecuterCount = function() {
+        var self = this;
+        return new Promise(function(resolve,reject)
+        {
+            var count = 0;
+            var Request = mongoose.model('Request');
+            Request.find({executer: self._id, accepted: true},(err)=> {
+              if (err) reject(err);
+            }).populate('task').exec((err,requests)=> {
+                if (err) reject(err);
+                requests.forEach((request)=> {
+                    console.log(request.task.status);
+                    if (request.task.status=="Выполнено") count+=1;
+                });
+                resolve(count);
+            });
+        });
+    };
 
     userSchema.statics.register = function(data, callback) {
         this.findOne({login: data.login}, function(err, user) {

@@ -1,0 +1,56 @@
+extends layout
+block additional_styles
+    link(rel="stylesheet",href="/css/admin.css")
+block content
+    .container(ng-controller="Admin")
+        .row.users
+            .col-lg-8
+                table.table.table-striped.table-hover
+                    thead
+                        tr
+                            th #
+                            th Имя
+                            th Email
+                            th Заказал
+                            th Выполнил
+                    tbody
+                        tr
+                            td
+                            td: input(type="text")
+                            td: input(type="text")
+                            td: input(type="text")
+                            td: input(type="text")
+                        tr(ng-repeat="user_info in users")
+                            td {{$index}}
+                            td {{user_info.user.name}}
+                            td {{user_info.user.email}}
+                            td.center {{user_info.customerOrders}}
+                            td.center {{user_info.executerOrders}}
+            .col-lg-4
+                p Топ-10 заказчиков
+                table.table.table-striped.table-hover
+                    thead
+                        tr
+                            th #
+                            th Имя
+                            th Заказы
+                    tbody
+                        tr(ng-repeat="user_info in users | orderBy: customerOrders | limitTo: 10")
+                            td {{$index+1}}
+                            td {{user_info.user.name}}
+                            td {{user_info.customerOrders}}
+                p Топ-10 исполнителей
+                table.table.table-striped.table-hover
+                    thead
+                        tr
+                            th #
+                            th Имя
+                            th Работы
+                    tbody
+                        tr(ng-repeat="user_info in users | orderBy: executerOrders | limitTo: 10")
+                            td {{$index+1}}
+                            td {{user_info.user.name}}
+                            td {{user_info.executerOrders}}
+
+block additional_scripts
+    script(src="/js/controllers/admin.js")

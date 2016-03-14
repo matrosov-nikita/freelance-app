@@ -4,6 +4,8 @@ nav.navbar.navbar-default.navbar-fixed-top
             a FF
         a(href="/task/get").btn.btn-default.navbar-btn.role Исполнитель
         a(href="/task/add").btn.btn-default.navbar-btn.role Заказчик
+        if user.role=="Администратор"
+            a(href="/admin").btn.btn-default.navbar-btn.role Администратор
         button.btn.btn-sm.btn-default.navbar-btn.navbar-right(id="logout") Выйти
         p.navbar-text.navbar-right(id='#{user._id}') Добро пожаловать,
             a(href='/user/#{user._id}') #{user.name}

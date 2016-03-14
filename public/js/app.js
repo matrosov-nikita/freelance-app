@@ -16,6 +16,7 @@ var App = angular.module('app', [])
                     $(element[0]).prepend(mes);
                 };
                 var uniqueResultOne =(newVal,oldVal)=> {
+                    console.log(oldVal);
                     return newVal.filter(function(obj) {
                         return !oldVal.some(function(obj2) {
                             return obj.id == obj2.id;

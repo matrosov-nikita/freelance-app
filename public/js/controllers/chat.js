@@ -73,7 +73,7 @@ angular.module('app').controller('Chat', function($scope, $http) {
     };
     $scope.messages = {};
     $scope.showChat = (ev, task) => {
-        $(ev.currentTarget.parentElement.parentElement.nextElementSibling.nextElementSibling).slideToggle();
+        $(ev.currentTarget).closest('.request').children('.chat').slideToggle();
         if ($scope.messages[task] == undefined) {
             $scope.messages[task] = [];
             $http({

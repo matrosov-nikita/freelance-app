@@ -80,7 +80,8 @@ request.methods.accept = function(callback) {
                 task.status="В работе";
                 task.save();
 
-                return callback(null,true);
+
+                return callback(null,task);
             }
         });
     };

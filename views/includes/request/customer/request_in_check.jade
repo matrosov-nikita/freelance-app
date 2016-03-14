@@ -3,3 +3,4 @@
     .authors
         .author(ng-repeat="req in request.requests") {{req.executer.name}}
             a(style="float: right", href="/task/viewresult/{{req.task}}").btn.btn-danger.btn-sm Просмотреть результат
+    include ../../chat

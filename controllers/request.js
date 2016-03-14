@@ -17,6 +17,7 @@ router.get('/getown', function(req,res) {
 router.get('/getRequests', function(req,res) {
     req.user.getAllRequests(function(err,requests){
            if (err) return next(err);
+        console.log(requests);
            res.json(requests);
     });
 });
@@ -98,6 +99,7 @@ router.post("/refuse", function(req,res,next) {
             else {
             request.accept(function(err,result) {
                 if (err) return next(err);
+                console.log(result);
                 res.json(result);
             });
         }
