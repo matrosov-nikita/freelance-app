@@ -13,4 +13,30 @@ angular.module('app').controller('Admin', function($scope, $http) {
 
     });
 
+    $http({
+        method: "get",
+        url: "/admin/tasks"
+    }).then(function success(response)  {
+       $scope.tasks = response.data;
+    }, function errorCallback(response) {
+
+    });
+
+    $scope.search = {
+        user: {
+            customerComparer: {
+                min: 0,
+                max: 10000
+            },
+            executerComparer: {
+                min: 0,
+                max: 10000
+            }
+        }
+    };
+
+    $scope.test = ()=> {
+       console.log($scope.search.user.customerComparer.order);
+    };
+
 });

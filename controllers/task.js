@@ -14,7 +14,7 @@ router.get('/get', function(req,res) {
 });
 
 router.get('/getTasks', function(req,res,next) {
-    Task.get(req.user, function(err,tasks) {
+    Task.get(/Поиск исполнителей/i, function(err,tasks) {
         if (err) return next(err);
         res.json(tasks);
     });

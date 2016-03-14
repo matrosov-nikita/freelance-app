@@ -35,5 +35,13 @@ router.get('/users',(req,res,next)=> {
     });
 });
 
+router.get('/tasks', function(req,res,next) {
+    var Task = mongoose.model("Task");
+    Task.get(/./i,function(err,tasks) {
+        if (err) return next(err);
+        res.json(tasks);
+    })
+});
+
 
 module.exports = router;

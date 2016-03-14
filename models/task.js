@@ -110,9 +110,10 @@ task.statics.add = function(data, callback) {
        }
     });
 };
-task.statics.get = function(user, callback) {
+
+task.statics.get = function(regStatus,callback) {
     Task.find({}).
-        where('status').equals("Поиск исполнителей").
+        where('status').regex(regStatus).
         sort({_created: -1}).
         populate('category').
         populate('author').
@@ -121,6 +122,7 @@ task.statics.get = function(user, callback) {
         return callback(null,tasks);
     })
 };
+
 task.statics.getMyCustomerTasks = function(user, callack) {
     Task.find({'author': user._id},'_id', function(err,mytasks) {
        if (err) return callack(err);

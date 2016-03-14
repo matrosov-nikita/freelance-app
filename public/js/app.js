@@ -36,3 +36,11 @@ var App = angular.module('app', [])
             }
         }
     });
+App.filter('orders', function() {
+    return function(items,field, greaterThan, lowerThan) {
+        items = items.filter(function(item){
+            return item[field] >= greaterThan && item[field] <= lowerThan;
+        });
+        return items;
+    }
+});

@@ -3,54 +3,92 @@ block additional_styles
     link(rel="stylesheet",href="/css/admin.css")
 block content
     .container(ng-controller="Admin")
-        .row.users
-            .col-lg-8
-                table.table.table-striped.table-hover
-                    thead
-                        tr
-                            th #
-                            th Имя
-                            th Email
-                            th Заказал
-                            th Выполнил
-                    tbody
-                        tr
-                            td
-                            td: input(type="text")
-                            td: input(type="text")
-                            td: input(type="text")
-                            td: input(type="text")
-                        tr(ng-repeat="user_info in users")
-                            td {{$index}}
-                            td {{user_info.user.name}}
-                            td {{user_info.user.email}}
-                            td.center {{user_info.customerOrders}}
-                            td.center {{user_info.executerOrders}}
-            .col-lg-4
-                p Топ-10 заказчиков
-                table.table.table-striped.table-hover
-                    thead
-                        tr
-                            th #
-                            th Имя
-                            th Заказы
-                    tbody
-                        tr(ng-repeat="user_info in users | orderBy: customerOrders | limitTo: 10")
-                            td {{$index+1}}
-                            td {{user_info.user.name}}
-                            td {{user_info.customerOrders}}
-                p Топ-10 исполнителей
-                table.table.table-striped.table-hover
-                    thead
-                        tr
-                            th #
-                            th Имя
-                            th Работы
-                    tbody
-                        tr(ng-repeat="user_info in users | orderBy: executerOrders | limitTo: 10")
-                            td {{$index+1}}
-                            td {{user_info.user.name}}
-                            td {{user_info.executerOrders}}
+        ul.nav.nav-tabs(id="tabs")
+            li.active
+                a(href='#users',data-toggle="tab") Пользователи
+            li
+                a(href='#orders',data-toggle="tab") Заказы
+            li
+                a(href='#stats',data-toggle="tab") Статистика
+        .tab-content
+            .tab-pane.active(id="users")
+                .row.users
+                    .col-lg-8
+                        table.table.table-striped.table-hover
+                            thead
+                                tr
+                                    th #
+                                    th Имя
+                                    th Email
+                                    th Заказал
+                                    th Выполнил
+                            tbody
+                                tr
+                                    td
+                                    td: input(type="text",ng-model="search.user.name")
+                                    td: input(type="text",ng-model="search.user.email")
+                                    td
+                                        label от
+                                            input(type="number",min="0",ng-model="search.user.customerComparer.min")
+                                        label до
+                                            input(type="number",max="10000",ng-model="search.user.customerComparer.max")
+                                    td
+                                        label от
+                                            input(type="number",min="0",ng-model="search.user.executerComparer.min")
+                                        label до
+                                            input(type="number",max="10000",ng-model="search.user.executerComparer.max")
+                                tr(ng-repeat="user_info in filteredUsers = (users |orders:'customerOrders':search.user.customerComparer.min:search.user.customerComparer.max" +
+                                "|orders:'executerOrders':search.user.executerComparer.min:search.user.executerComparer.max)" +
+                                "| filter: {user: {name: search.user.name,email: search.user.email}}")
+                                    td {{$index}}
+                                    td {{user_info.user.name}}
+                                    td {{user_info.user.email}}
+                                    td.center {{user_info.customerOrders}}
+                                    td.center {{user_info.executerOrders}}
+                    .col-lg-4
+                        p Топ-10 заказчиков
+                        table.table.table-striped.table-hover
+                            thead
+                                tr
+                                    th #
+                                    th Имя
+                                    th Заказы
+                            tbody
+                                tr(ng-repeat="user_info in users | orderBy: customerOrders | limitTo: 10")
+                                    td {{$index+1}}
+                                    td {{user_info.user.name}}
+                                    td {{user_info.customerOrders}}
+                        p Топ-10 исполнителей
+                        table.table.table-striped.table-hover
+                            thead
+                                tr
+                                    th #
+                                    th Имя
+                                    th Работы
+                            tbody
+                                tr(ng-repeat="user_info in users | orderBy: executerOrders | limitTo: 10")
+                                    td {{$index+1}}
+                                    td {{user_info.user.name}}
+                                    td {{user_info.executerOrders}}
+            .tab-pane.fade(id="orders")
+                .row
+                    .col-lg-8
+                        table.table.table-striped.table-hover
+                            thead
+                                tr
+                                    th #
+                                    th Наименование
+                                    th Кол-во заявок
+                            tbody
+                                tr
+                                    td
+                                    td: input(type="text")
+                                    td: input(type="text")
+                                tr(ng-repeat="task in tasks")
+                                    td {{$index}}
+                                    td {{task.header}}
+                                    td {{task.requests.length}}
+            .well.tab-pane.fade(id="stats")
 
 block additional_scripts
     script(src="/js/controllers/admin.js")
