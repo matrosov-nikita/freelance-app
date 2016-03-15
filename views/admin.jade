@@ -22,6 +22,7 @@ block content
                                     th Email
                                     th Заказал
                                     th Выполнил
+                                    th Забанить
                             tbody
                                 tr
                                     td
@@ -37,6 +38,7 @@ block content
                                             input(type="number",min="0",ng-model="search.user.executerComparer.min")
                                         label до
                                             input(type="number",max="10000",ng-model="search.user.executerComparer.max")
+                                    td
                                 tr(ng-repeat="user_info in filteredUsers = (users |orders:'customerOrders':search.user.customerComparer.min:search.user.customerComparer.max" +
                                 "|orders:'executerOrders':search.user.executerComparer.min:search.user.executerComparer.max)" +
                                 "| filter: {user: {name: search.user.name,email: search.user.email}}")
@@ -45,6 +47,7 @@ block content
                                     td {{user_info.user.email}}
                                     td.center {{user_info.customerOrders}}
                                     td.center {{user_info.executerOrders}}
+                                    td: i.fa.fa-times(ng-click="deleteUser(user_info.user._id)")
                     .col-lg-4
                         p Топ-10 заказчиков
                         table.table.table-striped.table-hover

@@ -144,6 +144,16 @@ router.post('/tasks/delete',CheckUser, function(req,res,next) {
     });
 });
 
+router.post('/delete', function(req,res,next) {
+    User.findOne({_id: req.body.id}, function(err,user) {
+        if (err) return next(err);
+        res.send(true);
+      //user.remove((err)=> {
+      //    if (err) return next(err);
+      //    res.send(true);
+      //})
+    })
+});
 
 router.post('/remember',function(req,res,next) {
 

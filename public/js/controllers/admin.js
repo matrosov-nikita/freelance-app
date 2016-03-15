@@ -34,9 +34,27 @@ angular.module('app').controller('Admin', function($scope, $http) {
             }
         }
     };
+    $scope.deleteUser = (id)=> {
+        var confirmation = confirm("Вы действительно хотите удалить пользователя?");
+        if (confirmation)
+        {
+            $http({
+                method: "post",
+                url: "/user/delete",
+                data: {id: id}
+            }).then(function successCallback(response) {
+                var userIndex;
+                if (response.data) {
+                    $scope.users.forEach((user_info,index)=> {
+                            if (user_info.user._id == id) userIndex = index;
+                    });
+                    if (userIndex>=0) $scope.users.splice(userIndex,1);
 
-    $scope.test = ()=> {
-       console.log($scope.search.user.customerComparer.order);
-    };
+                }
+            }, function errorCallback(response) {
+
+            });
+        }
+    }
 
 });
