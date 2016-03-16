@@ -32,6 +32,12 @@ angular.module('app').controller('Admin', function($scope, $http) {
                 min: 0,
                 max: 10000
             }
+        },
+        task: {
+            requests: {
+                min: 0,
+                max: 1000
+            }
         }
     };
     $scope.deleteUser = (id)=> {
@@ -55,6 +61,24 @@ angular.module('app').controller('Admin', function($scope, $http) {
 
             });
         }
-    }
+    };
+    $scope.deleteTask = function(task_id) {
+        var answer = confirm("Вы действительно хотите удалить задание");
+        if (answer) {
+            $http({
+                url: '/user/tasks/delete',
+                method: 'post',
+                data: {
+                    task_id: task_id
+                }
+            }).then(function successCallback(response) {
+                $scope.tasks.forEach((task,index,tasks)=> {
+                    if (task._id == task_id) tasks.splice(index,1);
+                });
+            }, function errorCallback(response) {
+                alert("error");
+            });
+        }
+    };
 
 });

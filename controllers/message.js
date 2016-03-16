@@ -15,9 +15,11 @@ router.post('/add', (req,res,next)=> {
 
 router.get('/getByTask', (req,res,next)=> {
     var task_id = req.query.task;
+    console.log(task_id);
     var Message = mongoose.model("Message");
     Message.getMessagesByTask(task_id, function(err,messages) {
         if (err) return next(err);
+        console.log(messages);
         res.json(messages);
     })
 });

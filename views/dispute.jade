@@ -1,0 +1,30 @@
+extends layout
+block additional_styles
+    link(rel="stylesheet",href="/css/dispute.css")
+    link(rel="stylesheet",href="/css/executer.css")
+    link(rel="stylesheet",href="/css/passive_task.css")
+    link(rel="stylesheet",href="/css/dispute.css")
+block content
+    .container(ng-controller="Dispute")
+        .row
+            .col-lg-12
+                .dropdown
+                    button.btn.btn-primary.dropdown-toggle(type='button', data-toggle='dropdown')
+                        | ID заданий в арбитраже
+                        span.caret
+                    ul.dropdown-menu
+                        li(ng-repeat="item in ids",ng-click="getInfo(item._id)") {{item._id}}
+        .row.main(ng-show="task")
+            .col-lg-7
+                include includes/task
+            .col-lg-5
+                div.chat
+                    div.mes(ng-repeat="mes in messages")
+                        p {{mes.text}}
+                        a {{mes.author.name}}
+                        span {{mes.datePublish| date:'dd MMMM HH:mm'}}
+
+
+block additional_scripts
+    script(src="/js/controllers/dispute.js")
+

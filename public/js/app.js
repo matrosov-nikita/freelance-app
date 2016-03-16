@@ -44,3 +44,12 @@ App.filter('orders', function() {
         return items;
     }
 });
+
+App.filter('requests', function() {
+    return function(items,field, greaterThan, lowerThan) {
+        items = items.filter(function(item){
+            return item[field].length >= greaterThan && item[field].length <= lowerThan;
+        });
+        return items;
+    }
+});

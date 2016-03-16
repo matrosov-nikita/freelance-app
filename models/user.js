@@ -65,7 +65,7 @@
 
         role: {
             type: String,
-            enum: ["Администратор","Пользователь"]
+            enum: ["Администратор","Арбитраж"]
         }
     });
 
@@ -110,7 +110,6 @@
             }).populate('task').exec((err,requests)=> {
                 if (err) reject(err);
                 requests.forEach((request)=> {
-                    console.log(request.task.status);
                     if (request.task.status=="Выполнено") count+=1;
                 });
                 resolve(count);

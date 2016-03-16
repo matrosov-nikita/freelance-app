@@ -22,7 +22,6 @@ block content
                                     th Email
                                     th Заказал
                                     th Выполнил
-                                    th Забанить
                             tbody
                                 tr
                                     td
@@ -75,7 +74,7 @@ block content
                                     td {{user_info.executerOrders}}
             .tab-pane.fade(id="orders")
                 .row
-                    .col-lg-8
+                    .col-lg-7
                         table.table.table-striped.table-hover
                             thead
                                 tr
@@ -85,12 +84,32 @@ block content
                             tbody
                                 tr
                                     td
-                                    td: input(type="text")
-                                    td: input(type="text")
-                                tr(ng-repeat="task in tasks")
+                                    td: input(type="text",ng-model="search.task.header")
+                                    td
+                                        label от
+                                            input(type="number",min="0",ng-model="search.task.requests.min")
+                                        label до
+                                            input(type="number",max="1000",ng-model="search.task.requests.max")
+                                tr(ng-repeat="task in filteredTasks = (tasks |requests:'requests':search.task.requests.min:search.task.requests.max)" +
+                                "| filter: {header: search.task.header}")
                                     td {{$index}}
                                     td {{task.header}}
                                     td {{task.requests.length}}
+                                    td: i.fa.fa-times(ng-click="deleteTask(task._id)")
+                                    td: i.fa.fa-file-o(ng-click="viewTask(task._id)")
+                    .col-lg-5
+                        p Топ-10 заданий
+                            table.table.table-striped.table-hover
+                                thead
+                                    tr
+                                        th #
+                                        th Задание
+                                        th Заявки
+                                tbody
+                                    tr(ng-repeat="task in tasks | orderBy: task.requests.length | limitTo: 10")
+                                        td {{$index+1}}
+                                        td {{task.header}}
+                                        td {{task.requests.length}}
             .well.tab-pane.fade(id="stats")
 
 block additional_scripts

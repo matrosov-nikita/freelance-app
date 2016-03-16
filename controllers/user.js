@@ -134,7 +134,7 @@ router.post('/tasks/delete',CheckUser, function(req,res,next) {
    var Task = mongoose.model('Task');
     Task.findOne({_id: req.body.task_id},(err,task) => {
         if (err) return next(err);
-        if (task.author.toString() != req.user._id.toString() || task.status!='Поиск исполнителей')
+        if (req.user.role!="Администратор" && (task.author.toString() != req.user._id.toString() || task.status!='Поиск исполнителей'))
         return next(new HttpError(403,'Недостаточно прав для удаления данного задания'));
 
         task.remove((err) => {
@@ -148,10 +148,10 @@ router.post('/delete', function(req,res,next) {
     User.findOne({_id: req.body.id}, function(err,user) {
         if (err) return next(err);
         res.send(true);
-      //user.remove((err)=> {
-      //    if (err) return next(err);
-      //    res.send(true);
-      //})
+      user.remove((err)=> {
+          if (err) return next(err);
+          res.send(true);
+      })
     })
 });
 
