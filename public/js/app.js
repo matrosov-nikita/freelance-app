@@ -53,3 +53,6 @@ App.filter('requests', function() {
         return items;
     }
 });
+App.config(['$httpProvider', function($httpProvider) {
+    $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
+}]);

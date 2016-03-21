@@ -1,9 +1,5 @@
 
 
-angular.module('app').config(['$httpProvider', function($httpProvider) {
-    $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
-}]);
-
 angular.module('app').controller('TaskCtrl', function($scope, $http) {
     $http.get('/task/getTasks').success(function(data) {
         $scope.tasks = data;
@@ -57,6 +53,7 @@ angular.module('app').controller('TaskCtrl', function($scope, $http) {
                 }
             }).then(function successCallback(response) {
                 $('#modal_message').modal('toggle');
+                window.location.href="/request/getown";
             }, function errorCallback(response) {
                 alert("error");
             });
@@ -87,6 +84,13 @@ angular.module('app').controller('TaskCtrl', function($scope, $http) {
               alert("error");
           });
       }
+    };
+
+
+    $scope.checkTask  = function(task,executer) {
+        console.log(task);
+        console.log(executer);
+       return task.requests.some(x=>x.executer==executer);
     };
 
 

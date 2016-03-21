@@ -42,7 +42,7 @@
         about:
         {
             type: String,
-            maxlength:[150,'Максимальная длина информации об имени 150 символов']
+            maxlength:[150,'Максимальная длина информации об авторе 150 символов']
         },
         salt: {
             type: String,
@@ -66,6 +66,11 @@
         role: {
             type: String,
             enum: ["Администратор","Арбитраж"]
+        },
+
+        score: {
+            type: Number,
+            default: 0
         }
     });
 
@@ -199,16 +204,31 @@
     };
 
     userSchema.methods.edit = function(date,callback) {
-        if (date._id != this._id) return callback(new HttpError(403,"Недостаточно прав"));
-            for (var item in date) {
-               if (item!='_id') {
-                   this[item] = date[item];
-               }
-            }
-            this.save(function(err) {
-                if (err) return callback(err);
-                return callback(null,this);
+        var self = this;
+        if (date._id != self._id) return callback(new HttpError(403,"Недостаточно прав"));
+           self.login = date.login;
+           self.email = date.email;
+           self.about = date.about;
+           self.name = date.name;
+            self.save(function(err) {
+                if (err) {
+                    console.log(err.errors);
+                    return callback(err);
+                }
+                return callback(null,self);
             });
+    };
+    userSchema.methods.setMark = function(mark,callback) {
+        var self = this;
+        switch(+mark) {
+            case 0: self.marks.positive+=1; break;
+            case 1: self.marks.neitral+=1; break;
+            case 2: self.marks.negative+=1;
+        }
+        self.save((err)=> {
+            if (err) return callback(err);
+            return callback(null,self);
+        });
     };
 
 

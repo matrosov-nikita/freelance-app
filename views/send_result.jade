@@ -15,7 +15,7 @@ block content
                     .div(ng-init="task= #{JSON.stringify(task)}")
                         include includes/task
                     form(action="/request/sendresult", method="post", enctype="multipart/form-data")
-                        +genGroupField('message','Сообщение',"")(tag='textarea')
+                        +genGroupField('message','Сообщение',"","message")(tag='textarea')
                         +genGroupField('files','Прикрепите файлы',"")(tag='input',type="file",other="multiple")
                         input(name='task',value='{{task._id}}',type='hidden')
                         button.btn.btn-primary.continue(type="submit") Отправить

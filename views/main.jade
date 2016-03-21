@@ -24,18 +24,19 @@ block content
                         a(href='#stats',data-toggle="tab") Статистика
                 .tab-content
                     .well.tab-pane.active(id="profile")
-                        form.form-horizontal(action="/user/update", method="post")
+                        form.form-horizontal(ng-submit="submitUser()")
                             fieldset
-                                 input.form-control(type="hidden" name="_id",value="#{user_info._id}")
+                                 input.form-control(type="hidden" name="_id",value="{{user._id}}")
                                  +genGroupField('name','Имя','',"user.name")(tag='input')
                                  +genGroupField('login','Логин','',"user.login")(tag='input')
                                  +genGroupField('email','E-mail','',"user.email")(tag='input')
                                  +genGroupField('about','О себе','',"user.about")(tag='textarea')
-                                button(class="btn btn-primary") Сохранить
+                                 button(class="btn btn-primary",type="submit") Сохранить
                         p Количество дней на сайте:  #{getDiffBetweenDates(user_info.created)}
                     .well.tab-pane.fade(id="portfolio")
-                        p(id="addwork") Добавить в портфолио
-                        form(action="/user/upload", method="post", id="upload", enctype="multipart/form-data")
+                        span(id="addwork") Добавить в портфолио
+                        i.fa.fa-caret-down
+                        form(ng-submit="submitWork()",id="upload", enctype="multipart/form-data")
                             input.form-control(type="text", name="name", placeholder="Название")
                             textarea.form-control(type="text", name="description", placeholder="Описание")
                             input(type="hidden",name="user", value='#{user_info._id}')
@@ -46,10 +47,10 @@ block content
                                 include includes/folder
                     .well.tab-pane.fade(id="stats")
                         ul
-                            li.positive Положительные оценки: #{user_info.marks.positive}
-                            li.neitral Нейтральные оценки: #{user_info.marks.neitral}
-                            li.negative Отрицательные оценки: #{user_info.marks.negative}
-                        p.rating Рейтинг: #{user_info.rating}
+                            li.positive Положительные оценки: {{user.marks.positive}}
+                            li.neitral Нейтральные оценки: {{user.marks.neitral}}
+                            li.negative Отрицательные оценки: {{user.marks.negative}}
+                        p.rating Рейтинг: {{user_info.rating}}
             include includes/last_tasks
 
 block additional_scripts

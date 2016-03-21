@@ -26,18 +26,14 @@ router.post('/add/comment', function(req,res,next) {
        if (err) return next(err);
         task.addComment(req.body.comment,(err)=> {
             if (err) return next(err);
-            task.findExecuter((err,request) => {
+            task.findExecuter((err,executer) => {
                 var User = mongoose.model("User");
-                User.findOne({_id: request[0].executer._id}, (err,user) => {
+                User.findOne({_id: executer._id}, (err,user) => {
                    if (err) return next(err);
-                    var marks = {
-                        0: user.marks.positive,
-                        1: user.marks.neitral,
-                        2: user.marks.negative
-                    };
-                    marks[req.body.mark]+=1;
-                    user.save();
-                    res.redirect("/request/get")
+                    user.setMark(req.body.mark,(err,result) => {
+                        if (err) return next(err);
+                        res.redirect("/request/get")
+                    });
                 });
             });
         })
@@ -86,8 +82,8 @@ router.post('/update', function(req,res,next) {
     });
 });
 router.get('/viewresult/:id', function(req,res,next) {
-    Task.findOne({_id: req.params.id}, function(err,task) {
-       if (err) return next(err);
+    Task.findOne({_id: req.params.id}).populate('author').exec((err,task)=> {
+        if (err) return next(err);
         res.render(
             'view_result',
             {

@@ -13,8 +13,8 @@ block content
                     p.request_status Поиск исполнителей
                     div.request.clearfix(ng-repeat="request in own_requests.req_search")
                         include includes/request/executer/request_search
-                    p.request_status.clearfix В работе
-                    div.request(ng-repeat="request in own_requests.req_work")
+                    p.request_status В работе
+                    div.request.clearfix(ng-repeat="request in own_requests.req_work")
                         include includes/request/executer/request_in_work
                     p.request_status Ожидают проверки
                     div.request.clearfix(ng-repeat="request in own_requests.req_check")

@@ -78,7 +78,6 @@ var task = new Schema({
         type: String,
         default: ''
     }
-
 });
 
 function dateValidator(value) {
@@ -117,6 +116,7 @@ task.statics.get = function(regStatus,callback) {
         sort({_created: -1}).
         populate('category').
         populate('author').
+        populate('requests').
         exec(function(err,tasks) {
        if (err) return callback(err);
         return callback(null,tasks);
@@ -194,9 +194,10 @@ task.methods.addDispute = function(dispute,callback) {
 task.methods.addComment = function(comment,callback) {
     this.comment = comment;
     this.status = "Выполнено";
+    var self = this;
     this.save(function(err){
         if (err) return callback(new HttpError(422,err.errors));
-        return callback(null,this);
+        return callback(null,self);
     });
 };
 
@@ -207,7 +208,7 @@ task.methods.findExecuter = function(callback) {
         if (err) return callback(err);
     }).where('accepted','true').populate('executer','_id').exec(function(err,requests) {
             if (err) return callback(err);
-            return callback(null,requests);
+            return callback(null,requests[0].executer);
     });
 };
 

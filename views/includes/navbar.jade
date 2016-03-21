@@ -10,6 +10,7 @@ nav.navbar.navbar-default.navbar-fixed-top
             when "Арбитраж"
                 a(href="/dispute/getDispute").btn.btn-default.navbar-btn.role Арбитраж
         button.btn.btn-sm.btn-default.navbar-btn.navbar-right(id="logout") Выйти
+        p.navbar-text.navbar-right Баланс: #{user.score}
         p.navbar-text.navbar-right(id='#{user._id}') Добро пожаловать,
             a(href='/user/#{user._id}') #{user.name}
 

@@ -23,7 +23,49 @@ block content
                         p {{mes.text}}
                         a {{mes.author.name}}
                         span {{mes.datePublish| date:'dd MMMM HH:mm'}}
-
+            .container
+                .row.data
+                    .col-lg-6
+                        p Исполнитель
+                        span Сообщение от исполнителя
+                        div.alert.alert-success(role="alert") {{task.result.message}}
+                        span Прикрепленные файлы
+                        ul
+                            li(ng-repeat="file in task.files")
+                                i.fa.fa-file-o
+                                a(href="http://localhost:8080/uploads/{{file.name}}") {{file.original}}
+                    .col-lg-6
+                        p Заказчик
+                        span Жалоба заказчика
+                        div.alert.alert-danger {{task.dispute}}
+            .container
+                .row.solution
+                    .row
+                        h4 Решение арбитража
+                    form(action="/dispute/resolve",method="post",id="disp")
+                        .row
+                            .col-lg-offset-2.col-lg-8
+                                textarea.form-control(rows="8",placeholder="Сообщение арбитража",name="message",required)
+                                .marks
+                                    p Оценка исполнителя:
+                                    input(type ='radio', name='mark',value="0",required)
+                                    |    Положительная
+                                    br
+                                    input(type ='radio', name='mark', value="1")
+                                    |    Нейтральная
+                                    br
+                                    input(type ='radio', name='mark', value="2" )
+                                    |    Отрицательная
+                            .col-lg-2.choose
+                                label
+                                    input(type='radio',name="choose", value='0',required)
+                                    |    В пользу заказчика
+                                label
+                                    input(type='radio', name="choose",value='1')
+                                    |    В пользу исполнителя
+                            input(type="hidden",value='{{task._id}}',name="task")
+                        .btn-wrap
+                            button.btn.btn-success(type="submit") Отправить решение
 
 block additional_scripts
     script(src="/js/controllers/dispute.js")

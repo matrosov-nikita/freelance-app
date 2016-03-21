@@ -2,7 +2,8 @@
     .task_header(id='{{task._id}}',ng-click="ClickTaskHeader(task._id)")
         span {{task.header}}
         span {{task.price}}
-        i.fa.fa-check-square-o(ng-click="SendRequest(task._id); $event.stopPropagation();")
+        marquee(ng-show="checkTask(task,'#{user._id}')") Вы уже подавали заявку на это задание!
+        i.fa.fa-check-square-o(ng-show="!checkTask(task,'#{user._id}')",ng-click="SendRequest(task._id); $event.stopPropagation();")
 
     .task_content
         p.category {{task.category.name}}

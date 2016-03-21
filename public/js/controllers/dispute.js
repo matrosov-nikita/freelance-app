@@ -1,8 +1,4 @@
 
-angular.module('app').config(['$httpProvider', function($httpProvider) {
-    $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
-}]);
-
 angular.module('app').controller('Dispute', function($scope, $http) {
     $scope.task = null;
     $http({
@@ -19,11 +15,11 @@ angular.module('app').controller('Dispute', function($scope, $http) {
             url: "/message/getByTask?task="+id
         }).then(function sucessCallback(response) {
             $scope.messages = response.data;
-            console.log($scope.messages);
         }, function errorCallback(response) {
 
         })
-    }
+    };
+
     $scope.getInfo = (id)=> {
         $http({
             method: "get",

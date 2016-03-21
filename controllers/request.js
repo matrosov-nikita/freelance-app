@@ -17,7 +17,6 @@ router.get('/getown', function(req,res) {
 router.get('/getRequests', function(req,res) {
     req.user.getAllRequests(function(err,requests){
            if (err) return next(err);
-        console.log(requests);
            res.json(requests);
     });
 });
@@ -35,8 +34,8 @@ router.get('/sendresult/:request', function(req,res,next) {
         if (err) return next(err);
         if (JSON.stringify(request.executer) == JSON.stringify(req.user._id)) {
             var Task = mongoose.model('Task');
-            Task.findById({_id: request.task}, (err,task) => {
-               if (err) return next(err);
+            Task.findById({_id: request.task}).populate('author').exec((err,task)=> {
+                if (err) return next(err);
                 res.render('send_result', {
                     task: task
                 })
@@ -99,7 +98,6 @@ router.post("/refuse", function(req,res,next) {
             else {
             request.accept(function(err,result) {
                 if (err) return next(err);
-                console.log(result);
                 res.json(result);
             });
         }

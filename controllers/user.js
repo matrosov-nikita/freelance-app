@@ -114,7 +114,7 @@ router.post('/upload',CheckUser, function(req,res,next) {
             if (err) return next(new HttpError(422,err.errors));
             req.user.works.push(portfolio._id);
             req.user.save();
-            res.redirect('/user/'+ req.user._id);
+            res.json(portfolio);
         });
 
     });
