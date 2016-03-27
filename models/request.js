@@ -77,10 +77,8 @@ request.methods.accept = function(callback) {
         Task.getByRequest(this._id, function (err, task) {
             if (err) return callback(err);
             else {
-                task.status="В работе";
+                task.changeStatus("В работе");
                 task.save();
-
-
                 return callback(null,task);
             }
         });

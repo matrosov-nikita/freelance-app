@@ -1,7 +1,6 @@
 var subscribes = {};
 
 exports.subscribe = (task,user) => {
-    console.log(user);
     if (!(task in subscribes)) subscribes[task]=[];
     subscribes[task].push(user);
     user.on('close', ()=> {
@@ -16,13 +15,9 @@ exports.getSubscribers = () => {
     return subscribes;
 };
 
-exports.sendMessage = (task,message) => {
-  subscribes[task].forEach((user)=> {
-      user.send(message);
-  });
+exports.send = (task,message) => {
+    subscribes[task].forEach((user)=> {
+        user.send(message);
+    });
     subscribes[task] = [];
 };
-
-exports.sendNotification = (task,message)=> {
-
-}

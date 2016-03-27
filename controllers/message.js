@@ -8,7 +8,7 @@ router.post('/add', (req,res,next)=> {
     var Message = mongoose.model("Message");
     Message.add(req.body,req.user._id, function(err,mes) {
        if (err) return next(err);
-       chat.send(task,mes);
+       chat.sendMessage(task,mes);
         res.send();
     });
 });

@@ -53,7 +53,7 @@ router.get('/sendresult/:request', function(req,res,next) {
             Task.findOne({_id: req.body.task}, function(err,task) {
                 if (err) return next(err);
                 task.result.message = req.body.message;
-                task.status = "Ожидает проверки";
+                task.changeStatus("Ожидает проверки");
                 req.files.forEach(function(el) {
                     task.result.files.push({ "name" : el.filename, "original": el.originalname});
                 });

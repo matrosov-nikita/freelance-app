@@ -32,7 +32,6 @@ angular.module('app').controller('Chat', function($scope, $http) {
             url: '/message/subscribe/'+task,
             method: 'get'
         }).then(function (response) {
-            console.log("response");
             $scope.addMessage(response.data.task,response.data);
             $scope.subscribeByTask(task);
         }, function (response) {
@@ -78,7 +77,7 @@ angular.module('app').controller('Chat', function($scope, $http) {
                 method: 'get'
             }).then(function success(resp) {
                 resp.data.forEach((message) => {
-                         $scope.messages[task].push({
+                         $scope.messages[task].unshift({
                             id: message.id,
                             author: message.author,
                             date: new Date(message.datePublish),

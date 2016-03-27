@@ -16,7 +16,6 @@ var App = angular.module('app', [])
                     $(element[0]).prepend(mes);
                 };
                 var uniqueResultOne =(newVal,oldVal)=> {
-                    console.log(oldVal);
                     return newVal.filter(function(obj) {
                         return !oldVal.some(function(obj2) {
                             return obj.id == obj2.id;
@@ -35,7 +34,34 @@ var App = angular.module('app', [])
                 },true);
             }
         }
-    });
+    })
+    .directive('notificationList', function() {
+    console.log("directive");
+    return {
+        link: function (scope, element, attrs) {
+            var show = (notification)=> {
+              var notify = document.createElement('div'); notify.className='notify';
+                var task = document.createElement("span");
+                task.className = "task";
+                task.innerHTML = notification.task_name;
+                var text = document.createElement("p");
+                text.innerHTML = notification.text;
+                var date = document.createElement("span");
+                date.className = "date";
+                date.innerHTML = notification.date;
+                notify.appendChild(task); notify.appendChild(text); notify.appendChild(date);
+                $(element[0]).prepend(notify);
+
+            };
+            scope.$watch('notifications', function(newVal, oldVal) {
+               Object.keys(newVal).forEach((key)=> {
+                   show(newVal[key]);
+               })
+            },true)
+        }
+    }
+});
+
 App.filter('orders', function() {
     return function(items,field, greaterThan, lowerThan) {
         items = items.filter(function(item){

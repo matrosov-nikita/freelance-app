@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var HttpError = require('../error/http_error');
+var chat = require('../libs/notification.js');
 
 var task = new Schema({
 
@@ -97,6 +98,7 @@ task.statics.add = function(data, callback) {
         deadline: new Date(data.deadline),
         _created: new Date()
     });
+    task.changeStatus("Поиск исполнителей");
     task.save(function(err,task) {
        if (err) return callback(err.errors);
         else {
@@ -184,7 +186,7 @@ task.statics.getByCustomerId = function(id,callback) {
 };
 task.methods.addDispute = function(dispute,callback) {
     this.dispute = dispute;
-    this.status = "Арбитраж";
+    this.changeStatus("Арбитраж");
     this.save(function(err){
         if (err) return callback(new HttpError(422,err.errors));
         return callback(null,this);
@@ -193,7 +195,7 @@ task.methods.addDispute = function(dispute,callback) {
 
 task.methods.addComment = function(comment,callback) {
     this.comment = comment;
-    this.status = "Выполнено";
+    this.changeStatus("Выполнено");
     var self = this;
     this.save(function(err){
         if (err) return callback(new HttpError(422,err.errors));
@@ -210,6 +212,10 @@ task.methods.findExecuter = function(callback) {
             if (err) return callback(err);
             return callback(null,requests[0].executer);
     });
+};
+
+task.methods.changeStatus = function(status) {
+   this.status = status;
 };
 
 Task = module.exports = mongoose.model("Task",task);

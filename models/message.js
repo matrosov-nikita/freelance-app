@@ -40,7 +40,7 @@ message.statics.getMessagesByTask = function(task,cb)
     Message.find({task: task}, (err,msgs) => {
        if (err) return cb(err);
         return cb(null,msgs);
-    }).populate('author','_id name');
+    }).populate('author','_id name').sort({datePublish: -1});
 };
 
 
