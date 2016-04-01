@@ -1,0 +1,5 @@
+ul.pagination(ng-init="getCount()")
+    li(ng-show="selectedIndex>0"): a(ng-click="getTasks(selectedIndex); itemClicked(selectedIndex-1);") «
+    li(ng-class="{'active': selectedIndex == $index}", ng-click="itemClicked($index)", ng-repeat="page in range()")
+            a(ng-click="getTasks(page)") {{page}}
+    li(ng-show="selectedIndex<pageCount-1"): a(ng-click="getTasks(selectedIndex); itemClicked(selectedIndex+1);") »

@@ -5,7 +5,8 @@ var Task = mongoose.model('Task');
 var upload = require('../libs/storage');
 var config = require('../config/config');
 var HttpError = require('../error/http_error');
-
+var chat = require('../libs/chat');
+var config = require('../config/config');
 router.get('/add', function(req,res) {
    res.render('customer');
 });
@@ -14,7 +15,7 @@ router.get('/get', function(req,res) {
 });
 
 router.get('/getTasks', function(req,res,next) {
-    Task.get(/Поиск исполнителей/i, function(err,tasks) {
+    Task.get(/Поиск исполнителей/i,req.query.page, function(err,tasks) {
         if (err) return next(err);
         res.json(tasks);
     });
@@ -22,6 +23,7 @@ router.get('/getTasks', function(req,res,next) {
 
 
 router.post('/add/comment', function(req,res,next) {
+    console.log(req.body);
     Task.findOne({_id: req.body.id},(err,task)=> {
        if (err) return next(err);
         task.addComment(req.body.comment,(err)=> {
@@ -32,7 +34,8 @@ router.post('/add/comment', function(req,res,next) {
                    if (err) return next(err);
                     user.setMark(req.body.mark,(err,result) => {
                         if (err) return next(err);
-                        res.redirect("/request/get")
+                        task.changeStatus();
+                        res.send(true);
                     });
                 });
             });
@@ -40,18 +43,21 @@ router.post('/add/comment', function(req,res,next) {
     });
 });
 router.post('/add', function(req,res,next) {
-    upload.array('files', config.get("maxCountFiles"))(req,res, function(err) {
+    upload.array('files', config.get("maxCountFiles"))(req, res, function (err) {
         if (err) return next(err);
 
-        Task.add(req.body, function(err,task) {
+        Task.add(req.body, function (err, task) {
             if (err) return next(err);
-            req.files.forEach(function(el) {
-                task.files.push({ "name" : el.filename, "original": el.originalname});
+            req.files.forEach(function (el) {
+                task.files.push({"name": el.filename, "original": el.originalname});
             });
             task.author = req.user._id;
+
             task.save((err)=> {
-                if (err) return next(new HttpError(422,err.errors));
+                if (err) return next(new HttpError(422, err.errors));
+                task.changeStatus();
                 res.redirect("/request/get");
+
             });
         });
     });
@@ -90,6 +96,14 @@ router.get('/viewresult/:id', function(req,res,next) {
                 task: task
             }
         );
+    });
+});
+
+router.get('/count', function(req,res,next) {
+    Task.getCount((err,result)=> {
+       if (err) return next(err);
+
+        res.json(Math.ceil(result/config.get('tasksPerPage')));
     });
 });
 

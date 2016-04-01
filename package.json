@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "async": "^2.0.0-rc.2",
     "body-parser": "^1.14.2",
     "bower": "^1.7.0",
     "connect-mongo": "^1.0.2",

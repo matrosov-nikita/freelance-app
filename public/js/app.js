@@ -23,9 +23,9 @@ var App = angular.module('app', [])
                     });
                 };
                 scope.$watch('messages', function(newVal,oldVal) {
-
                     if (newVal!==oldVal)
                     {
+
                         uniqueResultOne(newVal[attrs.messageList],oldVal[attrs.messageList]).forEach((mes)=> {
                             show(mes);
                         });
@@ -36,7 +36,6 @@ var App = angular.module('app', [])
         }
     })
     .directive('notificationList', function() {
-    console.log("directive");
     return {
         link: function (scope, element, attrs) {
             var show = (notification)=> {
@@ -48,15 +47,26 @@ var App = angular.module('app', [])
                 text.innerHTML = notification.text;
                 var date = document.createElement("span");
                 date.className = "date";
-                date.innerHTML = notification.date;
+                date.innerHTML = notification.date.toLocaleString();
                 notify.appendChild(task); notify.appendChild(text); notify.appendChild(date);
                 $(element[0]).prepend(notify);
 
             };
+
+            var uniqueResultOne =(newVal,oldVal)=> {
+                return newVal.filter(function(obj) {
+                    return !oldVal.some(function(obj2) {
+                        return obj.id == obj2.id;
+                    });
+                });
+            };
             scope.$watch('notifications', function(newVal, oldVal) {
-               Object.keys(newVal).forEach((key)=> {
-                   show(newVal[key]);
-               })
+                    uniqueResultOne(newVal,oldVal).forEach((note)=> {
+                        show(note);
+                    });
+
+
+
             },true)
         }
     }

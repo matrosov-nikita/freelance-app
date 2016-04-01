@@ -23,6 +23,7 @@ angular.module('app').controller('RequestCtrl', function($scope, $http) {
                      request.date =new Date(el.task.deadline) - new Date()?new Date(el.task.deadline) - new Date():"Срок истек";
                 });
             }
+
             status_actions[el.task.status].push(el);
         }
 
@@ -86,6 +87,20 @@ angular.module('app').controller('RequestCtrl', function($scope, $http) {
     };
     $scope.SendComment = () => {
         $("#comment").modal('show');
+    };
+
+    $scope.AddComment = () => {
+        $scope.result.id = $scope.task._id;
+        $http({
+            method: 'post',
+            url: '/task/add/comment',
+            data: $scope.result
+        }).then(()=> {
+            alert("comment");
+            window.location.href = "/request/get";
+        }, ()=> {
+
+        });
     };
 
     $scope.SendDispute = function(request,task_id) {

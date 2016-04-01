@@ -56,6 +56,7 @@ class Server {
 
         app.use('/message', checkUser, Controller.Message);
 
+
         app.use('/category', checkUser, Controller.Category);
 
         app.use('/task',checkUser, Controller.Task);

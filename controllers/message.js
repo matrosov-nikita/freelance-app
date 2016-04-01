@@ -27,6 +27,7 @@ router.get('/subscribe/customer',(req,res)=> {
     Task.getMyCustomerTasks(req.user, function(err,mytasks) {
         if (err) return next(err);
         mytasks.forEach((task)=> {
+
             chat.subscribe(task._id,res);
         });
     });
@@ -46,5 +47,12 @@ router.get('/subscribe/:task',(req,res)=> {
    chat.subscribe(req.params.task,res);
 });
 
+router.get('/notify/get',(req,res,next)=> {
+   var Notification = mongoose.model('Notification');
+   Notification.get(req.user._id, (err,notificationList)=> {
+       if (err) return next(err);
+       res.send(notificationList);
+   })
+});
 
 module.exports = router;

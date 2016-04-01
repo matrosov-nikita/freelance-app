@@ -3,7 +3,7 @@ block additional_styles
     link(rel="stylesheet",href="/css/executer.css")
 block content
     include includes/navbar
-    .container-fluid(ng-controller="TaskCtrl")
+    .container-fluid(ng-controller="TaskCtrl",  ng-init="getTasks(1);")
         .row
             include includes/messages
             .col-lg-6
@@ -12,6 +12,7 @@ block content
                     p Всего заданий: {{tasks.length}}
                     .col-lg-12(ng-repeat="task in tasks")
                         include includes/task
+                    include includes/paginator
             include includes/last_tasks
     .modal.fade(id="modal_message")
         .modal-dialog

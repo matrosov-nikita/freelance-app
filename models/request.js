@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var HttpError = require('../error/http_error');
-
+var async = require('async');
 var request = new Schema({
 
     task: {
@@ -77,7 +77,8 @@ request.methods.accept = function(callback) {
         Task.getByRequest(this._id, function (err, task) {
             if (err) return callback(err);
             else {
-                task.changeStatus("В работе");
+                task.status = "В работе";
+                task.changeStatus();
                 task.save();
                 return callback(null,task);
             }

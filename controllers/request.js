@@ -53,15 +53,19 @@ router.get('/sendresult/:request', function(req,res,next) {
             Task.findOne({_id: req.body.task}, function(err,task) {
                 if (err) return next(err);
                 task.result.message = req.body.message;
-                task.changeStatus("Ожидает проверки");
+                task.status="Ожидает проверки";
+
                 req.files.forEach(function(el) {
                     task.result.files.push({ "name" : el.filename, "original": el.originalname});
                 });
-                task.save();
+                task.save((err,task)=> {
+                    task.changeStatus();
+                    res.send(true);
+                });
 
             });
         });
-        res.redirect("/request/getown");
+
     });
 
 router.post('/add', function(req,res,next) {

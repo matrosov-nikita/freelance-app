@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var HttpError = require('../error/http_error');
-var chat = require('../libs/notification.js');
-
+var chat = require('../libs/chat');
+var config = require('../config/config');
 var task = new Schema({
 
     header: {
@@ -96,9 +96,9 @@ task.statics.add = function(data, callback) {
         price: data.price,
         category: data.category_id,
         deadline: new Date(data.deadline),
-        _created: new Date()
+        _created: new Date(),
+        status: "Поиск исполнителей"
     });
-    task.changeStatus("Поиск исполнителей");
     task.save(function(err,task) {
        if (err) return callback(err.errors);
         else {
@@ -112,9 +112,14 @@ task.statics.add = function(data, callback) {
     });
 };
 
-task.statics.get = function(regStatus,callback) {
+task.statics.get = function(regStatus,page,callback) {
+    var tasksPerPage = config.get("tasksPerPage");
+    console.log("page = "+page);
+    console.log("tasksPerPage = "+tasksPerPage);
     Task.find({}).
         where('status').regex(regStatus).
+        skip((page-1)*tasksPerPage).
+        limit(tasksPerPage).
         sort({_created: -1}).
         populate('category').
         populate('author').
@@ -123,6 +128,13 @@ task.statics.get = function(regStatus,callback) {
        if (err) return callback(err);
         return callback(null,tasks);
     })
+};
+
+task.statics.getCount = (cb) => {
+  Task.count({status: 'Поиск исполнителей'},(err,count)=> {
+     if (err) return cb(err);
+     return cb(null,count);
+  });
 };
 
 task.statics.getMyCustomerTasks = function(user, callack) {
@@ -186,16 +198,18 @@ task.statics.getByCustomerId = function(id,callback) {
 };
 task.methods.addDispute = function(dispute,callback) {
     this.dispute = dispute;
-    this.changeStatus("Арбитраж");
+    this.status = "Арбитраж";
+    var self = this;
     this.save(function(err){
         if (err) return callback(new HttpError(422,err.errors));
+        self.changeStatus();
         return callback(null,this);
     });
 };
 
 task.methods.addComment = function(comment,callback) {
     this.comment = comment;
-    this.changeStatus("Выполнено");
+    this.status = "Выполнено";
     var self = this;
     this.save(function(err){
         if (err) return callback(new HttpError(422,err.errors));
@@ -214,8 +228,8 @@ task.methods.findExecuter = function(callback) {
     });
 };
 
-task.methods.changeStatus = function(status) {
-   this.status = status;
+task.methods.changeStatus = function() {
+  chat.addNotification(this);
 };
 
 Task = module.exports = mongoose.model("Task",task);

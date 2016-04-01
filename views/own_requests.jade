@@ -9,7 +9,7 @@ block content
             include includes/messages
             .col-lg-6
                 include includes/executer_menu
-                .row(ng-controller="Chat as chat", ng-init="subscribeExecuterTasks()")
+                .row(ng-controller="Chat as chat")
                     p.request_status Поиск исполнителей
                     div.request.clearfix(ng-repeat="request in own_requests.req_search")
                         include includes/request/executer/request_search
@@ -25,7 +25,6 @@ block content
             include includes/last_tasks
 block additional_scripts
     script(src="/js/controllers/request.js")
-    script(src="/js/controllers/chat.js")
 
 
 

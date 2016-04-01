@@ -1,9 +1,18 @@
 
 
-angular.module('app').controller('TaskCtrl', function($scope, $http) {
-    $http.get('/task/getTasks').success(function(data) {
-        $scope.tasks = data;
-    });
+angular.module('app').controller('TaskCtrl', function($scope, $http,$rootScope) {
+
+    $scope.selectedIndex = 0;
+    $scope.itemClicked = (index)=> {
+        $scope.selectedIndex = index;
+    };
+
+    $scope.getTasks = (page) => {
+        $http.get('/task/getTasks?page='+page).success(function(data) {
+            $scope.tasks = data;
+        });
+    };
+
     $scope.continue = ()=>{
         $scope.task = { };
         $scope.task.category_name = $("a.active").html().split('(')[0] || "Другое";
@@ -32,6 +41,43 @@ angular.module('app').controller('TaskCtrl', function($scope, $http) {
         });
     };
 
+    $scope.range = () => {
+        var pages = [];
+        for(var i = 0; i < $scope.pageCount; i++)
+        {
+            pages.push(i+1);
+        }
+        return pages;
+    };
+
+    $scope.getCount = () => {
+      $http({
+          method: "get",
+          url: "/task/count"
+      }).then(
+          success = (resp) => {
+              $scope.pageCount = resp.data;
+          },
+          error = ()=> {
+
+          }
+
+      )
+    };
+
+    $scope.sendResult = () => {
+        $http({
+            url: "/request/sendresult",
+            method: 'post',
+            data: new FormData($("#sendresult")[0]),
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        }).success((resp)=> {
+            window.location.href="/request/getown";
+        }).error((resp)=> {
+        });
+    };
+
     $scope.ClickTaskHeader = function(id) {
         $("#" + id).next().slideToggle();
     };
@@ -41,6 +87,7 @@ angular.module('app').controller('TaskCtrl', function($scope, $http) {
     };
 
     $scope.SendRequest = function(task_id) {
+        //$rootScope.$emit("CallMessageMethod", task_id);
         $("#modal_message").modal('show');
         $("#modal_message .yes").click(function(e) {
             $http({
@@ -88,8 +135,6 @@ angular.module('app').controller('TaskCtrl', function($scope, $http) {
 
 
     $scope.checkTask  = function(task,executer) {
-        console.log(task);
-        console.log(executer);
        return task.requests.some(x=>x.executer==executer);
     };
 

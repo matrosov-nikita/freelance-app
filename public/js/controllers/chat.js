@@ -1,17 +1,50 @@
 
 
-angular.module('app').controller('Chat', function($scope, $http) {
+angular.module('app').controller('Chat', function($scope, $http,$rootScope) {
+
+
+
+    $scope.notifications=[];
+
+    $rootScope.$on("CallMessageMethod", function(task){
+        $scope.subscribeByTask(task);
+    });
+
+    $scope.getNotifications = () => {
+        $http({
+            url: '/message/notify/get',
+            method: 'get'
+        }).then(success = (response)=> {
+            response.data.forEach((note)=> {
+               $scope.addNotification(note);
+            })
+        }, error = (resp) => {
+
+        });
+    };
+
+    $scope.resp = (response) => {
+        if (response.data.type="notification")
+        {
+            $scope.addNotification(response.data.note);
+            $scope.subscribeByTask(response.data.note.task._id);
+        }
+        else {
+
+            $scope.addMessage(response.data.task, response.data);
+            $scope.subscribeByTask(response.data.task);
+        }
+
+
+    };
 
     $scope.subscribeCustomersTasks = () => {
         $http({
             url: '/message/subscribe/customer',
             method: 'get'
         }).then(function (response) {
-           $scope.addMessage(response.data.task,response.data);
-           $scope.subscribeByTask(response.data.task);
-
+           $scope.resp(response);
         }, function (response) {
-
         });
     };
 
@@ -20,8 +53,7 @@ angular.module('app').controller('Chat', function($scope, $http) {
             url: '/message/subscribe/executer',
             method: 'get'
         }).then(function (response) {
-            $scope.addMessage(response.data.task,response.data);
-            $scope.subscribeByTask(response.data.task);
+           $scope.resp(response);
         }, function (response) {
 
         });
@@ -32,22 +64,30 @@ angular.module('app').controller('Chat', function($scope, $http) {
             url: '/message/subscribe/'+task,
             method: 'get'
         }).then(function (response) {
-            $scope.addMessage(response.data.task,response.data);
-            $scope.subscribeByTask(task);
+            $scope.resp(response);
         }, function (response) {
 
         });
     };
 
     $scope.addMessage = (task,mes) => {
-        if ($scope.messages[task] === undefined) {
-            $scope.messages[task] = [];
+        if ($rootScope.messages[task] === undefined) {
+            $rootScope.messages[task] = [];
         }
-        $scope.messages[task].unshift({
+        $rootScope.messages[task].unshift({
             id: mes._id,
             author: mes.author,
             date: new Date(mes.datePublish),
             message: mes.text
+        });
+    };
+
+    $scope.addNotification = (note) => {
+        $scope.notifications.push({
+            id: note._id,
+            task_name: note.task.header,
+            date: new Date(note.datePublish),
+            text: note.text
         });
     };
 
@@ -67,17 +107,17 @@ angular.module('app').controller('Chat', function($scope, $http) {
             });
         }
     };
-    $scope.messages = {};
+    $rootScope.messages = {};
     $scope.showChat = (ev, task) => {
         $(ev.currentTarget).closest('.request').children('.chat').slideToggle();
-        if ($scope.messages[task] == undefined) {
-            $scope.messages[task] = [];
+        if ($rootScope.messages[task] == undefined) {
+            $rootScope.messages[task] = [];
             $http({
                 url: '/message/getByTask?task=' + task,
                 method: 'get'
             }).then(function success(resp) {
                 resp.data.forEach((message) => {
-                         $scope.messages[task].unshift({
+                         $rootScope.messages[task].unshift({
                             id: message.id,
                             author: message.author,
                             date: new Date(message.datePublish),
