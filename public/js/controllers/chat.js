@@ -1,14 +1,8 @@
 
 
 angular.module('app').controller('Chat', function($scope, $http,$rootScope) {
-
-
-
     $scope.notifications=[];
 
-    $rootScope.$on("CallMessageMethod", function(task){
-        $scope.subscribeByTask(task);
-    });
 
     $scope.getNotifications = () => {
         $http({
@@ -24,13 +18,13 @@ angular.module('app').controller('Chat', function($scope, $http,$rootScope) {
     };
 
     $scope.resp = (response) => {
-        if (response.data.type="notification")
+        if (response.data.type=="notification")
         {
             $scope.addNotification(response.data.note);
             $scope.subscribeByTask(response.data.note.task._id);
         }
         else {
-
+            console.log(response);
             $scope.addMessage(response.data.task, response.data);
             $scope.subscribeByTask(response.data.task);
         }

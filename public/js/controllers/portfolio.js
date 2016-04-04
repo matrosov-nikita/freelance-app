@@ -20,11 +20,21 @@ angular.module('app').controller('PortfolioCtrl', function($scope, $http) {
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined}
         }).then(success=(resp)=> {
-            console.log($scope.works);
             $scope.works.push(resp.data);
 
         }, error = ()=> {
 
         })
     }
+});
+
+$(document).ready(function() {
+    $("#addwork").click(function() {
+        $("#upload").slideToggle();
+    });
+    if (!access) {
+        $("input,textarea,button").prop("disabled", true);
+        $(".modal button").prop("disabled", false);
+    }
+
 });

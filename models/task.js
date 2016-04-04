@@ -114,8 +114,6 @@ task.statics.add = function(data, callback) {
 
 task.statics.get = function(regStatus,page,callback) {
     var tasksPerPage = config.get("tasksPerPage");
-    console.log("page = "+page);
-    console.log("tasksPerPage = "+tasksPerPage);
     Task.find({}).
         where('status').regex(regStatus).
         skip((page-1)*tasksPerPage).
@@ -125,7 +123,7 @@ task.statics.get = function(regStatus,page,callback) {
         populate('author').
         populate('requests').
         exec(function(err,tasks) {
-       if (err) return callback(err);
+        if (err) return callback(err);
         return callback(null,tasks);
     })
 };
