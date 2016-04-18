@@ -127,6 +127,12 @@ task.statics.get = function(regStatus,page,callback) {
         return callback(null,tasks);
     })
 };
+task.statics.getAll = function(callback) {
+    Task.find({},(err,tasks)=> {
+        if (err) return callback(err);
+        return callback(null,tasks);
+    })
+};
 
 task.statics.getCount = (cb) => {
   Task.count({status: 'Поиск исполнителей'},(err,count)=> {

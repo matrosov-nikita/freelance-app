@@ -1,6 +1,6 @@
 .request
     include request_header
     .authors
-        .author(ng-repeat="req in request.requests") {{req.executer.name}}
+        .author(ng-repeat="req in request.requests",ng-click="viewAuthorInfo(req.executer._id)") {{req.executer.name}}
             a(style="float: right", href="/task/viewresult/{{req.task}}").btn.btn-danger.btn-sm Просмотреть результат
     include ../../chat

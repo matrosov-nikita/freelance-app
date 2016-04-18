@@ -3,6 +3,7 @@
 angular.module('app').controller('TaskCtrl', function($scope, $http,$rootScope) {
 
     $scope.selectedIndex = 0;
+
     $scope.itemClicked = (index)=> {
         $scope.selectedIndex = index;
     };

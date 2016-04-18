@@ -6,6 +6,7 @@ angular.module('app').controller('Admin', function($scope, $http) {
         method:"get",
         url:"/admin/users"
     }).then(function success(response) {
+        console.log(response.data);
         $scope.users = response.data;
     }, function errorCallback(response) {
 

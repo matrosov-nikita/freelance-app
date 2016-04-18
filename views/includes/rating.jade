@@ -1,0 +1,24 @@
+p Топ-10 заказчиков
+    table.table.table-striped.table-hover
+        thead
+            tr
+                th #
+                th Имя
+                th Заказы
+        tbody
+            tr(ng-repeat="item in users | orderBy: 'customerOrders':true | limitTo: 10")
+                td {{$index+1}}
+                td {{item.user.name}}
+                td {{item.customerOrders}}
+    p Топ-10 исполнителей
+    table.table.table-striped.table-hover
+        thead
+            tr
+                th #
+                th Имя
+                th Работы
+        tbody
+            tr(ng-repeat="user_info in users | orderBy: 'executerOrders':true | limitTo: 10")
+                td {{$index+1}}
+                td {{user_info.user.name}}
+                td {{user_info.executerOrders}}

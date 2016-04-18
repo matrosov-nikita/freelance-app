@@ -5,14 +5,15 @@ block content
     include includes/navbar
     .container-fluid(ng-controller="TaskCtrl",  ng-init="getTasks(1);")
         .row
-            include includes/messages
-            .col-lg-9
+            include includes/notifications
+            .col-lg-6
                 include includes/executer_menu
                 .row
                     p Всего заданий: {{tasks.length}}
                     .col-lg-12(ng-repeat="task in tasks")
                         include includes/task
                     include includes/paginator
+            include includes/top
     .modal.fade(id="modal_message")
         .modal-dialog
             .modal-content

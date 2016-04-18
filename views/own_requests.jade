@@ -6,7 +6,7 @@ block content
     include includes/navbar
     .container-fluid(ng-controller="RequestCtrl")
         .row
-            include includes/messages
+            include includes/notifications
             .col-lg-6
                 include includes/executer_menu
                 .row(ng-controller="Chat as chat")
@@ -22,7 +22,7 @@ block content
                     p.request_status Арбитраж
                     div.request.clearfix(ng-repeat="request in own_requests.req_dispute")
                         include includes/request/executer/request_in_dispute
-            include includes/last_tasks
+            include includes/top
 block additional_scripts
     script(src="/js/controllers/request.js")
 

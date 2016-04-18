@@ -48,30 +48,8 @@ block content
                                     td.center {{user_info.executerOrders}}
                                     td: i.fa.fa-times(ng-click="deleteUser(user_info.user._id)")
                     .col-lg-4
-                        p Топ-10 заказчиков
-                        table.table.table-striped.table-hover
-                            thead
-                                tr
-                                    th #
-                                    th Имя
-                                    th Заказы
-                            tbody
-                                tr(ng-repeat="user_info in users | orderBy: customerOrders | limitTo: 10")
-                                    td {{$index+1}}
-                                    td {{user_info.user.name}}
-                                    td {{user_info.customerOrders}}
-                        p Топ-10 исполнителей
-                        table.table.table-striped.table-hover
-                            thead
-                                tr
-                                    th #
-                                    th Имя
-                                    th Работы
-                            tbody
-                                tr(ng-repeat="user_info in users | orderBy: executerOrders | limitTo: 10")
-                                    td {{$index+1}}
-                                    td {{user_info.user.name}}
-                                    td {{user_info.executerOrders}}
+                        include includes/rating
+
             .tab-pane.fade(id="orders")
                 .row
                     .col-lg-7
@@ -106,7 +84,7 @@ block content
                                         th Задание
                                         th Заявки
                                 tbody
-                                    tr(ng-repeat="task in tasks | orderBy: task.requests.length | limitTo: 10")
+                                    tr(ng-repeat="task in tasks | orderBy: 'task.requests.length':true | limitTo: 10")
                                         td {{$index+1}}
                                         td {{task.header}}
                                         td {{task.requests.length}}

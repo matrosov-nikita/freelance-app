@@ -8,36 +8,15 @@ router.get('/', (req,res)=> {
 
 router.get('/users',(req,res,next)=> {
     var User = mongoose.model("User");
-    var result = [];
-    var customerPromises = [];
-    var executerPromises = [];
     User.getAll((err,users)=> {
         if (err) return next(err);
-        users.forEach((user)=> {
-            customerPromises.push(user.getOrdersCount());
-            executerPromises.push(user.getExecuterCount())
-        });
-        Promise.all(customerPromises).then(amounts => {
-            users.map((user,index)=> {
-                result.push({
-                    user: user,
-                    customerOrders: amounts[index]
-                });
-            });
-        },(err)=> { return next(err)});
-
-        Promise.all(executerPromises).then(amounts => {
-            result.map((item,index)=> {
-                item.executerOrders = amounts[index];
-            });
-            res.json(result);
-        },(err)=> { return next(err)});
+        res.json(users);
     });
 });
 
 router.get('/tasks', function(req,res,next) {
     var Task = mongoose.model("Task");
-    Task.get(/./i,function(err,tasks) {
+    Task.getAll(function(err,tasks) {
         if (err) return next(err);
         res.json(tasks);
     })

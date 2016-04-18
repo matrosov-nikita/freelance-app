@@ -7,14 +7,14 @@ block content
     include mixins/genGroupField
     .container-fluid(ng-controller="TaskCtrl", ng-init="my_tasks=#{JSON.stringify(my_tasks)}")
         .row
-            include includes/messages
+            include includes/notifications
             .col-lg-6
                 include includes/customer_menu
                 .row
                     p Всего заданий: {{my_tasks.length}}
                         .col-lg-12(ng-repeat="task in my_tasks")
                             include includes/my_task
-            include includes/last_tasks
+            include includes/top
 block additional_scripts
     script(src="/js/controllers/task.js")
 

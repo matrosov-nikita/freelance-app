@@ -13,8 +13,8 @@ block content
     include mixins/genGroupField
     .container-fluid(ng-controller="PortfolioCtrl",ng-init="user= #{JSON.stringify(user_info)}; works= #{JSON.stringify(works)}")
         .row
-            include includes/messages
-            .col-lg-6
+            include includes/notifications
+            .col-lg-6.col-md-6.col-sm-7
                 ul.nav.nav-tabs(id="tabs")
                     li.active
                         a(href='#profile',data-toggle="tab") Профиль
@@ -51,7 +51,7 @@ block content
                             li.neitral Нейтральные оценки: {{user.marks.neitral}}
                             li.negative Отрицательные оценки: {{user.marks.negative}}
                         p.rating Рейтинг: {{user_info.rating}}
-            include includes/last_tasks
+            include includes/top
 
 block additional_scripts
     script(src="/js/controllers/portfolio.js")
