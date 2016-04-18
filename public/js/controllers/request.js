@@ -4,7 +4,7 @@ angular.module('app').controller('RequestCtrl', function($scope, $http) {
 
     var generateSetRequests = function(parent,data)
     {
-        parent.req_search = []; parent.req_work = []; parent.req_check = []; parent.req_dispute = [];
+        parent.req_search = []; parent.req_work = []; parent.req_check = []; parent.req_dispute = []; parent.req_complete=[];
         parent.done=[];
 
         function add_request_el(el)
@@ -14,7 +14,7 @@ angular.module('app').controller('RequestCtrl', function($scope, $http) {
                 "В работе": parent.req_work,
                 "Ожидает проверки":  parent.req_check,
                 "Арбитраж": parent.req_dispute,
-                "Выполнено": parent.done
+                "Выполнено": parent.req_complete,
             };
 
             if (el.hasOwnProperty('requests'))

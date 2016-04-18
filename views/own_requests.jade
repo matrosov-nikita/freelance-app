@@ -22,6 +22,9 @@ block content
                     p.request_status Арбитраж
                     div.request.clearfix(ng-repeat="request in own_requests.req_dispute")
                         include includes/request/executer/request_in_dispute
+                    p.request_status Выполнено
+                    div.request.clearfix(ng-repeat="request in own_requests.req_complete")
+                        include includes/request/executer/request_complete
             include includes/top
 block additional_scripts
     script(src="/js/controllers/request.js")

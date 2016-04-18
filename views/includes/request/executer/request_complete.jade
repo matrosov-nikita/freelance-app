@@ -1,0 +1,6 @@
+.request
+    .header
+        span {{request.task.header}}
+        .icon_set
+            i.fa.fa-envelope(ng-click="showChat($event, request.task._id)")
+    include ../../chat
