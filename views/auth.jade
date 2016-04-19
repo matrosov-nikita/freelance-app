@@ -1,22 +1,20 @@
 extend layout
 block content
     div(ng-controller='RegisterCtrl')
-        form( id="register", method="post")
+        form( id="register", method="post", name="registerForm")
             p Регистрация
-            span.valid_notification {{valid_mes}}
-            input(type="text",placeholder="Имя",class="form-control" name="name",required)
-            span.valid_mes {{valid_errors.name.message}}
-            input(type="text",placeholder="Логин",class="form-control" name="login",required)
-            span.valid_mes {{valid_errors.login.message}}
-            input(type="email",placeholder="Email",class="form-control" name="email",required)
-            span.valid_mes {{valid_errors.email.message}}
-            input(type="password",placeholder="Пароль",class="form-control", name="password",required)
-            span.valid_mes {{valid_errors.password.message}}
+            input(type="text",placeholder="Имя",class="form-control" ,name="name", ng-model="name")
+            div(ng-show="isEmpty(registerForm.name.$error)",style="color: #F2B1B1") {{registerForm.name.$error}}
+            input(type="text",placeholder="Логин",class="form-control", name="login", ng-model="login")
+            div(ng-show="isEmpty(registerForm.login.$error)",style="color: #F2B1B1") {{registerForm.login.$error}}
+            input(type="email",placeholder="Email",class="form-control", name="email", ng-model="email")
+            div(ng-show="isEmpty(registerForm.email.$error)",style="color: #F2B1B1") {{registerForm.email.$error}}
+            input(type="password",placeholder="Пароль",class="form-control", name="password", ng-model="password")
+            div(ng-show="isEmpty(registerForm.password.$error)",style="color: #F2B1B1") {{registerForm.password.$error}}
             button(type="submit",class="btn btn-primary") Зарегистрироваться
     div(ng-controller='AuthCtrl')
         form(method="post", id="authorize")
             p Авторизация
-            span.valid_notification {{valid_mes}}
             input(type="text",placeholder="Логин",class="form-control" name="login",required)
             input(type="password",placeholder="Пароль",class="form-control", name="password",required)
             button(type="submit",class="btn btn-primary") Войти

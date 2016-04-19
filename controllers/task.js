@@ -45,7 +45,6 @@ router.post('/add/comment', function(req,res,next) {
 router.post('/add', function(req,res,next) {
     upload.array('files', config.get("maxCountFiles"))(req, res, function (err) {
         if (err) return next(err);
-
         Task.add(req.body, function (err, task) {
             if (err) return next(err);
             req.files.forEach(function (el) {
@@ -54,7 +53,9 @@ router.post('/add', function(req,res,next) {
             task.author = req.user._id;
 
             task.save((err)=> {
-                if (err) return next(new HttpError(422, err.errors));
+                if (err) {
+                    return next(new HttpError(422, err.errors));
+                }
                 task.changeStatus();
                 res.redirect("/request/get");
 

@@ -6,10 +6,14 @@ angular.module('app').controller('PortfolioCtrl', function($scope, $http) {
             url: "/user/update",
             data: $scope.user
         }).then(success = (resp)=> {
-
+            success_callback("Информация о пользователе обновлена");
         }, error = (resp)=> {
-
+            error_callback($scope.updateForm.user,resp.data);
         });
+    };
+
+    $scope.isEmpty = (obj) => {
+        return !$.isEmptyObject(obj);
     };
 
     $scope.submitWork = () => {
@@ -21,9 +25,9 @@ angular.module('app').controller('PortfolioCtrl', function($scope, $http) {
             headers: {'Content-Type': undefined}
         }).then(success=(resp)=> {
             $scope.works.push(resp.data);
-
-        }, error = ()=> {
-
+            success_callback("Работа в портфолио успешно добавлено");
+        }, error = (resp)=> {
+            error_callback($scope.addWork,resp.data);
         })
     }
 });

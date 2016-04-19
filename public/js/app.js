@@ -1,5 +1,6 @@
 var App = angular.module('app', [])
     .run(function($rootScope) {
+
         $rootScope.users = [
             {
             user: {
@@ -28,7 +29,7 @@ var App = angular.module('app', [])
                 },
                 customerOrders: 6,
                 executerOrders:8
-            },
+            }
 
         ];
     })

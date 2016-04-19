@@ -100,7 +100,7 @@ task.statics.add = function(data, callback) {
         status: "Поиск исполнителей"
     });
     task.save(function(err,task) {
-       if (err) return callback(err.errors);
+       if (err) return callback(new HttpError(422,err.errors));
         else {
            Category.findOne({_id: task.category}, function (err, category) {
                if (err) return callback(new HttpError(404, "Категория не найдена"));

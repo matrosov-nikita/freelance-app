@@ -43,6 +43,7 @@ router.get('/activate',function(req,res) {
 router.post('/register', function(req,res,next) {
     User.register(req.body, function(err,user) {
         if (err) {
+            console.log("ошибка регистрация");
             return  next(err);
         }
         else {

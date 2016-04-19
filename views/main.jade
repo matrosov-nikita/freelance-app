@@ -24,21 +24,27 @@ block content
                         a(href='#stats',data-toggle="tab") Статистика
                 .tab-content
                     .well.tab-pane.active(id="profile")
-                        form.form-horizontal(ng-submit="submitUser()")
+                        form.form-horizontal(ng-submit="submitUser()",name="updateForm.user")
                             fieldset
                                  input.form-control(type="hidden" name="_id",value="{{user._id}}")
                                  +genGroupField('name','Имя','',"user.name")(tag='input')
+                                 div(ng-show="isEmpty(updateForm.user.name.$error)",style="color: #F2B1B1") {{updateForm.user.name.$error}}
                                  +genGroupField('login','Логин','',"user.login")(tag='input')
+                                 div(ng-show="isEmpty(updateForm.user.login.$error)",style="color: #F2B1B1") {{updateForm.user.login.$error}}
                                  +genGroupField('email','E-mail','',"user.email")(tag='input')
+                                 div(ng-show="isEmpty(updateForm.user.email.$error)",style="color: #F2B1B1") {{updateForm.user.email.$error}}
                                  +genGroupField('about','О себе','',"user.about")(tag='textarea')
+                                 div(ng-show="isEmpty(updateForm.user.about.$error)",style="color: #F2B1B1") {{updateForm.user.about.$error}}
                                  button(class="btn btn-primary",type="submit") Сохранить
-                        p Количество дней на сайте:  #{getDiffBetweenDates(user_info.created)}
+                        p Количество дней на сайте:  #{getDiffBetweenDates(user.created)}
                     .well.tab-pane.fade(id="portfolio")
                         span(id="addwork") Добавить в портфолио
                         i.fa.fa-caret-down
-                        form(ng-submit="submitWork()",id="upload", enctype="multipart/form-data")
-                            input.form-control(type="text", name="name", placeholder="Название")
-                            textarea.form-control(type="text", name="description", placeholder="Описание")
+                        form(ng-submit="submitWork()",name="addWork",id="upload", enctype="multipart/form-data")
+                            input.form-control(type="text", name="name", placeholder="Название",ng-model="name")
+                            div(ng-show="isEmpty(addWork.name.$error)",style="color: #F2B1B1") {{addWork.name.$error}}
+                            textarea.form-control(type="text", name="description", placeholder="Описание",ng-model="description")
+                            div(ng-show="isEmpty(addWork.description.$error)",style="color: #F2B1B1") {{addWork.description.$error}}
                             input(type="hidden",name="user", value='#{user_info._id}')
                             input.form-control(type="file",name="files",multiple)
                             button.btn.btn-sm.btn-default(type="submit") Добавить
@@ -46,10 +52,17 @@ block content
                             .col-lg-4(ng-repeat="work in works")
                                 include includes/folder
                     .well.tab-pane.fade(id="stats")
+                        p ОЦЕНКИ
                         ul
-                            li.positive Положительные оценки: {{user.marks.positive}}
-                            li.neitral Нейтральные оценки: {{user.marks.neitral}}
-                            li.negative Отрицательные оценки: {{user.marks.negative}}
+                            li.positive Положительные: {{user.marks.positive}}
+                                .progress.progress-striped.active
+                                    .progress-bar(style='width: #{user.marks.positive/(user.marks.positive+user.marks.neitral+user.marks.negative)*100}%')
+                            li.neitral Нейтральные: {{user.marks.neitral}}
+                                .progress.progress-striped.active
+                                    .progress-bar(style='width: #{user.marks.neitral / (user.marks.positive + user.marks.neitral + user.marks.negative) * 100}%')
+                            li.negative Отрицательные: {{user.marks.negative}}
+                                .progress.progress-striped.active
+                                    .progress-bar(style='width: #{user.marks.negative / (user.marks.positive + user.marks.neitral + user.marks.negative) * 100}%')
                         p.rating Рейтинг: {{user_info.rating}}
             include includes/top
 

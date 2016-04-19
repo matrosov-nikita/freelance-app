@@ -42,7 +42,7 @@
         about:
         {
             type: String,
-            maxlength:[150,'Максимальная длина информации об авторе 150 символов']
+            maxlength:[350,'Максимальная длина информации об авторе 150 символов']
         },
         salt: {
             type: String,
@@ -237,10 +237,9 @@
            self.email = date.email;
            self.about = date.about;
            self.name = date.name;
-            self.save(function(err) {
+           self.save(function(err) {
                 if (err) {
-                    console.log(err.errors);
-                    return callback(err);
+                    return callback(new HttpError(422,err.errors));
                 }
                 return callback(null,self);
             });

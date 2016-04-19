@@ -30,15 +30,7 @@ angular.module('app').controller('TaskCtrl', function($scope, $http,$rootScope) 
         }).success((resp)=> {
             window.location.href="/request/get";
         }).error((resp)=> {
-            for (var key in $scope.addForm)
-            {
-                if ($scope.addForm[key] && $scope.addForm[key].$error) {
-                    $scope.addForm[key].$error = {};
-                }
-            }
-            for (key in resp.error) {
-                $scope.addForm[key].$error = resp.error[key].message;
-            }
+            error_callback($scope.addForm,resp);
         });
     };
 
@@ -82,9 +74,8 @@ angular.module('app').controller('TaskCtrl', function($scope, $http,$rootScope) 
     $scope.ClickTaskHeader = function(id) {
         $("#" + id).next().slideToggle();
     };
-
     $scope.isEmpty = (obj) => {
-       return !$.isEmptyObject(obj);
+        return !$.isEmptyObject(obj);
     };
 
     $scope.SendRequest = function(task_id) {

@@ -16,9 +16,12 @@ myApp.controller('RegisterCtrl', function ($scope, $http) {
                 window.location.href = response.data;
             },
             function error(xhr) {
-                error_callback($scope, xhr.status,xhr.data.message);
+                error_callback($scope.registerForm, xhr.data);
             });
     });
+    $scope.isEmpty = (obj) => {
+        return !$.isEmptyObject(obj);
+    };
 });
 
 myApp.controller('AuthCtrl', function ($scope, $http) {
@@ -33,7 +36,7 @@ myApp.controller('AuthCtrl', function ($scope, $http) {
                 window.location.href = response.data;
             },
             function error(xhr) {
-                error_callback($scope, xhr.status,xhr.data.message);
+                error_callback($scope, xhr.data);
             });
     });
 });
