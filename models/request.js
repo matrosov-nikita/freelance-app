@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var HttpError = require('../error/http_error');
-var async = require('async');
 var request = new Schema({
 
     task: {
@@ -17,7 +16,8 @@ var request = new Schema({
     },
 
     message: {
-        type: String
+        type: String,
+        maxlength:[400,'Максимальная длина заявки 400 символов']
     },
     accepted: {
         type: Boolean,
@@ -45,10 +45,17 @@ request.statics.add = function(data, callback) {
                        return callback(new HttpError(404, "Вы уже оставляли заявку на это задание"));
                    }
                    else {
-                       task.requests.push(request._id);
-                       task.save();
-                       request.save();
-                       return callback(null);
+                       request.save(function(err) {
+                           if (err) {
+                               console.log("ошибка");
+                               return callback(new HttpError(422,err.errors));
+                           }
+                           task.requests.push(request._id);
+                           task.save((err)=> {
+                               return callback(null);
+                           });
+
+                       });
                    }
                });
            }

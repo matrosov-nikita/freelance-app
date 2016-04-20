@@ -23,7 +23,7 @@
                 button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
                 h4.modal-title {{task.header}}
             .modal-body
-                form(ng-submit ="update($event,task._id)", name="updateForm", novalidate, enctype="multipart/form-data")
+                form(ng-submit ="updateTask($event,task._id)", name="updateForm", novalidate, enctype="multipart/form-data")
                     +genGroupField('header','Заголовок',"","task.header")(tag='input',type="text")
                     div(ng-show="isEmpty(updateForm.header.$error)",style="color: #F2B1B1") {{updateForm.header.$error}}
                     +genGroupField('description','Описание',"","task.description")(tag='textarea')

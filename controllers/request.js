@@ -24,6 +24,8 @@ router.get('/getRequests', function(req,res) {
 router.get('/getOwnRequests', function(req,res) {
     req.user.getOwnRequests(function(err,requests) {
         if (err) return next(err);
+        console.log("мои заявки");
+        console.log(requests);
         res.json(requests);
     });
 });
@@ -52,13 +54,14 @@ router.get('/sendresult/:request', function(req,res,next) {
             var Task = mongoose.model('Task');
             Task.findOne({_id: req.body.task}, function(err,task) {
                 if (err) return next(err);
-                task.result.message = req.body.message;
+                task.result.message = req.body['result.message'];
                 task.status="Ожидает проверки";
 
                 req.files.forEach(function(el) {
                     task.result.files.push({ "name" : el.filename, "original": el.originalname});
                 });
                 task.save((err,task)=> {
+                    if (err) return next(new HttpError(422,err.errors));
                     task.changeStatus();
                     res.send(true);
                 });

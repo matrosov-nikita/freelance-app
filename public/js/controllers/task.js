@@ -30,7 +30,7 @@ angular.module('app').controller('TaskCtrl', function($scope, $http,$rootScope) 
         }).success((resp)=> {
             window.location.href="/request/get";
         }).error((resp)=> {
-            error_callback($scope.addForm,resp);
+            error_callback($scope.addForm,resp,'Ошибка добавления задания');
         });
     };
 
@@ -54,7 +54,6 @@ angular.module('app').controller('TaskCtrl', function($scope, $http,$rootScope) 
           error = ()=> {
 
           }
-
       )
     };
 
@@ -68,6 +67,8 @@ angular.module('app').controller('TaskCtrl', function($scope, $http,$rootScope) 
         }).success((resp)=> {
             window.location.href="/request/getown";
         }).error((resp)=> {
+            console.log(resp);
+            error_callback($scope.sendresult,resp,"Не удалось отправить работу заказчику");
         });
     };
 
@@ -78,24 +79,23 @@ angular.module('app').controller('TaskCtrl', function($scope, $http,$rootScope) 
         return !$.isEmptyObject(obj);
     };
 
-    $scope.SendRequest = function(task_id) {
-        //$rootScope.$emit("CallMessageMethod", task_id);
+    $scope.OpenRequest = function(task_id) {
         $("#modal_message").modal('show');
-        $("#modal_message .yes").click(function(e) {
-            $http({
-                url: '/request/add',
-                method: 'post',
-                data: {
-                    task_id: task_id,
-                    message:  $("#modal_message .message").val(),
-                    headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-                }
-            }).then(function successCallback(response) {
-                $('#modal_message').modal('toggle');
-                window.location.href="/request/getown";
-            }, function errorCallback(response) {
-                alert("error");
-            });
+        $scope.openTask = task_id;
+    };
+
+    $scope.SendRequest = function() {
+        $scope.result.task_id = $scope.openTask;
+
+        $http({
+            url: '/request/add',
+            method: 'post',
+            data: $scope.result
+        }).then(function successCallback(response) {
+            $('#modal_message').modal('toggle');
+            window.location.href="/request/getown";
+        }, function errorCallback(response) {
+            error_callback($scope.addRequest,response.data,'Не удалось отправить заявку')
         });
     };
 
@@ -131,7 +131,7 @@ angular.module('app').controller('TaskCtrl', function($scope, $http,$rootScope) 
     };
 
 
-    $scope.update = function(ev,id) {
+    $scope.updateTask = function(ev,id) {
         var formData = new FormData(ev.currentTarget);
         formData.append("id",id);
         $http({
@@ -141,9 +141,9 @@ angular.module('app').controller('TaskCtrl', function($scope, $http,$rootScope) 
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined}
         }).then((response) => {
-           alert('success');
+           success_callback("Задание успешно обновлено");
         }, (response)=> {
-            alert('error');
+            error_callback($scope.updateForm,response.data,"Не удалось обновить задание");
         });
     }
 });

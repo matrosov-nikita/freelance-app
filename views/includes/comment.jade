@@ -5,8 +5,9 @@
                 button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
                 h4.modal-title Напишите отзыв и поставьте оценку исполнителю
             .modal-body
-                form(ng-submit="AddComment()", id="addcomment")
+                form(ng-submit="AddComment()", name="addComment", id="addcomment")
                     textarea.message(rows=5,name="comment",placeholder="Отзыв", ng-model="result.comment")
+                    div(ng-show="isEmpty(addComment.comment.$error)",style="color: #F2B1B1") {{addComment.comment.$error}}
                     input(type="radio",name="mark",value="0", ng-model="result.mark")
                     | Положительная
                     input(type="radio",name="mark",value="1", ng-model="result.mark")

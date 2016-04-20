@@ -41,7 +41,7 @@ router.post('/resolve',(req,res,next)=> {
                   if (err) return next(err);
                   user.setMark(req.body.mark,(err,user) => {
                      if (err) return next(err);
-                     if (req.body.choose==0) {
+                     if (req.body.choose==0) { //в пользу заказчика
                         User.findOne({_id: task.author},(err,author)=> {
                            author.score+=task.price;
                            author.save();
@@ -49,7 +49,8 @@ router.post('/resolve',(req,res,next)=> {
                      }
                      else
                      {
-                        user.score+=task.price;
+                        user.score+=task.price; //в пользу исполнителя
+                        user.rating+=task.price;
                         user.save();
                      }
                      res.redirect('/dispute')

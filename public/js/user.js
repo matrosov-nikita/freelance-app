@@ -16,7 +16,7 @@ myApp.controller('RegisterCtrl', function ($scope, $http) {
                 window.location.href = response.data;
             },
             function error(xhr) {
-                error_callback($scope.registerForm, xhr.data);
+                error_callback($scope.registerForm, xhr.data,'Ошибка регистрации');
             });
     });
     $scope.isEmpty = (obj) => {
@@ -36,7 +36,7 @@ myApp.controller('AuthCtrl', function ($scope, $http) {
                 window.location.href = response.data;
             },
             function error(xhr) {
-                error_callback($scope, xhr.data);
+                error_callback($scope, xhr.data,'Ошибка авторизации');
             });
     });
 });

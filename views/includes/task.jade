@@ -3,7 +3,7 @@
         span {{task.header}}
         span {{task.price}}
         marquee(ng-show="checkTask(task,'#{user._id}')") Вы уже подавали заявку на это задание!
-        i.fa.fa-check-square-o(ng-show="!checkTask(task,'#{user._id}')",ng-click="SendRequest(task._id); $event.stopPropagation();")
+        i.fa.fa-check-square-o(ng-show="!checkTask(task,'#{user._id}')",ng-click="OpenRequest(task._id); $event.stopPropagation();")
 
     .task_content
         p.category {{task.category.name}}

@@ -52,7 +52,7 @@ block content
                             .col-lg-4(ng-repeat="work in works")
                                 include includes/folder
                     .well.tab-pane.fade(id="stats")
-                        p ОЦЕНКИ
+                        p Оценки:
                         ul
                             li.positive Положительные: {{user.marks.positive}}
                                 .progress.progress-striped.active
@@ -63,7 +63,7 @@ block content
                             li.negative Отрицательные: {{user.marks.negative}}
                                 .progress.progress-striped.active
                                     .progress-bar(style='width: #{user.marks.negative / (user.marks.positive + user.marks.neitral + user.marks.negative) * 100}%')
-                        p.rating Рейтинг: {{user_info.rating}}
+                        p.rating Рейтинг: #{user_info.rating}
             include includes/top
 
 block additional_scripts

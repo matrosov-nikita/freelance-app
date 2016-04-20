@@ -7,17 +7,18 @@ function success_callback(message) {
     })
 }
 
-function error_callback(scopeForm,xhr) {
+function error_callback(scopeForm,xhr,title) {
     if (xhr.status!=422)
     {
         swal({
             type: 'error',
-            title: 'Ошибка авторизации',
+            title: title,
             text: xhr.message
         })
     }
     else
     {
+        console.log(scopeForm);
         console.log(xhr);
         for (var key in scopeForm)
         {
@@ -25,7 +26,6 @@ function error_callback(scopeForm,xhr) {
                 scopeForm[key].$error = {};
             }
         }
-        console.log(scopeForm);
         for (key in xhr.message) {
             scopeForm[key].$error = xhr.message[key].message;
         }

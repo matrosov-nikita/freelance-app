@@ -8,7 +8,7 @@ angular.module('app').controller('PortfolioCtrl', function($scope, $http) {
         }).then(success = (resp)=> {
             success_callback("Информация о пользователе обновлена");
         }, error = (resp)=> {
-            error_callback($scope.updateForm.user,resp.data);
+            error_callback($scope.updateForm.user,resp.data,'Ошибка обновления');
         });
     };
 
@@ -27,7 +27,7 @@ angular.module('app').controller('PortfolioCtrl', function($scope, $http) {
             $scope.works.push(resp.data);
             success_callback("Работа в портфолио успешно добавлено");
         }, error = (resp)=> {
-            error_callback($scope.addWork,resp.data);
+            error_callback($scope.addWork,resp.data,'Не удалось добавить работу в портфолио');
         })
     }
 });

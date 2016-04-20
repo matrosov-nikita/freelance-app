@@ -62,7 +62,11 @@ var task = new Schema({
          [{type: Schema.Types.ObjectId, ref: 'Request'}],
 
     result: {
-        message: { type: String, default: '' },
+        message: { type: String,
+            default: '     ',
+            minlength:[5,'Минимальная длина сообщения результата 5 символов'],
+            maxlength:[4000,'Максимальная длина сообщения результата 4000 символов']
+        },
         files:
             [{
                 name: String,
@@ -72,12 +76,16 @@ var task = new Schema({
 
     dispute: {
         type: String,
-        default: ''
+        default: '     ',
+        minlength:[5,'Минимальная длина сообщения для арбитража 5 символов'],
+        maxlength:[3000,'Максимальная длина сообщения для арбитража 3000 символов'],
+
     },
 
     comment: {
         type: String,
-        default: ''
+        default: '',
+        maxlength:[2000,'Максимальная длина комментария 2000 символов']
     }
 });
 

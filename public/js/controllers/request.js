@@ -89,6 +89,10 @@ angular.module('app').controller('RequestCtrl', function($scope, $http) {
         $("#comment").modal('show');
     };
 
+    $scope.isEmpty = (obj) => {
+        return !$.isEmptyObject(obj);
+    };
+
     $scope.AddComment = () => {
         $scope.result.id = $scope.task._id;
         $http({
@@ -96,10 +100,9 @@ angular.module('app').controller('RequestCtrl', function($scope, $http) {
             url: '/task/add/comment',
             data: $scope.result
         }).then(()=> {
-            alert("comment");
             window.location.href = "/request/get";
-        }, ()=> {
-
+        }, (resp)=> {
+            error_callback($scope.addComment,resp.data,"Не удалось подтвердить результат работы исполнителя");
         });
     };
 
