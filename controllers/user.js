@@ -136,8 +136,9 @@ router.post('/tasks/delete',CheckUser, function(req,res,next) {
     Task.findOne({_id: req.body.task_id},(err,task) => {
         if (err) return next(err);
         if (req.user.role!="Администратор" && (task.author.toString() != req.user._id.toString() || task.status!='Поиск исполнителей'))
-        return next(new HttpError(403,'Недостаточно прав для удаления данного задания'));
-
+        {
+            return next(new HttpError(403,'Недостаточно прав для удаления данного задания'));
+        }
         task.remove((err) => {
             if (err) return next(err);
             res.json('Задание успешно удалено');

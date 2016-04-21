@@ -26,7 +26,7 @@ block content
                                 a(href="http://localhost:8080/uploads/{{file.name}}") {{file.original}}
                         .button_wrapper
                             button.btn.btn-success(ng-click="SendComment()") Подтвердить
-                            button.btn.btn-danger#dispute(ng-click="SendDispute(null,task._id)") Арбитраж
+                            button.btn.btn-danger#dispute(ng-click="OpenDispute(null,task._id)") Арбитраж
 
 
             include includes/top

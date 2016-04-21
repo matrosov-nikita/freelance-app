@@ -3,5 +3,5 @@
     .authors
         .author(ng-repeat="req in request.requests",ng-click="viewAuthorInfo(req.executer._id)") {{req.executer.name}}
             span {{req.date | date: 'M мес. ddдн. Hч. mmмин.'}}
-            button(ng-click="SendDispute(request._id, request.task._id); $event.stopPropagation();",style="float: right").btn.btn-danger.btn-sm Арбитраж
+            button(ng-click="OpenDispute(request._id, request.task._id); $event.stopPropagation();",style="float: right").btn.btn-danger.btn-sm Арбитраж
     include ../../chat

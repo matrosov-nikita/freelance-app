@@ -106,23 +106,32 @@ angular.module('app').controller('TaskCtrl', function($scope, $http,$rootScope) 
         var modal_id = `#modal_${task_id}`;
         $(modal_id).modal('show');
     };
+
     $scope.DeleteTask = function(task_id) {
-      var answer = confirm("Вы действительно хотите удалить задание");
-      if (answer) {
-          $http({
-              url: '/user/tasks/delete',
-              method: 'post',
-              data: {
-                  task_id: task_id
-              }
-          }).then(function successCallback(response) {
-                $scope.my_tasks.forEach((my_task,index,tasks)=> {
-                   if (my_task._id == task_id) tasks.splice(index,1);
+        swal({
+                title: "Вы уверены?",
+                text: "Удаление задания",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Да, принять",
+                closeOnConfirm: false },
+            function(){
+                $http({
+                    method: 'post',
+                    url: '/user/tasks/delete',
+                    data: {
+                        task_id: task_id
+                    }
+                }).success(function(response) {
+                    success_callback("Заявка удалено!");
+                    $scope.my_tasks.forEach((my_task,index,tasks)=> {
+                        if (my_task._id == task_id) tasks.splice(index,1);
+                    });
+                }).error(function(resp) {
+                    error_callback(null,resp,"Не удалось удалить задание" )
                 });
-          }, function errorCallback(response) {
-              alert("error");
-          });
-      }
+            });
     };
 
 

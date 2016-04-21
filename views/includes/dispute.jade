@@ -5,7 +5,9 @@
                 button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
                 h4.modal-title Напишите причину арбитража
             .modal-body
-                textarea.message(rows=15,placeholder="Причина арбитража")
+                form(ng-submit="SendDispute()", name="addDispute", id="addDispute")
+                    textarea.message(rows=12,name="dispute",placeholder="Причина арбитража",ng-model="dispute.message")
+                    div(ng-show="isEmpty(addDispute.dispute.$error)",style="color: #F2B1B1") {{addDispute.dispute.$error}}
+                    button.btn.btn-primary(type="submit") Отправить жалобу
             .modal-footer
                 button.btn.btn-default.no(type='button', data-dismiss='modal') Закрыть
-                button.btn.btn-primary.yes(type='button') Отправить жалобу

@@ -66,25 +66,36 @@ angular.module('app').controller('RequestCtrl', function($scope, $http) {
         RemoveRequest(source, task);
     };
 
+
     $scope.RefuseRequest = function(request,task,ev) {
         ev.stopPropagation();
-        var response = confirm("Вы действительно хотите отклонить данную заявку?");
-        if (response) {
-            $http({
-                method: 'post',
-                url: '/request/refuse',
-                data: {
-                    request: request
-                }
-            }).success(function(response) {
-                if (response) {
-                    RemoveOneAuthor($scope.requests.req_search,request,task);
-                }
-            }).error(function() {
-                alert("error");
+        swal({
+                title: "Вы уверены?",
+                text: "Удаление заявки",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Да, принять",
+                closeOnConfirm: false },
+            function(){
+                $http({
+                    method: 'post',
+                    url: '/request/refuse',
+                    data: {
+                        request: request
+                    }
+                }).success(function(response) {
+                    success_callback("Заявка удалена!");
+                    if (response) {
+                        RemoveOneAuthor($scope.requests.req_search,request,task);
+                    }
+                }).error(function(resp) {
+                    error_callback(null,resp,"Не удалось удалить заявку" )
+                });
             });
-        }
     };
+
+
     $scope.SendComment = () => {
         $("#comment").modal('show');
     };
@@ -106,45 +117,58 @@ angular.module('app').controller('RequestCtrl', function($scope, $http) {
         });
     };
 
-    $scope.SendDispute = function(request,task_id) {
+
+
+    $scope.OpenDispute = function(request,task_id) {
+        $scope.disputeTask = task_id;
+        $scope.disputeRequest = request;
         $("#dispute").modal('show');
-        $("#dispute .yes").click(function(e) {
+    };
+
+    $scope.SendDispute = () => {
+        $scope.dispute.task_id = $scope.disputeTask;
             $http({
                 url: '/dispute/add',
                 method: 'post',
-                data: {
-                    task_id: task_id,
-                    message:  $("#dispute .message").val()
-                }
+                data:  $scope.dispute
             }).then(function successCallback(response) {
                 $('#dispute').modal('toggle');
-
-                if (request && response) {
-                    ComeRequestToAnotherCollection( $scope.requests.req_work,$scope.requests.req_dispute,request, task_id);
+                if ($scope.disputeRequest && response) {
+                    ComeRequestToAnotherCollection( $scope.requests.req_work,$scope.requests.req_dispute,$scope.disputeRequest,  $scope.disputeTask);
                 }
             }, function errorCallback(response) {
-                alert("error");
+                error_callback($scope.addDispute,response.data,"Не удалось отправить жалобу");
             });
-        });
     };
+
     $scope.AcceptRequest = function(request,task,ev) {
         ev.stopPropagation();
-        var response = confirm("Принять заявку?");
-        if (response) {
-            $http({
-                method: 'post',
-                url: '/request/accept',
-                data: {
-                    request: request
-                }
-            }).success(function(response) {
-                if (response) {
-                    ComeRequestToAnotherCollection( $scope.requests.req_search,$scope.requests.req_work, request,task);
-                }
-            }).error(function() {
-                alert("error");
+        swal({
+                title: "Вы уверены?",
+                text: "Подтверждние заявки",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Да, принять",
+                closeOnConfirm: false },
+            function(){
+                $http({
+                    method: 'post',
+                    url: '/request/accept',
+                    data: {
+                        request: request
+                    }
+                }).success(function(response) {
+                    success_callback("Заявка утверждена!");
+                    if (response) {
+                        ComeRequestToAnotherCollection( $scope.requests.req_search,$scope.requests.req_work, request,task);
+                    }
+
+                }).error(function(resp) {
+                    error_callback(null,resp,"Не удалось подтвердить заявку" )
+                });
             });
-        }
+
     };
 
     $scope.viewAuthorInfo = (id)=>
