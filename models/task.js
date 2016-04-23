@@ -86,6 +86,10 @@ var task = new Schema({
         type: String,
         default: '',
         maxlength:[2000,'Максимальная длина комментария 2000 символов']
+    },
+
+    dateAccepted: {
+        type: Date
     }
 });
 
@@ -222,6 +226,7 @@ task.methods.addDispute = function(dispute,callback) {
 task.methods.addComment = function(comment,callback) {
     this.comment = comment;
     this.status = "Выполнено";
+    this.dateAccepted = new Date();
     var self = this;
     this.save(function(err){
         if (err) return callback(new HttpError(422,err.errors));

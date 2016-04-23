@@ -12,27 +12,17 @@ var HttpError  = require('../error/http_error');
 var chat = require('../libs/chat');
 
 router.get('/:id', CheckUser,function(req, res) {
-    if (req.user._id == req.params.id) {
-        req.user.getWorks(function (err, works) {
+    User.findById({_id: req.params.id}, function (err, user) {
+        user.getWorks(function (err, works) {
             if (err) return next(err);
+            var access = (req.user._id==req.params.id)?true:false;
             res.render('main', {
                 works: works,
-                user_info: req.user,
-                access: true
+                user_info: user,
+                access: access
             });
         });
-    } else {
-        User.findById({_id: req.params.id}, function (err, user) {
-            user.getWorks(function (err, works) {
-                if (err) return next(err);
-                res.render('main', {
-                    works: works,
-                    user_info: user,
-                    access: false
-                });
-            });
-        });
-    }
+    });
 });
 
 

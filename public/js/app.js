@@ -1,4 +1,4 @@
-var App = angular.module('app', [])
+var App = angular.module('app',[])
     .run(function($rootScope) {
 
         $rootScope.users = [
@@ -104,7 +104,30 @@ var App = angular.module('app', [])
             },true)
         }
     }
-});
+})
+    .directive('drawing',function($http) {
+        return  {
+            link: function (scope,element,attrs)
+            {
+                $http({
+                    method:'get',
+                    url: attrs.url + '?id='+attrs.userId
+                }).then(successCallback = (resp) => {
+                    scope.tasksPerDate = scope.fillCalendarDate(resp.data);
+                    var ctx = element[0].getContext('2d');
+                    Chart.defaults.global.legend = false;
+                    var myLineChart = new Chart(ctx, {
+                        type: 'line',
+                        data: scope.tasksPerDate
+                    });
+
+                }, errorCallback = (resp)=> {
+
+                });
+            }
+        }
+
+    });
 
 App.filter('orders', function() {
     return function(items,field, greaterThan, lowerThan) {

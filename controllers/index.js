@@ -5,3 +5,4 @@ exports.Request = require('./request');
 exports.Dispute = require('./dispute');
 exports.Message = require('./message');
 exports.Admin = require('./admin');
+exports.Stats = require('./stats');

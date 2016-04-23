@@ -69,6 +69,8 @@ class Server {
 
         app.use('/admin', checkUser, Controller.Admin);
 
+        app.use('/stats', checkUser, Controller.Stats);
+
         app.use(function(err,req,res,next) {
            if (typeof err == "number")
            {
