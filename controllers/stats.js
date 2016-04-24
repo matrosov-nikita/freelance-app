@@ -31,4 +31,27 @@ router.get('/worksperdate',(req,res,next)=> {
     });
 });
 
+router.get('/admin/ordersperdate',(req,res,next)=> {
+    var result = {};
+    var Task = mongoose.model('Task');
+    Task.getAll((err,tasks)=> {
+        tasks.forEach((task)=> {
+            var day = new Date(task._created).toDateString();
+            result[day] = result[day]+1 || 1;
+        });
+        res.json(result);
+    });
+});
+
+router.get('/admin/worksperdate',(req,res,next)=> {
+    var result = {};
+    var Task = mongoose.model('Task');
+    Task.find({status:"Выполнено"},(err,tasks)=> {
+        tasks.forEach((task)=> {
+            var day = new Date(task._created).toDateString();
+            result[day] = result[day]+1 || 1;
+        });
+        res.json(result);
+    });
+});
 module.exports = router;

@@ -6,10 +6,9 @@ angular.module('app').controller('Admin', function($scope, $http) {
         method:"get",
         url:"/admin/users"
     }).then(function success(response) {
-        console.log(response.data);
         $scope.users = response.data;
     }, function errorCallback(response) {
-
+        error_callback(null,response.data,"Не удалось получить пользователей");
     });
 
     $http({
@@ -18,7 +17,7 @@ angular.module('app').controller('Admin', function($scope, $http) {
     }).then(function success(response)  {
        $scope.tasks = response.data;
     }, function errorCallback(response) {
-
+        error_callback(null,response.data,"Не удалось получить задания");
     });
 
     $scope.search = {
@@ -40,44 +39,63 @@ angular.module('app').controller('Admin', function($scope, $http) {
         }
     };
     $scope.deleteUser = (id)=> {
-        var confirmation = confirm("Вы действительно хотите удалить пользователя?");
-        if (confirmation)
-        {
-            $http({
-                method: "post",
-                url: "/user/delete",
-                data: {id: id}
-            }).then(function successCallback(response) {
-                var userIndex;
-                if (response.data) {
-                    $scope.users.forEach((user_info,index)=> {
+        swal({
+                title: "Вы уверены?",
+                text: "Удаление пользователя",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Да, принять",
+                closeOnConfirm: false },
+            function(){
+                $http({
+                    method: "post",
+                    url: "/user/delete",
+                    data: {id: id}
+                }).then(function successCallback(response) {
+                    success_callback("Пользователь успешно удален");
+                    var userIndex;
+                    if (response.data) {
+                        $scope.users.forEach((user_info,index)=> {
                             if (user_info.user._id == id) userIndex = index;
-                    });
-                    if (userIndex>=0) $scope.users.splice(userIndex,1);
-
-                }
-            }, function errorCallback(response) {
-
-            });
-        }
-    };
-    $scope.deleteTask = function(task_id) {
-        var answer = confirm("Вы действительно хотите удалить задание");
-        if (answer) {
-            $http({
-                url: '/user/tasks/delete',
-                method: 'post',
-                data: {
-                    task_id: task_id
-                }
-            }).then(function successCallback(response) {
-                $scope.tasks.forEach((task,index,tasks)=> {
-                    if (task._id == task_id) tasks.splice(index,1);
+                        });
+                        if (userIndex>=0) $scope.users.splice(userIndex,1);
+                    }
+                }, function errorCallback(response) {
+                    error_callback(null,response.data,"Не удалось удалить пользователя");
                 });
-            }, function errorCallback(response) {
-                alert("error");
             });
-        }
     };
 
+    $scope.deleteTask = function(task_id) {
+        swal({
+                title: "Вы уверены?",
+                text: "Удаление задания",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Да, принять",
+                closeOnConfirm: false },
+            function(){
+                $http({
+                    url: '/user/tasks/delete',
+                    method: 'post',
+                    data: {
+                        task_id: task_id
+                    }
+                }).then(function successCallback(response) {
+                    success_callback("Задание успешно удалено!");
+                    $scope.tasks.forEach((task,index,tasks)=> {
+                        if (task._id == task_id) tasks.splice(index,1);
+                    });
+                }, function errorCallback(response) {
+                    error_callback(null,response.data,"Не удалось удалить задание");
+                });
+            });
+    };
+
+
+    $scope.viewTask = function(task_id) {
+        $("#"+task_id).modal('show');
+    }
 });

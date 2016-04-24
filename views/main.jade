@@ -64,16 +64,18 @@ block content
                                 .progress.progress-striped.active
                                     .progress-bar(style='width: #{user.marks.negative / (user.marks.positive + user.marks.neitral + user.marks.negative) * 100}%')
                         p.rating Рейтинг: #{user_info.rating}
-                        div.chart-container Активность размещения заданий
-                            canvas(drawing, user_id="#{user._id}", url="/stats/ordersperdate")
-                        div.chart-container Активность выполнения заданий
-                            canvas(drawing, user_id="#{user._id}", url="/stats/worksperdate")
+                        div(ng-controller="StatsCtrl")
+                            div.chart-container Активность размещения заданий
+                                canvas(drawing, user_id="#{user._id}", url="/stats/ordersperdate")
+                            div.chart-container Активность выполнения заданий
+                                canvas(drawing, user_id="#{user._id}", url="/stats/worksperdate")
 
             include includes/top
 
 block additional_scripts
     script(src="/js/controllers/portfolio.js")
     script(src="/libs/Chart.js/dist/Chart.js")
+    script(src="/js/controllers/stats.js")
     script.
         access = #{access}
 
