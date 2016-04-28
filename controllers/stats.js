@@ -20,8 +20,8 @@ router.get('/worksperdate',(req,res,next)=> {
    var Request = mongoose.model('Request');
     Request.find({executer:req.query.id}).select('task').populate('task').exec((err,tasks)=> {
         if (err) return next(err);
-       tasks = tasks.filter((item)=> {
-           return item.task.status=="Выполнено";
+       tasks = tasks.filter((item,index)=> {
+           return item.task && item.task.status=="Выполнено";
        });
         tasks.forEach((item)=> {
             var day = new Date(item.task._created).toDateString();

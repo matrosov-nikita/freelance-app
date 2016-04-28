@@ -8,9 +8,10 @@ block content
     .container(ng-controller="Dispute")
         .row
             .col-lg-12
+                a.btn.btn-sm.btn-primary.profile(href="/user/#{user._id}") Вернуться в профиль
                 .dropdown
                     button.btn.btn-primary.dropdown-toggle(type='button', data-toggle='dropdown')
-                        | ID заданий в арбитраже
+                        | Задания в арбитраже
                         span.caret
                     ul.dropdown-menu
                         li(ng-repeat="item in ids",ng-click="getInfo(item._id)") {{item._id}}
@@ -42,10 +43,11 @@ block content
                 .row.solution
                     .row
                         h4 Решение арбитража
-                    form(action="/dispute/resolve",method="post",id="disp")
+                    form(ng-submit="submitComment(task._id)",name="addComment", id="disp")
                         .row
                             .col-lg-offset-2.col-lg-8
-                                textarea.form-control(rows="8",placeholder="Сообщение арбитража",name="message",required)
+                                textarea.form-control(rows="8",placeholder="Сообщение арбитража",name="comment",ng-model="comment.message")
+                                div(ng-show="isEmpty(addComment.comment.$error)",style="color: #F2B1B1") {{addComment.comment.$error}}
                                 .marks
                                     p Оценка исполнителя:
                                     input(type ='radio', name='mark',value="0",required)
@@ -63,7 +65,6 @@ block content
                                 label
                                     input(type='radio', name="choose",value='1')
                                     |    В пользу исполнителя
-                            input(type="hidden",value='{{task._id}}',name="task")
                         .btn-wrap
                             button.btn.btn-success(type="submit") Отправить решение
 

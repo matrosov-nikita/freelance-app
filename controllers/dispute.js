@@ -31,10 +31,12 @@ router.get('/getInfo',(req,res,next)=> {
    })
 });
 router.post('/resolve',(req,res,next)=> {
+   console.log(req.body);
    var Task = mongoose.model("Task");
    Task.findOne({_id:req.body.task},(err,task)=> {
       if (err) return next(err);
       task.addComment("Арбитраж."+req.body.message,(err,task)=> {
+         if (err) return next(err);
             task.findExecuter((err,executer) => {
                var User = mongoose.model("User");
                User.findOne({_id: executer._id}, (err,user) => {

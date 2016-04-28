@@ -229,6 +229,8 @@ task.methods.addComment = function(comment,callback) {
     this.dateAccepted = new Date();
     var self = this;
     this.save(function(err){
+        console.log("addComment");
+        console.log(err);
         if (err) return callback(new HttpError(422,err.errors));
         return callback(null,self);
     });
