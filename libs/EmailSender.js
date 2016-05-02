@@ -28,6 +28,7 @@ class EmailSender {
                 return callback(error);
             }
             console.log('Message sent: ' + info.response);
+            callback(null,true);
         });
     }
 }

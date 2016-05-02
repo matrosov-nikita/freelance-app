@@ -13,6 +13,7 @@ myApp.controller('RegisterCtrl', function ($scope, $http) {
             data: form,
             headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
         }).then(function success(response) {
+            console.log(response.data);
                 window.location.href = response.data;
             },
             function error(xhr) {

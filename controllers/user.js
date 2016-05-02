@@ -11,21 +11,6 @@ var Portfolio = mongoose.model('Portfolio');
 var HttpError  = require('../error/http_error');
 var chat = require('../libs/chat');
 
-router.get('/:id', CheckUser,function(req, res) {
-    User.findById({_id: req.params.id}, function (err, user) {
-        user.getWorks(function (err, works) {
-            if (err) return next(err);
-            var access = (req.user._id==req.params.id)?true:false;
-            res.render('main', {
-                works: works,
-                user_info: user,
-                access: access
-            });
-        });
-    });
-});
-
-
 router.get('/activate',function(req,res) {
     res.render('activation');
 });
@@ -37,11 +22,12 @@ router.post('/register', function(req,res,next) {
             return  next(err);
         }
         else {
+            console.log("Email_sender");
             var sender = new EmailSender(user._hash);
             sender.send(function(err) {
                if (err) return next(err);
+                res.send("/user/activate");
             });
-            res.send("/user/activate");
         }
     });
 });
@@ -129,12 +115,27 @@ router.post('/tasks/delete',CheckUser, function(req,res,next) {
         {
             return next(new HttpError(403,'Недостаточно прав для удаления данного задания'));
         }
-        task.remove((err) => {
+        task.removeTask((err) => {
             if (err) return next(err);
             res.json('Задание успешно удалено');
         })
     });
 });
+
+router.get('/:id', CheckUser,function(req, res) {
+    User.findById({_id: req.params.id}, function (err, user) {
+        user.getWorks(function (err, works) {
+            if (err) return next(err);
+            var access = (req.user._id==req.params.id)?true:false;
+            res.render('main', {
+                works: works,
+                user_info: user,
+                access: access
+            });
+        });
+    });
+});
+
 
 router.post('/delete', function(req,res,next) {
     User.findOne({_id: req.body.id}, function(err,user) {
