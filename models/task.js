@@ -289,7 +289,7 @@
             return new Promise((resolve,reject)=>
             {
                 item.remove((err)=> {
-                    err ? resolve() : reject(err);
+                    err ? reject(err) : resolve();
                 });
             });
         }));

@@ -124,7 +124,7 @@ angular.module('app').controller('TaskCtrl', function($scope, $http,$rootScope) 
                         task_id: task_id
                     }
                 }).success(function(response) {
-                    success_callback("Заявка удалено!");
+                    success_callback("Задание удалено!");
                     $scope.my_tasks.forEach((my_task,index,tasks)=> {
                         if (my_task._id == task_id) tasks.splice(index,1);
                     });
