@@ -1,38 +1,4 @@
 var App = angular.module('app',[])
-    .run(function($rootScope) {
-
-        $rootScope.users = [
-            {
-            user: {
-                name: 'Петров'
-            },
-            customerOrders: 1,
-            executerOrders:2
-            },
-            {
-                user: {
-                    name: 'Иванов'
-                },
-                customerOrders: 4,
-                executerOrders:5
-            },
-            {
-                user: {
-                    name: 'Сидоров'
-                },
-                customerOrders: 2,
-                executerOrders:2
-            },
-            {
-                user: {
-                    name: 'Андреев'
-                },
-                customerOrders: 6,
-                executerOrders:8
-            }
-
-        ];
-    })
     .directive("messageList", function() {
         return {
             link: function(scope,element,attrs) {
@@ -98,9 +64,6 @@ var App = angular.module('app',[])
                     uniqueResultOne(newVal,oldVal).forEach((note)=> {
                         show(note);
                     });
-
-
-
             },true)
         }
     }

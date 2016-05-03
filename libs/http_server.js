@@ -1,7 +1,6 @@
 'use strict';
 var express = require('express'),
 Controller = require("../controllers");
-//var sassMiddleware = require('node-sass-middleware');
 var path = require('path');
 var body_parser = require('body-parser');
 var HttpError = require('../error/http_error');
@@ -32,13 +31,6 @@ class Server {
             extended: true
         }));
         app.use(body_parser.json());
-        /*app.use(sassMiddleware({
-            src: path.join(__dirname, '../public/sass'),
-            dest: path.join(__dirname, '../public/css'),
-            indentedSyntax: true,
-            outputStyle: 'compressed',
-            prefix: '/css'
-        }));*/
         
         app.use(session({
             secret: conf.get("session:secret"),

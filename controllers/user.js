@@ -35,7 +35,7 @@ router.post('/register', function(req,res,next) {
 router.post('/authorize', function(req,res,next) {
     if (req.user)
     {
-       res.send('/user');
+       res.send('/user/' + req.user._id);
     }
     else {
        User.authorize(req.body.login, req.body.password, function(err,user) {

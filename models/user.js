@@ -86,35 +86,29 @@
     });
 
     userSchema.statics.getAll = function(cb) {
-        var result = [];
-        var customerPromises = [];
-        var executerPromises = [];
         User.find({}, (err, users)=> {
             if (err) return cb(err);
-
-            users.forEach((user)=> {
-                customerPromises.push(user.getOrdersCount());
-                executerPromises.push(user.getExecuterCount())
+            var promises = [];
+            users.forEach(user => {
+                promises.push(Promise.all(
+                    [
+                        user.getOrdersCount(),
+                        user.getExecuterCount()
+                    ]).then((result)=> {
+                        return {
+                            user: user,
+                            customerOrders: result[0],
+                            executerOrders: result[1]
+                        };
+                }, (err)=> {
+                    return err;
+                }));
             });
 
-            Promise.all(customerPromises).then(amounts => {
-                users.map((user, index)=> {
-                    result.push({
-                        user: user,
-                        customerOrders: amounts[index]
-                    });
-                });
-            }, (err)=> {
+            Promise.all(promises).then((res)=> {
+                return cb(null,res);
+            }, (err) => {
                 return cb(err);
-            });
-
-            Promise.all(executerPromises).then(amounts => {
-                result.map((item, index)=> {
-                    item.executerOrders = amounts[index];
-                });
-                return cb(null, result);
-            }, (err)=> {
-                return cb(err)
             });
         });
     };
