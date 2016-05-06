@@ -17,7 +17,8 @@ var request = new Schema({
 
     message: {
         type: String,
-        maxlength:[400,'Максимальная длина заявки 400 символов']
+        maxlength:[400,'Максимальная длина заявки 400 символов'],
+        default: ''
     },
     accepted: {
         type: Boolean,

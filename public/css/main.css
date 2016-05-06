@@ -113,3 +113,18 @@ canvas {
   height: 80vh;
   font-weight: normal;
   border: 1px dashed #fff; }
+
+.review {
+  border: 1px solid #fff;
+  padding: 5px;
+  margin-bottom: 10px; }
+  .review span {
+    display: inline-block;
+    border-bottom: 1px solid #fff;
+    background-color: #62cc79;
+    padding: 0 5px; }
+  .review p {
+    margin-top: 5px;
+    font-style: italic; }
+  .review .customer {
+    float: right; }

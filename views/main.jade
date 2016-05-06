@@ -22,6 +22,8 @@ block content
                         a(href='#portfolio',data-toggle="tab") Портфолио
                     li
                         a(href='#stats',data-toggle="tab") Статистика
+                    li
+                        a(href='#reviews',data-toggle="tab") Отзывы
                 .tab-content
                     .well.tab-pane.active(id="profile")
                         form.form-horizontal(ng-submit="submitUser()",name="updateForm.user")
@@ -69,6 +71,9 @@ block content
                                 canvas(drawing, user_id="#{user._id}", url="/stats/ordersperdate")
                             div.chart-container Активность выполнения заданий
                                 canvas(drawing, user_id="#{user._id}", url="/stats/worksperdate")
+                    .well.tab-pane.fade(id="reviews", ng-init="getReviews()")
+                        .review.clearfix(ng-repeat="review in reviews")
+                            include includes/review
 
             include includes/top
 

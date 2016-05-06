@@ -118,7 +118,7 @@
         return new Promise(function(resolve,reject)
         {
             var Task = mongoose.model('Task');
-            Task.count({author:self._id}, (err,count)=> {
+            Task.count({author:self._id, status: "Выполнено"}, (err,count)=> {
                 if (err)  reject(err);
                 resolve(count);
             });
@@ -129,18 +129,56 @@
         var self = this;
         return new Promise(function(resolve,reject)
         {
-            var count = 0;
-            var Request = mongoose.model('Request');
-            Request.find({executer: self._id, accepted: true},(err)=> {
-              if (err) reject(err);
-            }).populate('task').exec((err,requests)=> {
-                if (err) reject(err);
-                requests.forEach((request)=> {
-                    if (request.task.status=="Выполнено") count+=1;
-                });
-                resolve(count);
+            self.getExecuterTasks().then((result) => {
+                resolve(result.length);
+            }, (err) => {
+                reject(err);
             });
         });
+    };
+
+    userSchema.methods.getExecuterTasks = function() {
+      var self = this;
+        return new Promise(function(resolve, reject) {
+            var Request = mongoose.model('Request');
+            Request.find({executer: self._id, accepted: true},(err)=> {
+                if (err) reject(err);
+            }).populate({
+                path: 'task',model:'Task',
+                populate: {
+                    path: 'author',
+                    model: 'User'
+                }
+            }).exec((err,requests)=> {
+                if (err) reject(err);
+                 var result  = requests.filter((request)=> {
+                    return (request.task.status=="Выполнено");
+                });
+                resolve(result);
+            });
+        })
+    };
+
+    userSchema.methods.getReviews = function () {
+        var self = this;
+        return new Promise(function(resolve, reject) {
+            self.getExecuterTasks().then((tasks)=> {
+                var comments = tasks.map((item)=> {
+                    console.log(item);
+                    return {
+                        comment: item.task.comment,
+                        task_name: item.task.header,
+                        author: {
+                            name: item.task.author.name,
+                            _id: item.task.author._id
+                        }
+                }
+                });
+                resolve(comments);
+            }, (err) => {
+                reject(err);
+            })
+        })
     };
 
     userSchema.statics.register = function(data, callback) {

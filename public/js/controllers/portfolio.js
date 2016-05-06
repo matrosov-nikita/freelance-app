@@ -16,7 +16,17 @@ angular.module("app").controller('PortfolioCtrl', function($scope, $http) {
         return !$.isEmptyObject(obj);
     };
 
-
+    $scope.getReviews = () => {
+        $http({
+            method: "get",
+            url: "/user/reviews"
+        }).then((resp)=> {
+            $scope.reviews = resp.data;
+            console.log($scope.reviews);
+        }, (err) => {
+            error_callback(null,err.data,"Не удалось получить отзывы пользователя");
+        });
+    };
 
     $scope.submitWork = () => {
         $http({

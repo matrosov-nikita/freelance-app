@@ -83,10 +83,9 @@ angular.module('app').controller('TaskCtrl', function($scope, $http,$rootScope) 
         $("#modal_message").modal('show');
         $scope.openTask = task_id;
     };
-
+    $scope.result = {};
     $scope.SendRequest = function() {
         $scope.result.task_id = $scope.openTask;
-
         $http({
             url: '/request/add',
             method: 'post',

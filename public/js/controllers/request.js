@@ -124,7 +124,7 @@ angular.module('app').controller('RequestCtrl', function($scope, $http) {
         $scope.disputeRequest = request;
         $("#dispute").modal('show');
     };
-
+    $scope.dispute = {};
     $scope.SendDispute = () => {
         $scope.dispute.task_id = $scope.disputeTask;
             $http({

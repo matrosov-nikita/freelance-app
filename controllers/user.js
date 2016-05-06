@@ -63,6 +63,14 @@ router.get('/verify', function(req,res,next) {
     });
 });
 
+router.get('/reviews', function (req,res,next) {
+    req.user.getReviews().then((result)=> {
+        res.json(result);
+    }, (err) => {
+        return next(err);
+    });
+});
+
 router.post('/logout',CheckUser, function(req,res) {
     req.session.destroy();
     res.send('/');
@@ -114,7 +122,7 @@ router.post('/tasks/delete',CheckUser, function(req,res,next) {
         if (req.user.role!="Администратор" && (task.author.toString() != req.user._id.toString() || task.status!='Поиск исполнителей'))
         {
             return next(new HttpError(403,'Недостаточно прав для удаления данного задания'));
-        }
+        };
         task.removeTask((err) => {
             if (err) return next(err);
             res.json('Задание успешно удалено');
