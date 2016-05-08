@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 router.get('/ordersperdate', (req,res,next)=> {
     var Task = mongoose.model('Task');
     var result = {};
+    console.log(req.query.id);
     Task.find({author: req.query.id},(err,tasks)=> {
         if (err) return next(err);
         tasks.forEach((task)=> {

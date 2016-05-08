@@ -64,10 +64,14 @@ router.get('/verify', function(req,res,next) {
 });
 
 router.get('/reviews', function (req,res,next) {
-    req.user.getReviews().then((result)=> {
-        res.json(result);
-    }, (err) => {
-        return next(err);
+    var User = mongoose.model('User');
+    User.findOne({_id: req.query.id}, (err, user) => {
+        if (err) return next(err);
+        user.getReviews().then((result)=> {
+            res.json(result);
+        }, (err) => {
+            return next(err);
+        });
     });
 });
 

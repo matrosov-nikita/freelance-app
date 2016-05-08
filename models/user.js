@@ -154,6 +154,7 @@
                  var result  = requests.filter((request)=> {
                     return (request.task.status=="Выполнено");
                 });
+
                 resolve(result);
             });
         })
@@ -164,7 +165,6 @@
         return new Promise(function(resolve, reject) {
             self.getExecuterTasks().then((tasks)=> {
                 var comments = tasks.map((item)=> {
-                    console.log(item);
                     return {
                         comment: item.task.comment,
                         task_name: item.task.header,
@@ -278,6 +278,8 @@
     };
     userSchema.methods.setMark = function(mark,callback) {
         var self = this;
+        console.log("оценка");
+        console.log(+mark);
         switch(+mark) {
             case 0: self.marks.positive+=1; break;
             case 1: self.marks.neitral+=1; break;

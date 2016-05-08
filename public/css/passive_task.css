@@ -10,3 +10,6 @@ li i {
 .button_wrapper {
     text-align: center;
 }
+li a {
+    color: #df691a !important
+}

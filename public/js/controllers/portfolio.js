@@ -17,9 +17,10 @@ angular.module("app").controller('PortfolioCtrl', function($scope, $http) {
     };
 
     $scope.getReviews = () => {
+
         $http({
             method: "get",
-            url: "/user/reviews"
+            url: "/user/reviews?id="+$scope.user._id
         }).then((resp)=> {
             $scope.reviews = resp.data;
             console.log($scope.reviews);

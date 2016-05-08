@@ -58,19 +58,19 @@ block content
                         ul
                             li.positive Положительные: {{user.marks.positive}}
                                 .progress.progress-striped.active
-                                    .progress-bar(style='width: #{user.marks.positive/(user.marks.positive+user.marks.neitral+user.marks.negative)*100}%')
+                                    .progress-bar(style='width: {{user.marks.positive/(user.marks.positive+user.marks.neitral+user.marks.negative)*100}}%')
                             li.neitral Нейтральные: {{user.marks.neitral}}
                                 .progress.progress-striped.active
-                                    .progress-bar(style='width: #{user.marks.neitral / (user.marks.positive + user.marks.neitral + user.marks.negative) * 100}%')
+                                    .progress-bar(style='width: {{user.marks.neitral / (user.marks.positive + user.marks.neitral + user.marks.negative) * 100}}%')
                             li.negative Отрицательные: {{user.marks.negative}}
                                 .progress.progress-striped.active
-                                    .progress-bar(style='width: #{user.marks.negative / (user.marks.positive + user.marks.neitral + user.marks.negative) * 100}%')
+                                    .progress-bar(style='width: {{user.marks.negative / (user.marks.positive + user.marks.neitral + user.marks.negative) * 100}}%')
                         p.rating Рейтинг: #{user_info.rating}
                         div(ng-controller="StatsCtrl")
                             div.chart-container Активность размещения заданий
-                                canvas(drawing, user_id="#{user._id}", url="/stats/ordersperdate")
+                                canvas(drawing,  url="/stats/ordersperdate")
                             div.chart-container Активность выполнения заданий
-                                canvas(drawing, user_id="#{user._id}", url="/stats/worksperdate")
+                                canvas(drawing,  url="/stats/worksperdate")
                     .well.tab-pane.fade(id="reviews", ng-init="getReviews()")
                         .review.clearfix(ng-repeat="review in reviews")
                             include includes/review

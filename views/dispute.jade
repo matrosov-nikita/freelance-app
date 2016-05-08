@@ -50,20 +50,20 @@ block content
                                 div(ng-show="isEmpty(addComment.comment.$error)",style="color: #F2B1B1") {{addComment.comment.$error}}
                                 .marks
                                     p Оценка исполнителя:
-                                    input(type ='radio', name='mark',value="0",required)
+                                    input(type ='radio', name='mark',value="0", ng-model="comment.mark",required)
                                     |    Положительная
                                     br
-                                    input(type ='radio', name='mark', value="1")
+                                    input(type ='radio', name='mark', value="1", ng-model="comment.mark")
                                     |    Нейтральная
                                     br
-                                    input(type ='radio', name='mark', value="2" )
+                                    input(type ='radio', name='mark', value="2",ng-model="comment.mark" )
                                     |    Отрицательная
                             .col-lg-2.choose
                                 label
-                                    input(type='radio',name="choose", value='0',required)
+                                    input(type='radio',name="choose", value='0',ng-model="comment.choose", required)
                                     |    В пользу заказчика
                                 label
-                                    input(type='radio', name="choose",value='1')
+                                    input(type='radio', name="choose",value='1', ng-model="comment.choose")
                                     |    В пользу исполнителя
                         .btn-wrap
                             button.btn.btn-success(type="submit") Отправить решение

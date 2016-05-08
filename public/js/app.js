@@ -74,7 +74,7 @@ var App = angular.module('app',[])
             {
                 $http({
                     method:'get',
-                    url: attrs.url + '?id='+attrs.userId
+                    url: attrs.url + '?id='+scope.user._id
                 }).then(successCallback = (resp) => {
                     scope.tasksPerDate = scope.fillCalendarDate(resp.data);
                     var ctx = element[0].getContext('2d');

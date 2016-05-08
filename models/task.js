@@ -141,7 +141,7 @@
         })
     };
     task.statics.getAll = function(callback) {
-        Task.find({},(err,tasks)=> {
+        Task.find({}).populate('author').exec((err,tasks)=> {
             if (err) return callback(err);
             return callback(null,tasks);
         })
@@ -189,8 +189,6 @@
             });
         },
         (err)=> {
-            console.log(err);
-            console.log("не удалось здесь вот удалить задание");
                cb(new HttpError(500,"Не удалось удалить задание"));
         });
     };
@@ -251,7 +249,6 @@
         }).then((result)=> {
             return Task.removeCollection(result);
         },()=> {
-            console.log("Н удалсь удалить заявки");
         });
     };
 
@@ -265,7 +262,6 @@
         }).then((result)=> {
             return Task.removeCollection(result);
         }, ()=> {
-            console.log("не удалсь удалить собщения");
         });
     };
 
@@ -279,7 +275,6 @@
         }).then((result)=> {
             return Task.removeCollection(result);
         },()=> {
-            console.log("не удалсь удалить нотификационные сообщения");
         });
     };
 
@@ -319,8 +314,6 @@
         this.dateAccepted = new Date();
         var self = this;
         this.save(function(err){
-            console.log("addComment");
-            console.log(err);
             if (err) return callback(new HttpError(422,err.errors));
             return callback(null,self);
         });
