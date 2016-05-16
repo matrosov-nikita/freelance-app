@@ -45,7 +45,6 @@ class Server {
 
 
         app.get('/', function(req,res) {
-            console.log('im here');
             res.render('auth');
         });
         app.use("/user",Controller.User);

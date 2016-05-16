@@ -12,6 +12,7 @@ router.get('/ordersperdate', (req,res,next)=> {
             var day = new Date(task._created).toDateString();
             result[day] = result[day]+1 || 1;
         });
+        console.log(result);
         res.json(result);
     })
 });
@@ -28,6 +29,7 @@ router.get('/worksperdate',(req,res,next)=> {
             var day = new Date(item.task._created).toDateString();
             result[day] = result[day]+1 || 1;
         });
+        console.log("result");
         res.json(result);
     });
 });

@@ -20,7 +20,10 @@ angular.module('app').controller('RequestCtrl', function($scope, $http) {
             if (el.hasOwnProperty('requests'))
             {
                 el.requests.forEach(function(request) {
-                     request.date =new Date(el.task.deadline) - new Date()?new Date(el.task.deadline) - new Date():"Срок истек";
+                    console.log(new Date(el.task.deadline).toLocaleString());
+                    console.log(new Date().toLocaleString());
+                    console.log(new Date(el.task.deadline) - new Date());
+                     request.date =new Date(el.task.deadline) - new Date();
                 });
             }
 

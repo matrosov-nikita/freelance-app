@@ -1,13 +1,33 @@
 /*==========  Desktop First Method  ==========*/
 
+@media only screen and (max-width : 1400px) {
+    .last-tasks {
+        position: fixed;
+        right: 0;
+    }
+    .messages {
+        position: fixed;
+    }
+}
 /* Large Devices, Wide Screens */
 @media only screen and (max-width : 1200px) {
-
+    .last-tasks {
+        position: fixed;
+        right: 0;
+    }
+    .messages {
+        position: fixed;
+    }
 }
 
 /* Medium Devices, Desktops */
 @media only screen and (max-width : 992px) {
-
+.row .last-tasks {
+    position: relative;
+}
+    .messages {
+        position: relative;
+    }
 }
 
 /* Small Devices, Tablets */

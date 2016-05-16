@@ -72,9 +72,12 @@ var App = angular.module('app',[])
         return  {
             link: function (scope,element,attrs)
             {
+                console.log(scope.user);
+                var params="";
+                if (scope.user) params = "?id="+scope.user._id;
                 $http({
                     method:'get',
-                    url: attrs.url + '?id='+scope.user._id
+                    url: attrs.url + params
                 }).then(successCallback = (resp) => {
                     scope.tasksPerDate = scope.fillCalendarDate(resp.data);
                     var ctx = element[0].getContext('2d');
@@ -108,6 +111,27 @@ App.filter('requests', function() {
         });
         return items;
     }
+});
+App.filter('timespan', function () {
+   return function(diff) {
+        if (diff>0)
+        {
+            var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            diff -=  days * (1000 * 60 * 60 * 24);
+
+            var hours = Math.floor(diff / (1000 * 60 * 60));
+            diff -= hours * (1000 * 60 * 60);
+
+            var mins = Math.floor(diff / (1000 * 60));
+            diff -= mins * (1000 * 60);
+
+            var seconds = Math.floor(diff / (1000));
+            diff -= seconds * (1000);
+            return days + " дн. " + hours + " ч. " + mins + " мин. " + seconds + " сек."
+        }
+        return "Срок истек!";
+
+   }
 });
 App.config(['$httpProvider', function($httpProvider) {
     $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
