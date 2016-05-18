@@ -68,9 +68,12 @@ block content
                         p.rating Рейтинг: #{user_info.rating}
                         div(ng-controller="StatsCtrl")
                             div.chart-container Активность размещения заданий
-                                canvas(drawing,  url="/stats/ordersperdate")
+                                include includes/dateFilter
+                                div(drawing,  url="/stats/ordersperdate")
+                        div(ng-controller="StatsCtrl")
                             div.chart-container Активность выполнения заданий
-                                canvas(drawing,  url="/stats/worksperdate")
+                                include includes/dateFilter
+                                div(drawing,  url="/stats/worksperdate")
                     .well.tab-pane.fade(id="reviews", ng-init="getReviews()")
                         .review.clearfix(ng-repeat="review in reviews")
                             include includes/review

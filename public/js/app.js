@@ -70,29 +70,44 @@ var App = angular.module('app',[])
 })
     .directive('drawing',function($http) {
         return  {
+            restrict: "EA",
             link: function (scope,element,attrs)
             {
-                console.log(scope.user);
+                var show = (data) => {
+                    while (element[0].hasChildNodes()) {
+                        element[0].removeChild(element[0].lastChild);
+                    }
+                    var canvas = document.createElement('canvas');
+                    element[0].appendChild(canvas);
+                    Chart.defaults.global.legend = false;
+                    new Chart(canvas.getContext('2d'), {
+                        type: 'line',
+                        data: data
+                    });
+                };
+
                 var params="";
                 if (scope.user) params = "?id="+scope.user._id;
                 $http({
                     method:'get',
                     url: attrs.url + params
                 }).then(successCallback = (resp) => {
-                    scope.tasksPerDate = scope.fillCalendarDate(resp.data);
-                    var ctx = element[0].getContext('2d');
-                    Chart.defaults.global.legend = false;
-                    var myLineChart = new Chart(ctx, {
-                        type: 'line',
-                        data: scope.tasksPerDate
-                    });
-
+                    scope.pureDate = resp.data;
+                    scope.getFormatChartData("month",scope.pureDate);
+                    //show(scope.tasksPerDate);
                 }, errorCallback = (resp)=> {
-
+                    error_callback(null,resp.data,"Не удалось полуить статистику");
                 });
+
+
+               scope.$watch('tasksPerDate', function(newVal, oldVal) {
+                   if (newVal!==oldVal)
+                   {
+                       show(newVal);
+                   }
+                },false)
             }
         }
-
     });
 
 App.filter('orders', function() {

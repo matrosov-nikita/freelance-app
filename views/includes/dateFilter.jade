@@ -1,0 +1,7 @@
+div.dateFilter
+    a(ng-click='getFormatChartData("month",pureDate)') Месяц
+    a(ng-click='getFormatChartData("week",pureDate)')  Неделя
+    a(ng-click='getFormatChartData("yesterday",pureDate)')  Вчера
+    a(ng-click='getFormatChartData("today",pureDate)') Сегодня
+input(type="date",ng-change="change()",ng-model="startDate")
+input(type="date",ng-change="change()",ng-model="endDate")

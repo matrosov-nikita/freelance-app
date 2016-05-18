@@ -128,3 +128,10 @@ canvas {
     font-style: italic; }
   .review .customer {
     float: right; }
+
+.dateFilter {
+  display: block; }
+  .dateFilter a {
+    margin-right: 15px; }
+    .dateFilter a:last-child {
+      margin-right: 0; }
