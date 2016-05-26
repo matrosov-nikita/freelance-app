@@ -23,17 +23,17 @@
                 button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
                 h4.modal-title {{task.header}}
             .modal-body
-                form(ng-submit ="updateTask($event,task._id)", name="updateForm", novalidate, enctype="multipart/form-data")
+                form(ng-submit ="updateTask($event,task._id, $index)", name="updateForm[$index]", novalidate, enctype="multipart/form-data")
                     +genGroupField('header','Заголовок',"","task.header")(tag='input',type="text")
-                    div(ng-show="isEmpty(updateForm.header.$error)",style="color: #F2B1B1") {{updateForm.header.$error}}
+                    div(ng-show="isEmpty(updateForm[$index].header.$error)",style="color: #F2B1B1") {{updateForm[$index].header.$error}}
                     +genGroupField('description','Описание',"","task.description")(tag='textarea')
-                    div(ng-show="isEmpty(updateForm.description.$error)",style="color: #F2B1B1") {{updateForm.description.$error}}
+                    div(ng-show="isEmpty(updateForm[$index].description.$error)",style="color: #F2B1B1") {{updateForm[$index].description.$error}}
                     +genGroupField('price','Цена',"","task.price")(tag='input',type="number")
-                    div(ng-show="isEmpty(updateForm.price.$error)",style="color: #F2B1B1") {{updateForm.price.$error}}
+                    div(ng-show="isEmpty(updateForm[$index].price.$error)",style="color: #F2B1B1") {{updateForm[$index].price.$error}}
                     +genGroupField('deadline','Срок сдачи',"","task.deadline")(tag='input',type="datetime-local")
-                    div(ng-show="isEmpty(updateForm.deadline.$error)",style="color: #F2B1B1") {{updateForm.deadline.$error}}
+                    div(ng-show="isEmpty(updateForm[$index].deadline.$error)",style="color: #F2B1B1") {{updateForm[$index].deadline.$error}}
                     +genGroupField('files','Файлы',"","files")(tag='input',type="file")
-                    button.btn.btn-primary.continue(type="submit") Сохранить
-            .modal-footer
-                button.btn.btn-default(type='button', data-dismiss='modal') Закрыть
+                    .modal-footer
+                        button.btn.btn-primary.continue(type="submit") Сохранить
+                        button.btn.btn-default(type='button', data-dismiss='modal') Закрыть
 

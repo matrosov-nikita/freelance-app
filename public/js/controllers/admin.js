@@ -99,5 +99,13 @@ angular.module('app').controller('Admin', function($scope, $http) {
 
     $scope.viewTask = function(task_id) {
         $("#"+task_id).modal('show');
+    };
+
+    $scope.colors = {
+        "Поиск исполнителей": 'gray',
+        "В работе": '#2767B0',
+        "Ожидает проверки": '#B0AC27',
+        "Арбитраж": '#F14144',
+        "Выполнено": '#2C961D'
     }
 });

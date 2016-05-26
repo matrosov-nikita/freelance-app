@@ -30,13 +30,11 @@
             minlength: [20,'Минимальная длина описания задания 20 символов'],
             maxlength:[4000,'Максимальная длина описания задания 400 символов']
         },
-
-
-            deadline: {
-                type: Date,
-                required: [true,'Срок сдачи задания обязателен для заполнения'],
-                validate: [dateValidator, 'Срок сдачи задания должен быть не меньше 15 минут и не больше года']
-            },
+        
+        deadline: {
+            type: Date,
+            required: [true,'Срок сдачи задания обязателен для заполнения']
+        },
 
         files:
             [{
@@ -94,12 +92,12 @@
         }
     });
 
-    function dateValidator(value) {
-        var min = new Date(+new Date + 20*60000);
-        var max = new Date(+new Date + 365*24*60*60000);
-        var deadline = new Date(+value-3*60*60000);
+    task.path('deadline').validate(function(v) {
+        var min = new Date(+this._created+ 20*60000);
+        var max = new Date(+this._created + 365*24*60*60000);
+        var deadline = new Date(+v-3*60*60000);
         return min < deadline && deadline < max;
-    }
+    },'Срок сдачи задания должен быть не меньше 15 минут и не больше года');
 
     task.statics.add = function(data, callback) {
         var Category = mongoose.model("Category");

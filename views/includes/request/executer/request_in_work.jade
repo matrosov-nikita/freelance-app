@@ -1,8 +1,9 @@
 .header
     span {{request.task.header}}
     .icon_set
+        span {{request.date| timespan}}
         i.fa.fa-envelope(ng-click="showChat($event, request.task._id)")
         a(href="/request/sendresult/{{request._id}}"): i.fa.fa-check
-        i.fa.fa-balance-scale
+        i.fa.fa-balance-scale(ng-click="OpenDispute(request._id, request.task._id)")
 include ../../chat
 

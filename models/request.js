@@ -36,6 +36,9 @@ request.statics.add = function(data, callback) {
        var Task = mongoose.model('Task');
        Task.findOne({_id: data.task_id}, function(err,task) {
            if (err) return callback(err);
+
+           if (JSON.stringify(task.author) == JSON.stringify(data.author))
+               return callback(new HttpError(404,"Вы являетесь автором этого задания"));
            if (!task) {
                return callback(new HttpError(404,"Задание не найдено"));
            }
@@ -48,7 +51,6 @@ request.statics.add = function(data, callback) {
                    else {
                        request.save(function(err) {
                            if (err) {
-                               console.log("ошибка");
                                return callback(new HttpError(422,err.errors));
                            }
                            task.requests.push(request._id);

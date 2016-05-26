@@ -17,15 +17,8 @@ angular.module('app').controller('RequestCtrl', function($scope, $http) {
                 "Выполнено": parent.req_complete,
             };
 
-            if (el.hasOwnProperty('requests'))
-            {
-                el.requests.forEach(function(request) {
-                    console.log(new Date(el.task.deadline).toLocaleString());
-                    console.log(new Date().toLocaleString());
-                    console.log(new Date(el.task.deadline) - new Date());
-                     request.date =new Date(el.task.deadline) - new Date();
-                });
-            }
+           if (el.task.status == "В работе")
+               el.date = new Date(el.task.deadline) - new Date();
 
             status_actions[el.task.status].push(el);
         }

@@ -19,7 +19,6 @@ function error_callback(scopeForm,xhr,title) {
     else
     {
         console.log(scopeForm);
-        console.log(xhr);
         for (var key in scopeForm)
         {
             if (scopeForm[key] && scopeForm[key].$error) {
@@ -27,7 +26,9 @@ function error_callback(scopeForm,xhr,title) {
             }
         }
         for (key in xhr.message) {
+            console.log(key);
             scopeForm[key].$error = xhr.message[key].message;
+            console.log( scopeForm[key].$error);
         }
 
     }

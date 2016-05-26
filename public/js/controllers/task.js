@@ -30,6 +30,7 @@ angular.module('app').controller('TaskCtrl', function($scope, $http,$rootScope) 
         }).success((resp)=> {
             window.location.href="/request/get";
         }).error((resp)=> {
+
             error_callback($scope.addForm,resp,'Ошибка добавления задания');
         });
     };
@@ -138,8 +139,8 @@ angular.module('app').controller('TaskCtrl', function($scope, $http,$rootScope) 
        return task.requests.some(x=>x.executer==executer);
     };
 
-
-    $scope.updateTask = function(ev,id) {
+    $scope.updateForm = [];
+    $scope.updateTask = function(ev,id, index) {
         var formData = new FormData(ev.currentTarget);
         formData.append("id",id);
         $http({
@@ -148,10 +149,10 @@ angular.module('app').controller('TaskCtrl', function($scope, $http,$rootScope) 
             data: formData,
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined}
-        }).then((response) => {
+        }).then(function successCallback(response)  {
            success_callback("Задание успешно обновлено");
-        }, (response)=> {
-            error_callback($scope.updateForm,response.data,"Не удалось обновить задание");
+        }, function errorCallback(response) {
+            error_callback($scope.updateForm[index],response.data,"Не удалось обновить задание");
         });
     }
 });

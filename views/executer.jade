@@ -24,9 +24,9 @@ block content
                         form(ng-submit="SendRequest()", name="addRequest", id="addRequest")
                             textarea.message(name="message",placeholder="Сообщение",ng-model="result.message")
                             div(ng-show="isEmpty(addRequest.message.$error)",style="color: #F2B1B1") {{addRequest.message.$error}}
-                            button.btn.btn-primary(type="submit") Отправить заявку
-                    .modal-footer
-                        button.btn.btn-default.no(type='button', data-dismiss='modal') Закрыть
+                            .modal-footer
+                                button.btn.btn-primary(type="submit") Отправить заявку
+                                button.btn.btn-default.no(type='button', data-dismiss='modal') Закрыть
 
 block additional_scripts
     script(src="/js/controllers/task.js")

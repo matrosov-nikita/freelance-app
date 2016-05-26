@@ -57,25 +57,32 @@ block content
                 .row
                     .col-lg-7
                         table.table.table-striped.table-hover
+                            colgroup
+                                col(span='1', style='width: 5%;')
+                                col(span='1', style='width: 45%;')
+                                col(span='1', style='width: 10%;')
+                                col(span='1', style='width: 35%;')
+                                col(span='1', style='width: 5%;')
                             thead
                                 tr
                                     th #
                                     th Наименование
                                     th Кол-во заявок
+                                    th Статус
                             tbody
                                 tr
                                     td
                                     td: input(type="text",ng-model="search.task.header")
                                     td
-                                        label от
-                                            input(type="number",min="0",ng-model="search.task.requests.min")
-                                        label до
-                                            input(type="number",max="1000",ng-model="search.task.requests.max")
+                                            input(type="number",min="0",ng-model="search.task.requests.min",placeholder="от")
+                                            input(type="number",max="1000",ng-model="search.task.requests.max", placeholder="до")
+                                    td: input(type="text",ng-model="search.task.status")
                                 tr(ng-repeat="task in filteredTasks = (tasks |requests:'requests':search.task.requests.min:search.task.requests.max)" +
-                                "| filter: {header: search.task.header}")
+                                "| filter: {header: search.task.header, status: search.task.status}", ng-style="{'background-color': '{{colors[task.status]}}'}")
                                     td {{$index}}
                                     td {{task.header}}
                                     td {{task.requests.length}}
+                                    td {{task.status}}
                                     td: i.fa.fa-times(ng-click="deleteTask(task._id)")
                                     td
                                         i.fa.fa-file-o(data-toggle="modal",data-target="#{{task._id}}")
@@ -103,10 +110,14 @@ block content
                                         td {{task.header}}
                                         td {{task.requests.length}}
             .well.tab-pane.fade(id="stats",ng-controller="StatsCtrl")
-                div.chart-container Активность размещения заданий
-                    canvas(drawing, url="/stats/admin/ordersperdate")
-                div.chart-container Активность выполнения заданий
-                    canvas(drawing, url="/stats/admin/worksperdate")
+                div(ng-controller="StatsCtrl")
+                    div.chart-container Активность размещения заданий
+                        include includes/dateFilter
+                        div(drawing,  url="/stats/admin/ordersperdate")
+                div(ng-controller="StatsCtrl")
+                    div.chart-container Активность выполнения заданий
+                        include includes/dateFilter
+                        div(drawing,  url="/stats/admin/worksperdate")
 
 
 block additional_scripts

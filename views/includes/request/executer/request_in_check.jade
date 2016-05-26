@@ -2,4 +2,5 @@
     span {{request.task.header}}
     .icon_set
         i.fa.fa-envelope(ng-click="showChat($event, request.task._id)")
+        i.fa.fa-balance-scale(ng-click="OpenDispute(request._id, request.task._id)")
 include ../../chat

@@ -70,8 +70,6 @@ router.get('/sendresult/:request', function(req,res,next) {
     });
 
 router.post('/add', function(req,res,next) {
-    console.log("пришла заявка");
-    console.log(req.body);
     req.body.author = req.user._id;
     Request.add(req.body, function(err) {
         if (err) return next(err);

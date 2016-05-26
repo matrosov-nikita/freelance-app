@@ -32,15 +32,17 @@
 
 .authors {
   padding: 0; }
+  .authors button, .authors a {
+    float: right; }
+  .authors button {
+    margin-top: 5px; }
   .authors .author {
     width: 100%;
-    height: auto;
     border-top: none;
-    line-height: 30px;
     cursor: pointer;
-    position: relative;
     padding-left: 10px;
     display: inline-block;
+    line-height: 30px;
     background-color: #677e8f;
     border-bottom: 1px solid black;
     color: #fff; }

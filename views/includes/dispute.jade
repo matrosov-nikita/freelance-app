@@ -8,6 +8,6 @@
                 form(ng-submit="SendDispute()", name="addDispute", id="addDispute")
                     textarea.message(rows=12,name="dispute",placeholder="Причина арбитража",ng-model="dispute.message")
                     div(ng-show="isEmpty(addDispute.dispute.$error)",style="color: #F2B1B1") {{addDispute.dispute.$error}}
-                    button.btn.btn-primary(type="submit") Отправить жалобу
-            .modal-footer
-                button.btn.btn-default.no(type='button', data-dismiss='modal') Закрыть
+                    .modal-footer
+                        button.btn.btn-primary(type="submit") Отправить жалобу
+                        button.btn.btn-default.no(type='button', data-dismiss='modal') Закрыть
