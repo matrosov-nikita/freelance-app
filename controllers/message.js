@@ -22,26 +22,6 @@ router.get('/getByTask', (req,res,next)=> {
     })
 });
 
-router.get('/subscribe/customer',(req,res)=> {
-    var Task = mongoose.model('Task');
-    Task.getMyCustomerTasks(req.user, function(err,mytasks) {
-        if (err) return next(err);
-        mytasks.forEach((task)=> {
-            chat.subscribe(task._id,res);
-        });
-    });
-});
-
-router.get('/subscribe/executer', (req,res) => {
-   var Request = mongoose.model('Request');
-    Request.getMyExecuterTasks(req.user._id,(err,tasks) => {
-        if (err) return next(err);
-        tasks.forEach((task)=> {
-            chat.subscribe(task.task,res);
-        });
-    });
-});
-
 router.get('/subscribe/:task',(req,res)=> {
    chat.subscribe(req.params.task,res);
 });

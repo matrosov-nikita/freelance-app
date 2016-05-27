@@ -27,30 +27,35 @@ angular.module('app').controller('Chat', function($scope, $http,$rootScope) {
             $scope.addMessage(response.data.task, response.data);
             $scope.subscribeByTask(response.data.task);
         }
-
-
     };
 
-    $scope.subscribeCustomersTasks = () => {
-        $http({
-            url: '/message/subscribe/customer',
-            method: 'get'
-        }).then(function (response) {
-            alert("RESP");
-           $scope.resp(response);
-        }, function (response) {
+    $scope.subscribeAllMyCustomerTask = () => {
+      $http({
+          method: 'get',
+          url: '/task/my/customerall'
+      }).then(
+           function successClbk(response) {
+            var ids = response.data.map((task) => {
+                return task._id;
+            });
+           ids.forEach($scope.subscribeByTask);
+        }, function errorClbk(response){
+
         });
     };
 
-    $scope.subscribeExecuterTasks = () => {
+    $scope.subscribeAllMyExecuterTask = () => {
         $http({
-            url: '/message/subscribe/executer',
-            method: 'get'
-        }).then(function (response) {
-           $scope.resp(response);
-        }, function (response) {
+            method: 'get',
+            url: '/task/my/executerall'
+        }).then(
+            function successClbk(response) {
+                console.log("RESPONSE INFO");
+                console.log(response);
+                response.data.forEach($scope.subscribeByTask);
+            }, function errorClbk(response){
 
-        });
+            });
     };
 
     $scope.subscribeByTask = (task)=> {

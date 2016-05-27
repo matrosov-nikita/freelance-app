@@ -126,9 +126,20 @@ router.get('/my/get', function(req,res,next) {
     res.render('customer_tasks')
 });
 
-router.get('/my/tasks', function(req,res,next) {
+router.get('/my/customerall', function(req,res,next) {
     Task.getByCustomerId(req.user._id, (err,tasks) => {
         if (err) return next(err);
+        res.json(tasks);
+    });
+});
+
+router.get('/my/executerall', function(req,res,next) {
+    var Request = mongoose.model('Request');
+    Request.getMyExecuterTasks(req.user._id,(err,tasks) => {
+        if (err) return next(err);
+        tasks = tasks.map((el)=> {
+            return el.task;
+        });
         res.json(tasks);
     });
 });
