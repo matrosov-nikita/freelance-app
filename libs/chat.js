@@ -61,6 +61,7 @@ exports.getStatusMessages = () => {
 
 exports.sendMessage = (task,message) => {
   subscribes[task].forEach((user)=> {
+      console.log(message);
       user.send(message);
   });
     subscribes[task] = [];

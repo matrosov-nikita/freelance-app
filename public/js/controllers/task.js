@@ -68,7 +68,6 @@ angular.module('app').controller('TaskCtrl', function($scope, $http,$rootScope) 
         }).success((resp)=> {
             window.location.href="/request/getown";
         }).error((resp)=> {
-            console.log(resp);
             error_callback($scope.sendresult,resp,"Не удалось отправить работу заказчику");
         });
     };
@@ -137,6 +136,20 @@ angular.module('app').controller('TaskCtrl', function($scope, $http,$rootScope) 
 
     $scope.checkTask  = function(task,executer) {
        return task.requests.some(x=>x.executer==executer);
+    };
+
+    $scope.loadMyTasks = () => {
+        $http({
+            method:"get",
+            url:"/task/my/tasks"
+        }).then(function success(response) {
+            $scope.my_tasks = response.data;
+            $scope.my_tasks.forEach((task)=> {
+               task.deadline = new Date(task.deadline);
+            });
+        }, function errorCallback(response) {
+            error_callback(null,response.data,"Не удалось получить ваши задания");
+        });
     };
 
     $scope.updateForm = [];

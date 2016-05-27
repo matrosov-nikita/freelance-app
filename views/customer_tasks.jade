@@ -5,7 +5,7 @@ block additional_styles
 block content
     include includes/navbar
     include mixins/genGroupField
-    .container-fluid(ng-controller="TaskCtrl", ng-init="my_tasks=#{JSON.stringify(my_tasks)}")
+    .container-fluid(ng-controller="TaskCtrl", ng-init="loadMyTasks()")
         .row
             include includes/notifications
             .col-lg-6.col-md-6.col-sm-7.col-lg-offset-3.col-md-offset-3

@@ -82,8 +82,6 @@ router.post('/update', function(req,res,next) {
             if (task.status!="Поиск исполнителей")
             return next(new HttpError(403,"Задание находится в состоянии "+task.status+".Редактирование невозможно"));
             var diff = req.body.price - task.price;
-            console.log("diff");
-            console.log(diff);
             if (task.author.score >= diff)
             {
                 task.edit(req.body, function(err,task) {
@@ -107,7 +105,6 @@ router.post('/update', function(req,res,next) {
                 });
             }
             else {
-                console.log("update balance error");
                 return next(new HttpError(403,"Недостаточно денег на балансе.Редактирование невозможно"));
             }
         });
@@ -123,6 +120,16 @@ router.get('/viewresult/:id', function(req,res,next) {
                 task: task
             }
         );
+    });
+});
+router.get('/my/get', function(req,res,next) {
+    res.render('customer_tasks')
+});
+
+router.get('/my/tasks', function(req,res,next) {
+    Task.getByCustomerId(req.user._id, (err,tasks) => {
+        if (err) return next(err);
+        res.json(tasks);
     });
 });
 

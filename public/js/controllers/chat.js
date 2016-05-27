@@ -24,7 +24,6 @@ angular.module('app').controller('Chat', function($scope, $http,$rootScope) {
             $scope.subscribeByTask(response.data.note.task._id);
         }
         else {
-            console.log(response);
             $scope.addMessage(response.data.task, response.data);
             $scope.subscribeByTask(response.data.task);
         }
@@ -37,6 +36,7 @@ angular.module('app').controller('Chat', function($scope, $http,$rootScope) {
             url: '/message/subscribe/customer',
             method: 'get'
         }).then(function (response) {
+            alert("RESP");
            $scope.resp(response);
         }, function (response) {
         });
@@ -85,17 +85,18 @@ angular.module('app').controller('Chat', function($scope, $http,$rootScope) {
         });
     };
 
+    $scope.chat.mes = {};
     $scope.add = (event, author, task) => {
         if (event.keyCode == 13) {
             $http({
                 url: '/message/add',
                 method: 'post',
                 data: {
-                    text: $scope.chat.mes,
+                    text: $scope.chat.mes[task],
                     task: task
                 }
             }).then(function successCallback(response) {
-                $scope.chat.mes = "";
+                $scope.chat.mes[task] = "";
             }, function errorCallback(response) {
 
             });

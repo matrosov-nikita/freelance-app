@@ -8,7 +8,7 @@ router.post('/add', (req,res,next)=> {
     var Message = mongoose.model("Message");
     Message.add(req.body,req.user._id, function(err,mes) {
        if (err) return next(err);
-       chat.sendMessage(task,mes);
+        chat.sendMessage(task,mes);
         res.send();
     });
 });
@@ -27,7 +27,6 @@ router.get('/subscribe/customer',(req,res)=> {
     Task.getMyCustomerTasks(req.user, function(err,mytasks) {
         if (err) return next(err);
         mytasks.forEach((task)=> {
-
             chat.subscribe(task._id,res);
         });
     });
