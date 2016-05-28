@@ -23,14 +23,9 @@ var App = angular.module('app',[])
                     });
                 };
                 scope.$watch('messages', function(newVal,oldVal) {
-                    if (newVal!==oldVal)
+                    if (newVal[attrs.messageList]!==oldVal[attrs.messageList])
                     {
-                        console.log("newVal");
-                        console.log(newVal);
-                        console.log("oldVal");
-                        console.log(oldVal);
                         uniqueResultOne(newVal[attrs.messageList],oldVal[attrs.messageList]).forEach((mes)=> {
-                            console.log(mes);
                             show(mes);
                         });
                     }

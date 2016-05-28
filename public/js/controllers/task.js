@@ -141,7 +141,7 @@ angular.module('app').controller('TaskCtrl', function($scope, $http,$rootScope) 
     $scope.loadMyTasks = () => {
         $http({
             method:"get",
-            url:"/task/my/tasks"
+            url:"/task/my/customerall"
         }).then(function success(response) {
             $scope.my_tasks = response.data;
             $scope.my_tasks.forEach((task)=> {

@@ -44,10 +44,8 @@ exports.subscribe = (task,user) => {
     if (!(task in subscribes)) subscribes[task]=[];
     subscribes[task].push(user);
     user.on('close', ()=> {
-        Object.keys(subscribes).forEach((task)=> {
-            var index = subscribes[task].indexOf(user);
-            if (index!==-1) subscribes[task].splice(index,1);
-        });
+        var index = subscribes[task].indexOf(user);
+        if (index!==-1) subscribes[task].splice(index,1);
     });
 };
 
@@ -61,7 +59,6 @@ exports.getStatusMessages = () => {
 
 exports.sendMessage = (task,message) => {
   subscribes[task].forEach((user)=> {
-      console.log(message);
       user.send(message);
   });
     subscribes[task] = [];

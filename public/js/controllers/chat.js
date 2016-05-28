@@ -39,8 +39,6 @@ angular.module('app').controller('Chat', function($scope, $http,$rootScope) {
                 return task._id;
             });
            ids.forEach($scope.subscribeByTask);
-        }, function errorClbk(response){
-
         });
     };
 
@@ -50,22 +48,16 @@ angular.module('app').controller('Chat', function($scope, $http,$rootScope) {
             url: '/task/my/executerall'
         }).then(
             function successClbk(response) {
-                console.log("RESPONSE INFO");
-                console.log(response);
                 response.data.forEach($scope.subscribeByTask);
-            }, function errorClbk(response){
-
             });
     };
 
     $scope.subscribeByTask = (task)=> {
         $http({
-            url: '/message/subscribe/'+task,
+            url: '/message/subscribe?task=' +task,
             method: 'get'
         }).then(function (response) {
             $scope.resp(response);
-        }, function (response) {
-
         });
     };
 

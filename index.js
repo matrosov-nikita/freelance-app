@@ -7,7 +7,7 @@ var server = new Server(conf.get("port"),conf.get("host"));
 
 var mongoose_address = conf.get("mongoose_address");
 mongoose.connect(mongoose_address, function(){
-   console.log("Соединился с БЖ по адресу " +  mongoose_address);
+   console.log("Соединился с БД по адресу " +  mongoose_address);
 });
 
 server.run();

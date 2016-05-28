@@ -7,12 +7,15 @@ var message = new Schema({
         minlength: [1,'Минимальная длина сообщения  1 символ'],
         maxlength:[100,'Максимальная длина сообщения 100 символов']
     },
+
     author: {
         type: Schema.ObjectId, ref: 'User'
     },
+
     task: {
         type: Schema.ObjectId, ref: 'Task'
     },
+
     datePublish: {
         type: Date
     }

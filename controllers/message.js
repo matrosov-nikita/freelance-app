@@ -9,8 +9,8 @@ router.post('/add', (req,res,next)=> {
     Message.add(req.body,req.user._id, function(err,mes) {
        if (err) return next(err);
         chat.sendMessage(task,mes);
-        res.send();
     });
+    res.send();
 });
 
 router.get('/getByTask', (req,res,next)=> {
@@ -22,8 +22,10 @@ router.get('/getByTask', (req,res,next)=> {
     })
 });
 
-router.get('/subscribe/:task',(req,res)=> {
-   chat.subscribe(req.params.task,res);
+router.get('/subscribe',(req,res)=> {
+    console.log("TASK");
+    console.log(req.query.task);
+   chat.subscribe(req.query.task,res);
 });
 
 router.get('/notify/get',(req,res,next)=> {

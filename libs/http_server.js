@@ -11,7 +11,6 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var checkUser = require('../middleware/checkUser');
 var Category = mongoose.model('Category');
-
 var app = express();
 
 class Server {
@@ -91,7 +90,9 @@ class Server {
         this.init();
         app.listen(this.port, () => {
            console.log("Сервер запущен");
+
         });
+
     }
 }
 
