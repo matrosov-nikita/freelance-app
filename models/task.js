@@ -1,6 +1,7 @@
     var mongoose = require('mongoose');
     var Schema = mongoose.Schema;
     var HttpError = require('../error/http_error');
+    var io = require('socket.io-client');
     var chat = require('../libs/chat');
     var config = require('../config/config');
     var fs = require('fs');
@@ -329,7 +330,13 @@
     };
 
     task.methods.changeStatus = function() {
-      chat.addNotification(this);
+        var socket = io.connect('ws://localhost:3000', {reconnect: true});
+        console.log('2');
+// Add a connect listener
+        socket.on('connect', function(socket) {
+            console.log('Connected!');
+        });
+        socket.emit('notific message',this);
     };
 
     Task = module.exports = mongoose.model("Task",task);

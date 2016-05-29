@@ -21,6 +21,8 @@
     "node-sass-middleware": "*",
     "nodemailer": "^2.3.2",
     "path": "^0.12.7",
+    "socket.io": "^1.4.6",
+    "socket.io-client": "^1.4.6",
     "util": "^0.10.3"
   },
   "devDependencies": {

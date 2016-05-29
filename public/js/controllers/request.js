@@ -17,13 +17,18 @@ angular.module('app').controller('RequestCtrl', function($scope, $http) {
                 "Выполнено": parent.req_complete,
             };
 
-           if (el.task.status == "В работе")
-               el.date = new Date(el.task.deadline) - new Date();
 
+          if (el.task.status == "Поиск исполнителей" || el.task.status == "В работе") {
+                if (el.hasOwnProperty('requests'))
+                {
+                    el.requests.forEach((request)=>request.date = new Date(el.task.deadline) - new Date());
+                }
+                else {
+                    el.date = new Date(el.task.deadline) - new Date();
+                }
+           }
             status_actions[el.task.status].push(el);
         }
-
-
         data.forEach(function(el) {
             add_request_el(el);
         });
@@ -72,6 +77,7 @@ angular.module('app').controller('RequestCtrl', function($scope, $http) {
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
                 confirmButtonText: "Да, принять",
+                cancelButtonText: "Отмена",
                 closeOnConfirm: false },
             function(){
                 $http({
@@ -113,14 +119,14 @@ angular.module('app').controller('RequestCtrl', function($scope, $http) {
         });
     };
 
-
-
     $scope.OpenDispute = function(request,task_id) {
         $scope.disputeTask = task_id;
         $scope.disputeRequest = request;
         $("#dispute").modal('show');
     };
+
     $scope.dispute = {};
+
     $scope.SendDispute = () => {
         $scope.dispute.task_id = $scope.disputeTask;
             $http({
@@ -130,7 +136,10 @@ angular.module('app').controller('RequestCtrl', function($scope, $http) {
             }).then(function successCallback(response) {
                 $('#dispute').modal('toggle');
                 if ($scope.disputeRequest && response) {
-                    ComeRequestToAnotherCollection( $scope.requests.req_work,$scope.requests.req_dispute,$scope.disputeRequest,  $scope.disputeTask);
+                    ComeRequestToAnotherCollection($scope.requests.req_work, $scope.requests.req_dispute, $scope.disputeRequest, $scope.disputeTask);
+                }
+                else {
+                    location.href = "/request/get";
                 }
             }, function errorCallback(response) {
                 error_callback($scope.addDispute,response.data,"Не удалось отправить жалобу");
@@ -146,6 +155,7 @@ angular.module('app').controller('RequestCtrl', function($scope, $http) {
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
                 confirmButtonText: "Да, принять",
+                cancelButtonText: "Отмена",
                 closeOnConfirm: false },
             function(){
                 $http({
@@ -164,7 +174,6 @@ angular.module('app').controller('RequestCtrl', function($scope, $http) {
                     error_callback(null,resp,"Не удалось подтвердить заявку" )
                 });
             });
-
     };
 
     $scope.viewAuthorInfo = (id)=>

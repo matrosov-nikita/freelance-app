@@ -2,5 +2,5 @@ style
     include ../../public/css/notify.css
 .col-lg-3.col-md-3.col-sm-5.col-xs-12.messages
     p Сообщения
-    .well.notifyies(ng-controller="Chat as chat",ng-init="subscribeAllMyCustomerTask();subscribeAllMyExecuterTask();getNotifications();")
+    .well.notifyies(ng-controller="Chat as chat",ng-init="init('#{user._id}'); getNotifications();")
         div(notification-list="notifications")

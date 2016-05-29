@@ -114,6 +114,7 @@ angular.module('app').controller('TaskCtrl', function($scope, $http,$rootScope) 
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
                 confirmButtonText: "Да, принять",
+                cancelButtonText: "Отмена",
                 closeOnConfirm: false },
             function(){
                 $http({
@@ -181,10 +182,12 @@ $(document).ready(function() {
         rewindNav:false
     });
     $('.continue').click(function() {
-        owl.trigger('owl.next');
-        $("input[name='category_name']").val($("a.active").html().split('(')[0]);
-        $("input[name='category_id']").val($("a.active").attr("data-id"));
-
+        if ($("a.active").attr("data-id"))
+        {
+            owl.trigger('owl.next');
+            $("input[name='category_name']").val($("a.active").html().split('(')[0]);
+            $("input[name='category_id']").val($("a.active").attr("data-id"));
+        }
     });
     $('.prev').click(function() {
         owl.trigger('owl.prev');

@@ -46,6 +46,7 @@ angular.module('app').controller('Admin', function($scope, $http) {
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
                 confirmButtonText: "Да, принять",
+                cancelButtonText: "Отмена",
                 closeOnConfirm: false },
             function(){
                 $http({
@@ -75,6 +76,7 @@ angular.module('app').controller('Admin', function($scope, $http) {
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
                 confirmButtonText: "Да, принять",
+                cancelButtonText: "Отмена",
                 closeOnConfirm: false },
             function(){
                 $http({

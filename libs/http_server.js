@@ -63,6 +63,9 @@ class Server {
 
         app.use('/stats', checkUser, Controller.Stats);
 
+        app.use((req, res, next) => {
+            res.sendHttpError(new HttpError(404,"Страница не найдена"));
+        });
         app.use(function(err,req,res,next) {
            if (typeof err == "number")
            {

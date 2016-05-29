@@ -18,59 +18,27 @@ angular.module('app').controller('Chat', function($scope, $http,$rootScope) {
     };
 
     $scope.resp = (response) => {
-        if (response.data.type=="notification")
+        if (response.type=="notification")
         {
-            $scope.addNotification(response.data.note);
-            $scope.subscribeByTask(response.data.note.task._id);
+            $scope.addNotification(response.note);
         }
         else {
-            $scope.addMessage(response.data.task, response.data);
-            $scope.subscribeByTask(response.data.task);
+            $scope.addMessage(response);
         }
     };
 
-    $scope.subscribeAllMyCustomerTask = () => {
-      $http({
-          method: 'get',
-          url: '/task/my/customerall'
-      }).then(
-           function successClbk(response) {
-            var ids = response.data.map((task) => {
-                return task._id;
-            });
-           ids.forEach($scope.subscribeByTask);
-        });
-    };
-
-    $scope.subscribeAllMyExecuterTask = () => {
-        $http({
-            method: 'get',
-            url: '/task/my/executerall'
-        }).then(
-            function successClbk(response) {
-                response.data.forEach($scope.subscribeByTask);
-            });
-    };
-
-    $scope.subscribeByTask = (task)=> {
-        $http({
-            url: '/message/subscribe?task=' +task,
-            method: 'get'
-        }).then(function (response) {
-            $scope.resp(response);
-        });
-    };
-
-    $scope.addMessage = (task,mes) => {
-        if ($rootScope.messages[task] === undefined) {
-            $rootScope.messages[task] = [];
+    $scope.addMessage = (mes) => {
+        console.log(mes);
+        if ($rootScope.messages[mes.task] === undefined) {
+            $rootScope.messages[mes.task] = [];
         }
-        $rootScope.messages[task].unshift({
+        $rootScope.messages[mes.task].unshift({
             id: mes._id,
             author: mes.author,
             date: new Date(mes.datePublish),
             message: mes.text
         });
+        $rootScope.$apply();
     };
 
     $scope.addNotification = (note) => {
@@ -83,22 +51,33 @@ angular.module('app').controller('Chat', function($scope, $http,$rootScope) {
     };
 
     $scope.chat.mes = {};
+
+    var socket = io('ws://localhost:3000');
+    $scope.init = (author) => {
+        socket.on('connect', function () {
+            console.log('подключиилсь к веб-сокетам');
+            socket.emit('subscribe',author);
+            socket.on('chat message', function(msg) {
+               $scope.resp(msg)
+            });
+            socket.on('notific message', function(notific) {
+               $scope.resp(notific);
+            });
+        });
+    };
+
     $scope.add = (event, author, task) => {
         if (event.keyCode == 13) {
-            $http({
-                url: '/message/add',
-                method: 'post',
-                data: {
+            var data = {
                     text: $scope.chat.mes[task],
                     task: task
-                }
-            }).then(function successCallback(response) {
-                $scope.chat.mes[task] = "";
-            }, function errorCallback(response) {
-
-            });
+            };
+            socket.emit('chat message',data,author);
+            $scope.chat.mes[task] = "";
         }
     };
+
+
     $rootScope.messages = {};
     $scope.showChat = (ev, task) => {
         $(ev.currentTarget).closest('.request').children('.chat').slideToggle();

@@ -2,6 +2,6 @@
     include request_header
     .authors
         .author(ng-repeat="req in request.requests",ng-click="viewAuthorInfo(req.executer._id)") {{req.executer.name}}
-            span {{request.date| timespan}}
-            button(ng-click="OpenDispute(request._id, request.task._id); $event.stopPropagation();").btn.btn-danger.btn-sm Арбитраж
+            span {{req.date| timespan}}
+            button(ng-click="OpenDispute(req._id, request.task._id); $event.stopPropagation();").btn.btn-danger.btn-sm Арбитраж
     include ../../chat
