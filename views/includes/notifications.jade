@@ -3,4 +3,4 @@ style
 .col-lg-3.col-md-3.col-sm-5.col-xs-12.messages
     p Сообщения
     .well.notifyies(ng-controller="Chat as chat",ng-init="init('#{user._id}'); getNotifications();")
-        div(notification-list="notifications")
+        div(notification-list)

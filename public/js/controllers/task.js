@@ -1,6 +1,6 @@
 
 
-angular.module('app').controller('TaskCtrl', function($scope, $http,$rootScope) {
+angular.module('app').controller('TaskCtrl', function($scope, $http) {
 
     $scope.selectedIndex = 0;
 

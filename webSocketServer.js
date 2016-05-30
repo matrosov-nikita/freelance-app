@@ -20,7 +20,7 @@ var status_messages = {
 
 var addSubscriberId = (id,task) => {
     if (!(task in subscribers)) subscribers[task] = [];
-    subscribers[task].push(id);
+    if (!subscribers[task].includes(id)) subscribers[task].push(id);
 };
 
 
@@ -47,7 +47,7 @@ io.on('connection', function(socket){
                     socket.join(el.task);
                     addSubscriberId(author,el.task);
                 });
-               
+                console.log(subscribers);
             });
         });
     });
@@ -59,37 +59,39 @@ io.on('connection', function(socket){
             io.sockets.in(mes.task).emit('chat message', mes);
         });
     });
-    
     //отправка нотификационного сообщения
     socket.on('notific message', function(task) {
-        console.log("УЖЕ НЕ ПЛОХО");
-        var Notification = mongoose.model('Notification');
-        Notification.add({
-            text: status_messages[task.status],
-            task: task._id
-        },(err,note)=> {
-            if (task._id in io.sockets.adapter.rooms) {
-                subscribers[task._id].forEach((res)=> {
-                    note.recipients.push(res);
-                });
-                note.save((err)=> {
-                    Notification.populate(note,{path: 'task'},(err,pop_note)=> {
-                        io.sockets.in(task._id).emit('notific message', {note: pop_note, type: 'notification'});
+        console.log("ДА ЗДЕСЬ Я ЗДЕСь");
+        if (task) {
+            var Notification = mongoose.model('Notification');
+            Notification.add({
+                text: status_messages[task.status],
+                task: task._id
+            },(err,note)=> {
+                console.log(note);
+                if (task._id in io.sockets.adapter.rooms) {
+                    subscribers[task._id].forEach((res)=> {
+                        note.recipients.push(res);
                     });
-                });
-            }
-            else
-            {
-                note.recipients.push(task.author);
-                note.save();
-            }
-        })
+                    note.save((err)=> {
+                        Notification.populate(note,{path: 'task'},(err,pop_note)=> {
+                            io.sockets.in(task._id).emit('notific message', {note: pop_note, type: 'notification'});
+                        });
+                    });
+                }
+                else
+                {
+                    note.recipients.push(task.author);
+                    note.save();
+                }
+            })
+        }
     })
 });
 
 run = () => {
     http.listen(3000, function(){
-        console.log('listening on *:3000');
+        console.log('listening on *:12345');
     });
 };
 

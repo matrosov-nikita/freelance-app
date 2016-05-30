@@ -75,6 +75,7 @@ block content
                                 include includes/dateFilter
                                 div(drawing,  url="/stats/worksperdate")
                     .well.tab-pane.fade(id="reviews", ng-init="getReviews()")
+                        p(ng-if="reviews.length==0") Отзывов у пользователя нет
                         .review.clearfix(ng-repeat="review in reviews")
                             include includes/review
 

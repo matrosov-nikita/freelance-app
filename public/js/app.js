@@ -1,4 +1,34 @@
 var App = angular.module('app',[])
+.factory('socket',function ($rootScope){
+    var socket = io.connect('ws://localhost:3000');
+    return {
+        on: function (eventName,callback){
+            socket.on(eventName,function(){
+                var args = [].slice.call(arguments);
+                $rootScope.$apply(function(){
+                    if(callback){
+                        callback.apply(socket,args);
+                    }
+                });
+            });
+        },
+        emit: function (eventName, data, callback){
+            var args = [].slice.call(arguments), cb;
+            if( typeof args[args.length-1]  == "function" ){
+                cb = args[args.length-1];
+                args[args.length-1] = function(){
+                    var args = [].slice.call(arguments);
+                    $rootScope.$apply(function(){
+                        if(cb){
+                            cb.apply(socket,args);
+                        }
+                    });
+                };
+            }
+            socket.emit.apply(socket, args);
+        }
+    };
+})
     .directive("messageList", function() {
         return {
             link: function(scope,element,attrs) {
@@ -23,6 +53,7 @@ var App = angular.module('app',[])
                     });
                 };
                 scope.$watch('messages', function(newVal,oldVal) {
+                    console.log("WATCH MESSAGE");
                     if (newVal[attrs.messageList]!==oldVal[attrs.messageList])
                     {
                         uniqueResultOne(newVal[attrs.messageList],oldVal[attrs.messageList]).forEach((mes)=> {
@@ -59,9 +90,13 @@ var App = angular.module('app',[])
                 });
             };
             scope.$watch('notifications', function(newVal, oldVal) {
+                console.log("watch");
+                if (newVal!==oldVal)
+                {
                     uniqueResultOne(newVal,oldVal).forEach((note)=> {
                         show(note);
                     });
+                }
             },true)
         }
     }
