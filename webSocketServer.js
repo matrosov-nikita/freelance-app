@@ -47,7 +47,6 @@ io.on('connection', function(socket){
                     socket.join(el.task);
                     addSubscriberId(author,el.task);
                 });
-                console.log(subscribers);
             });
         });
     });
@@ -61,7 +60,6 @@ io.on('connection', function(socket){
     });
     //отправка нотификационного сообщения
     socket.on('notific message', function(task) {
-        console.log("ДА ЗДЕСЬ Я ЗДЕСь");
         if (task) {
             var Notification = mongoose.model('Notification');
             Notification.add({

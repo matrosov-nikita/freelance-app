@@ -1,5 +1,8 @@
 extend layout
+block additional_styles
+    link(rel="stylesheet",href="/css/auth.css")
 block content
+    h2 Биржа фриланса
     div(ng-controller='RegisterCtrl')
         form( id="register", method="post", name="registerForm")
             p Регистрация

@@ -1,5 +1,6 @@
 body {
-  padding-top: 70px; }
+  padding-top: 70px;
+}
 
 a {
   cursor: pointer; }
@@ -69,13 +70,16 @@ ul {
   margin-right: 10px; }
 
 #register, #authorize {
-  width: 400px;
   margin: auto;
-  margin-bottom: 20px; }
+  width: 400px;
+  margin-bottom: 20px;
+ }
   #register input, #authorize input {
     margin-top: 10px; }
   #register p, #authorize p {
-    text-align: center;
+    text-align: left;
+    border-bottom: 1px solid #fff;
+    font-size: 14px;
     text-transform: uppercase; }
   #register button, #authorize button {
     width: 180px;

@@ -22,10 +22,16 @@
       margin: 0 5px; }
   .request .header {
     background-color: #62cc79;
-    position: relative; }
+    position: relative;
+    }
     .request .header .icon_set {
       padding-top: 7px;
       padding-right: 10px; }
+    .request .header .deadline {
+      color: red;
+      font-size: 14px;
+      text-align: center;
+    }
 
 .reqs {
   margin-bottom: 10px; }

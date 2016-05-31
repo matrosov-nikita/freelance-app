@@ -58,7 +58,6 @@ angular.module('app').controller('Chat', function($scope, $http, $rootScope, soc
                 $scope.resp(msg);
             });
             socket.on('notific message', function(notific) {
-                alert("SADASDASD");
                $scope.resp(notific);
                 console.log("notific");
                 console.log(notific);

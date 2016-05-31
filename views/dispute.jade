@@ -16,9 +16,9 @@ block content
                     ul.dropdown-menu
                         li(ng-repeat="item in ids",ng-click="getInfo(item._id)") {{item._id}}
         .row.main(ng-show="task")
-            .col-lg-7
+            .col-lg-7.col-md-7.col-sm-7
                 include includes/task
-            .col-lg-5
+            .col-lg-5.col-md-5.col-sm-5
                 div.chat
                     div.mes(ng-repeat="mes in messages")
                         p {{mes.text}}
@@ -26,7 +26,7 @@ block content
                         span {{mes.datePublish| date:'dd MMMM HH:mm'}}
             .container
                 .row.data
-                    .col-lg-6
+                    .col-lg-6.col-md-6.col-sm-6
                         p Исполнитель
                         span Сообщение от исполнителя
                         div.alert.alert-success(role="alert") {{task.result.message}}
@@ -35,7 +35,7 @@ block content
                             li(ng-repeat="file in task.files")
                                 i.fa.fa-file-o
                                 a(href="http://localhost:8080/uploads/{{file.name}}") {{file.original}}
-                    .col-lg-6
+                    .col-lg-6.col-md-6.col-sm-6
                         p Заказчик
                         span Жалоба заказчика
                         div.alert.alert-danger {{task.dispute}}
@@ -45,7 +45,7 @@ block content
                         h4 Решение арбитража
                     form(ng-submit="submitComment(task._id)",name="addComment", id="disp")
                         .row
-                            .col-lg-offset-2.col-lg-8
+                            .col-lg-offset-2.col-lg-8.col-md-8.col-sm-8
                                 textarea.form-control(rows="8",placeholder="Сообщение арбитража",name="comment",ng-model="comment.message")
                                 div(ng-show="isEmpty(addComment.comment.$error)",style="color: #F2B1B1") {{addComment.comment.$error}}
                                 .marks
@@ -58,7 +58,7 @@ block content
                                     br
                                     input(type ='radio', name='mark', value="2",ng-model="comment.mark" )
                                     |    Отрицательная
-                            .col-lg-2.choose
+                            .col-lg-2.col-md-4.col-sm-4.choose
                                 label
                                     input(type='radio',name="choose", value='0',ng-model="comment.choose", required)
                                     |    В пользу заказчика
